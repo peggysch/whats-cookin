@@ -1,0 +1,5 @@
+{
+	"ConnectionStrings": {
+		"UniversityDatabase": "YourConnectionStringHere"
+	}
+}
