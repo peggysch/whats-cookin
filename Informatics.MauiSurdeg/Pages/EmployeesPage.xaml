@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Informatics.MauiSurdeg.Pages.EmployeesPage"
+             Title="Employees">
+    <VerticalStackLayout Padding="15"
+                         Spacing="10">
+        <!-- Add Employee Button -->
+        <Button Text="Add Employee"
+                Command="{Binding OpenAddEmployeeCommand}"
+                HorizontalOptions="Fill"
+                BackgroundColor="#27AE60"
+                TextColor="White"
+                FontAttributes="Bold"
+                CornerRadius="10"
+                Padding="10"/>
+        <!-- CollectionView for Employee List -->
+        <CollectionView x:Name="EmployeesList"
+                        ItemsSource="{Binding Employees}"
+                        SelectionMode="Single"
+                        VerticalOptions="FillAndExpand"
+                        ItemsUpdatingScrollMode="KeepItemsInView">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10"
+                          ColumnDefinitions="*,Auto"
+                          RowDefinitions="Auto,Auto"
+                          BackgroundColor="White">
+                        <!-- Employee Name -->
+                        <Label Grid.Row="0"
+                               Grid.Column="0"
+                               Text="{Binding Name}"
+                               FontAttributes="Bold"
+                               FontSize="18"
+                               AutomationId="EmployeeName"
+                               TextColor="Black"
+                               VerticalOptions="Center"/>
+                        <!-- Employee Salary -->
+                        <Label Grid.Row="1"
+                               Grid.Column="0"
+                               Text="{Binding Salary, StringFormat='Salary: {0:C}'}"
+                               FontSize="16"
+                               AutomationId="EmployeeSalary"
+                               TextColor="Gray"
+                               VerticalOptions="Center"/>
+                        <!-- Tap Gesture for Selecting Employee -->
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Path=BindingContext.OpenEmployeeDetailsCommand, Source={x:Reference EmployeesList}}"
+                                                  CommandParameter="{Binding Id}"/>
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <!-- Empty View -->
+            <CollectionView.EmptyView>
+                <Label Text="No employees found."
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       FontSize="16"
+                       FontAttributes="Italic"
+                       TextColor="Gray"/>
+            </CollectionView.EmptyView>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentPage>
