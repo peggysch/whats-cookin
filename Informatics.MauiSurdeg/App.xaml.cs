@@ -1,4 +1,4 @@
-﻿namespace Informatics.MauiSurdeg;
+namespace Informatics.MauiSurdeg;
 
 public partial class App : Application
 {

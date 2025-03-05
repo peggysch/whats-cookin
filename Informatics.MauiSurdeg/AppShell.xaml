@@ -4,12 +4,14 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Informatics.MauiSurdeg"
-    Shell.FlyoutBehavior="Flyout"
+    Shell.FlyoutBehavior="Disabled"
     Title="Informatics.MauiSurdeg">
-
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-
+    <TabBar>
+        <ShellSection Title="Employees">
+            <ShellContent ContentTemplate="{DataTemplate local:Pages.EmployeesPage}"/>
+        </ShellSection>
+        <ShellSection Title="Departments">
+            <ShellContent ContentTemplate="{DataTemplate local:Pages.DepartmentsPage}"/>
+        </ShellSection>
+    </TabBar>
 </Shell>
