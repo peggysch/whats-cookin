@@ -3,7 +3,7 @@ using Informatics.MauiSurdeg.Models;
 
 namespace Informatics.MauiSurdeg.Contexts
 {
-    public class RecipeContext : DbContext
+    public class UniversityContext : DbContext
     {
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<Recipe> Recipes { get; set; }
@@ -12,7 +12,7 @@ namespace Informatics.MauiSurdeg.Contexts
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<Comment> Comments { get; set; }
 
-        public RecipeContext(DbContextOptions<RecipeContext> options)
+        public UniversityContext(DbContextOptions<UniversityContext> options)
             : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
