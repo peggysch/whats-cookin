@@ -1,0 +1,88 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Informatics.MauiSurdeg.Contexts;
+using Informatics.MauiSurdeg.Interfaces;
+using Informatics.MauiSurdeg.Models;
+
+
+namespace Informatics.MauiSurdeg.Services
+{
+    
+    public class RecipeIngredientService : IRecipeIngredientService
+    {
+        private readonly UniversityContext _context;
+
+        public RecipeIngredientService(UniversityContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
+        public async Task<IEnumerable<RecipeIngredient>> GetRecipeIngredientsAsync()
+        {
+            return await _context.RecipeIngredients
+                .AsNoTracking()
+                .Include(ri => ri.Recipe)
+                .Include(ri => ri.Ingredient)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Ingredient>> GetIngredientsForRecipeAsync(int recipeId)
+        {
+            return await _context.RecipeIngredients
+                .AsNoTracking()
+                .Where(ri => ri.RecipeId == recipeId)
+                .Select(ri => ri.Ingredient)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Recipe>> GetRecipesForIngredientAsync(int ingredientId)
+        {
+            return await _context.RecipeIngredients
+                .AsNoTracking()
+                .Where(ri => ri.IngredientId == ingredientId)
+                .Select(ri => ri.Recipe)
+                .ToListAsync();
+        }
+
+        public async Task<bool> AddIngredientToRecipeAsync(int recipeId, int ingredientId, string quantity)
+        {
+            try
+            {
+                var recipeIngredient = new RecipeIngredient
+                {
+                    RecipeId = recipeId,
+                    IngredientId = ingredientId,
+                    Quantity = quantity
+                };
+
+                await _context.RecipeIngredients.AddAsync(recipeIngredient);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new InvalidOperationException("Error adding ingredient to recipe.", ex);
+            }
+        }
+
+        public async Task<bool> RemoveIngredientFromRecipeAsync(int recipeId, int ingredientId) //KOLLA
+        {
+            var recipeIngredient = await _context.RecipeIngredients
+                .FirstOrDefaultAsync(ri => ri.RecipeId == recipeId && ri.IngredientId == ingredientId);
+            if (recipeIngredient == null) return false;
+
+            try
+            {
+                _context.RecipeIngredients.Remove(recipeIngredient);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new InvalidOperationException("Error removing ingredient from recipe.", ex);
+            }
+        }
+    }
+}
