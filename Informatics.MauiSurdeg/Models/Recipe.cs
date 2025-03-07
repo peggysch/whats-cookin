@@ -51,5 +51,5 @@ public class Recipe
     public virtual ICollection<Comment> Comments { get; set; }
 
     // Define the navigation property for Ingredients
-    public ICollection<Ingredient> Ingredients { get; set; }
+    // public ICollection<Ingredient> Ingredients { get; set; }
 }

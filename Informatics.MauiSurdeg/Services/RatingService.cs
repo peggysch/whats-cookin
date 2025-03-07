@@ -33,7 +33,7 @@ namespace Informatics.MauiSurdeg.Services
                 .AsNoTracking()
                 .Include(r => r.AppUser)
                 .Include(r => r.Recipe)
-                .FirstOrDefaultAsync(r => r.RatingId == id);
+                .FirstOrDefaultAsync(r => r.Id == id);
         }
 
         public async Task<Rating?> GetUserRatingForRecipeAsync(int userId, int recipeId)
@@ -67,7 +67,7 @@ namespace Informatics.MauiSurdeg.Services
             }
         }
 
-        public async Task<bool> DeleteRatingByIdAsync(int id)
+        public async Task<bool> DeleteRatingByIdAsync(int id) //KOLLA
         {
             var rating = await _context.Ratings.FindAsync(id);
             if (rating == null) return false;
@@ -82,7 +82,7 @@ namespace Informatics.MauiSurdeg.Services
             {
                 throw new InvalidOperationException("Error deleting rating.", ex);
             }
-            public async 
+
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Informatics.MauiSurdeg.Services
         {
             return await _context.Comments
                 .AsNoTracking()
-                .Include(c => c.User) // Include the user who posted the comment
+                .Include(c => c.AppUser) // Include the user who posted the comment
                 .Include(c => c.Recipe) // Include the recipe
                 .ToListAsync();
         }
@@ -31,17 +31,17 @@ namespace Informatics.MauiSurdeg.Services
         {
             return await _context.Comments
                 .AsNoTracking()
-                .Include(c => c.User)
+                .Include(c => c.AppUser)
                 .Include(c => c.Recipe)
-                .FirstOrDefaultAsync(c => c.CommentID == id);
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<IEnumerable<Comment>> GetCommentsForRecipeAsync(int recipeId)
         {
             return await _context.Comments
                 .AsNoTracking()
-                .Where(c => c.RecipeID == recipeId)
-                .Include(c => c.User)
+                .Where(c => c.RecipeId == recipeId)
+                .Include(c => c.AppUser)
                 .ToListAsync();
         }
 
@@ -51,7 +51,7 @@ namespace Informatics.MauiSurdeg.Services
 
             try
             {
-                if (comment.CommentID > 0) // Update existing comment
+                if (comment.Id > 0) // Update existing comment
                 {
                     _context.Comments.Update(comment);
                 }
@@ -69,7 +69,7 @@ namespace Informatics.MauiSurdeg.Services
             }
         }
 
-        public async Task<bool> DeleteCommentByIdAsync(int id)
+        public async Task<bool> DeleteCommentByIdAsync(int id) //KOLLA
         {
             var comment = await _context.Comments.FindAsync(id);
             if (comment == null) return false;
