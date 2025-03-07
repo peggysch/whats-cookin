@@ -1,0 +1,8 @@
+using System;
+
+namespace Informatics.MauiSurdeg.Services;
+
+public class RecipeService
+{
+
+}
