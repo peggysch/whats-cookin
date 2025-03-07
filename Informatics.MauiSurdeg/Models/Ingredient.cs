@@ -26,5 +26,5 @@ public class Ingredient
     public virtual ICollection<RecipeIngredient> RecipeIngredients { get; set; }
 
     // Define the navigation property for Recipes
-    // public ICollection<Recipe> Recipes { get; set; }
+    public ICollection<Recipe> Recipes { get; set; }
 }
