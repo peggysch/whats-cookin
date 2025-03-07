@@ -43,22 +43,6 @@ public static class MauiProgram
 			options.UseSqlServer(connectionString);
 		});
 
-		builder.Services.AddScoped<IDepartmentService, DepartmentService>();
-		builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-
-		// Use Singleton for ViewModels that manage lists
-		builder.Services.AddSingleton<EmployeesViewModel>();
-		builder.Services.AddSingleton<DepartmentsViewModel>();
-
-		// Use Transient for ViewModels that manage single detail pages
-		builder.Services.AddTransient<EmployeeDetailsViewModel>();
-		builder.Services.AddTransient<DepartmentDetailsViewModel>();
-
-		// Register Pages
-		builder.Services.AddSingleton<EmployeesPage>();
-		builder.Services.AddTransient<EmployeeDetailsPage>();
-		builder.Services.AddSingleton<DepartmentsPage>();
-		builder.Services.AddTransient<DepartmentDetailsPage>();
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif
