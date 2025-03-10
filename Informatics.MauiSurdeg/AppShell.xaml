@@ -6,12 +6,4 @@
     xmlns:local="clr-namespace:Informatics.MauiSurdeg"
     Shell.FlyoutBehavior="Disabled"
     Title="Informatics.MauiSurdeg">
-    <TabBar>
-        <ShellSection Title="Employees">
-            <ShellContent ContentTemplate="{DataTemplate local:Pages.EmployeesPage}"/>
-        </ShellSection>
-        <ShellSection Title="Departments">
-            <ShellContent ContentTemplate="{DataTemplate local:Pages.DepartmentsPage}"/>
-        </ShellSection>
-    </TabBar>
 </Shell>

@@ -43,6 +43,20 @@ public static class MauiProgram
 			options.UseSqlServer(connectionString);
 		});
 
+		builder.Services.AddScoped<IRecipeService, RecipeService>();
+		builder.Services.AddScoped<IAppUserService, AppUserService>();
+		builder.Services.AddScoped<IRatingService, RatingService>();
+		builder.Services.AddScoped<ICommentService, CommentService>();
+		builder.Services.AddScoped<IIngredientService, IngredientService>();
+		builder.Services.AddScoped<IRatingService, RatingService>();
+
+		// Register ViewModels
+		builder.Services.AddTransient<LoginViewModel>();
+
+		// Register Pages
+		builder.Services.AddTransient<LoginPage>();
+
+
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif

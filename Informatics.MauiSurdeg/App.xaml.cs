@@ -1,3 +1,6 @@
+using Informatics.MauiSurdeg.ViewModels;
+using Informatics.MauiSurdeg.Pages;
+
 namespace Informatics.MauiSurdeg;
 
 public partial class App : Application
@@ -9,6 +12,6 @@ public partial class App : Application
 
 	protected override Window CreateWindow(IActivationState? activationState)
 	{
-		return new Window(new AppShell());
+		return new Window(new LoginPage(new LoginViewModel()));
 	}
 }
