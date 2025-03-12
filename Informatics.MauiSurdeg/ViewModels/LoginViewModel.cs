@@ -12,10 +12,10 @@ namespace Informatics.MauiSurdeg.ViewModels;
 public partial class LoginViewModel : BaseViewModel
 {
     [ObservableProperty]
-    private string username;
+    private string newUsername;
 
     [ObservableProperty]
-    private string password;
+    private string username;
 
     [ObservableProperty]
     private string errorMessage;
