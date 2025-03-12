@@ -2,7 +2,7 @@ using System;
 
 namespace Informatics.MauiSurdeg.ViewModels;
 
-public class ProfileViewModel
+public partial class ProfileViewModel : BaseViewModel
 {
 
 }
