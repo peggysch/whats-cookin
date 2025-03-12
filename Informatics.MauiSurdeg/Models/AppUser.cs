@@ -10,12 +10,12 @@ public class AppUser
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("AppUserID")]
-    public int Id { get; set; }
+    public int AppUserID { get; set; }  // Changed from Id to match column name
 
     [Required]
     [Column("UserNo")]
     [MaxLength(50)]
-    public string Number { get; set; }
+    public string UserNo { get; set; }  // Changed from Number to match column name
 
     [Required]
     [Column("Username")]
@@ -26,13 +26,8 @@ public class AppUser
     [Column("PasswordHash")]
     public byte[] PasswordHash { get; set; }
 
-    // Navigation property for the one-to-many relationship with Recipe
-    public virtual ICollection<Recipe> Recipes { get; set; }
-
-    // Navigation property for associated ratings
-    public virtual ICollection<Rating> Ratings { get; set; }
-
-    // Navigation property for associated comments
-    public virtual ICollection<Comment> Comments { get; set; }
+    // Navigation properties
+    public virtual ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
+    public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();
+    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 }
-

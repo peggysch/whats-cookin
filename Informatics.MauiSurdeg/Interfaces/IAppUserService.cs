@@ -9,7 +9,7 @@ namespace Informatics.MauiSurdeg.Interfaces
    public interface IAppUserService
     {
         Task<IEnumerable<AppUser>> GetUsersAsync();
-        Task<AppUser?> GetUserByIdAsync(int id);
+        Task<AppUser?> GetUserByIdAsync(string username);
         Task<AppUser?> GetUserByNoAsync(string userNo);
         Task<AppUser> SaveUserAsync(AppUser user);
         Task<bool> DeleteUserByIdAsync(int id);

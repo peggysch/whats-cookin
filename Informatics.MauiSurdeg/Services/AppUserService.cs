@@ -24,18 +24,18 @@ public class AppUserService : IAppUserService
                 .ToListAsync();
         }
 
-        public async Task<AppUser?> GetUserByIdAsync(int id)
+        public async Task<AppUser?> GetUserByIdAsync(string username)
         {
             return await _context.AppUsers
                 .AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Id == id);
+                .FirstOrDefaultAsync(u => u.Username == username);
         }
 
         public async Task<AppUser?> GetUserByNoAsync(string userNo)
         {
             return await _context.AppUsers
                 .AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Number == userNo);
+                .FirstOrDefaultAsync(u => u.UserNo == userNo);
         }
 
         public async Task<AppUser> SaveUserAsync(AppUser user)
@@ -44,7 +44,7 @@ public class AppUserService : IAppUserService
 
             try
             {
-                if (user.Id > 0) // Update existing user
+                if (user.AppUserID > 0) // Update existing user
                 {
                     _context.AppUsers.Update(user);
                 }
@@ -81,7 +81,7 @@ public class AppUserService : IAppUserService
 
         public async Task<bool> DeleteUserByNoAsync(string userNo) //KOLLA
         {
-            var user = await _context.AppUsers.FirstOrDefaultAsync(u => u.Number == userNo);
+            var user = await _context.AppUsers.FirstOrDefaultAsync(u => u.UserNo == userNo);
             if (user == null) return false;
 
             try

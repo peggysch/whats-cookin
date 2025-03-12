@@ -69,19 +69,33 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="appsettings.json">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
+    <None Remove="appsettings.json" />
+    <EmbeddedResource Include="appsettings.json">
+        <LogicalName>Informatics.MauiSurdeg.appsettings.json</LogicalName>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.2" />
-		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.2" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.2" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
+    <!-- Add core EF Core package -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.2" />
+    <!-- Optionally add this for development -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+    <!-- Align this version -->
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+    <Content Include="$(NuGetPackageRoot)microsoft.entityframeworkcore.sqlserver/9.0.2/lib/**/*.resources.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <Link>%(RecursiveDir)\%(Filename)%(Extension)</Link>
+    </Content>
 	</ItemGroup>
 
 	<ItemGroup>
