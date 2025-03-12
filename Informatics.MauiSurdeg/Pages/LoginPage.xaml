@@ -4,13 +4,44 @@
              x:Class="Informatics.MauiSurdeg.Pages.LoginPage"
              Title="Login">
 
-    <VerticalStackLayout Padding="20" Spacing="15"
+    <VerticalStackLayout Padding="30" Spacing="15"
                          VerticalOptions="Center"
                          HorizontalOptions="Center">
         
-        <Label Text="Login"
-               FontSize="32"
+        <Label Text="Welcome to What's Cookin'"
+               FontSize="40"
                FontAttributes="Bold"
+               HorizontalOptions="Center"/>
+       
+        <Label Text="Create an account'"
+               FontSize="28"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"/>
+       
+        <Label Text="Enter a username and password"
+               FontSize="20"
+               HorizontalOptions="Center"/>
+
+        <Entry Placeholder="user123"
+               Text="{Binding Username}"
+               Keyboard="Text"
+               WidthRequest="250"/>
+
+        <Entry Placeholder="password123"
+               Text="{Binding Password}"
+               IsPassword="True"
+               WidthRequest="250"/>
+
+        <Button Text="Create account"
+                Command="{Binding LoginCommand}"
+                BackgroundColor="#FF51A888"
+                TextColor="White"
+                CornerRadius="10"
+                WidthRequest="250"/>
+        
+        <Label Text="Already have an account?"
+               TextColor="#FF787474"
+               FontSize="20"
                HorizontalOptions="Center"/>
 
         <Entry Placeholder="Username"
@@ -23,9 +54,9 @@
                IsPassword="True"
                WidthRequest="250"/>
 
-        <Button Text="Login"
+        <Button Text="Log In"
                 Command="{Binding LoginCommand}"
-                BackgroundColor="Blue"
+                BackgroundColor="#FF51A888"
                 TextColor="White"
                 CornerRadius="10"
                 WidthRequest="250"/>
