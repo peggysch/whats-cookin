@@ -31,7 +31,7 @@ public class RecipeService : IRecipeService
             return await _context.Recipes
                 .AsNoTracking()
                 .Include(r => r.AppUser)
-                .FirstOrDefaultAsync(r => r.Id == id);
+                .FirstOrDefaultAsync(r => r.RecipeID == id);
         }
 
         public async Task<Recipe?> GetRecipeByNoAsync(string recipeNo)
@@ -39,7 +39,7 @@ public class RecipeService : IRecipeService
             return await _context.Recipes
                 .AsNoTracking()
                 .Include(r => r.AppUser)
-                .FirstOrDefaultAsync(r => r.Number == recipeNo);
+                .FirstOrDefaultAsync(r => r.RecipeNo == recipeNo);
         }
 
         public async Task<Recipe> SaveRecipeAsync(Recipe recipe)
@@ -48,7 +48,7 @@ public class RecipeService : IRecipeService
 
             try
             {
-                if (recipe.Id > 0) // Update existing recipe
+                if (recipe.RecipeID > 0) // Update existing recipe
                 {
                     _context.Recipes.Update(recipe);
                 }
@@ -85,7 +85,7 @@ public class RecipeService : IRecipeService
 
         public async Task<bool> DeleteRecipeByNoAsync(string recipeNo) //KOLLA
         {
-            var recipe = await _context.Recipes.FirstOrDefaultAsync(r => r.Number == recipeNo);
+            var recipe = await _context.Recipes.FirstOrDefaultAsync(r => r.RecipeNo == recipeNo);
             if (recipe == null) return false;
 
             try

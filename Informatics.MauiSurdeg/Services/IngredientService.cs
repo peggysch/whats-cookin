@@ -29,14 +29,14 @@ public class IngredientService : IIngredientService
         {
             return await _context.Ingredients
                 .AsNoTracking()
-                .FirstOrDefaultAsync(i => i.Id == id);
+                .FirstOrDefaultAsync(i => i.IngredientID == id);
         }
 
         public async Task<Ingredient?> GetIngredientByNoAsync(string ingredientNo)
         {
             return await _context.Ingredients
                 .AsNoTracking()
-                .FirstOrDefaultAsync(i => i.Number == ingredientNo);
+                .FirstOrDefaultAsync(i => i.IngredientNo == ingredientNo);
         }
 
         public async Task<Ingredient> SaveIngredientAsync(Ingredient ingredient)
@@ -45,7 +45,7 @@ public class IngredientService : IIngredientService
 
             try
             {
-                if (ingredient.Id > 0) // Update existing ingredient
+                if (ingredient.IngredientID > 0) // Update existing ingredient
                 {
                     _context.Ingredients.Update(ingredient);
                 }
@@ -82,7 +82,7 @@ public class IngredientService : IIngredientService
 
         public async Task<bool> DeleteIngredientByNoAsync(string ingredientNo) //KOLLA
         {
-            var ingredient = await _context.Ingredients.FirstOrDefaultAsync(i => i.Number == ingredientNo);
+            var ingredient = await _context.Ingredients.FirstOrDefaultAsync(i => i.IngredientNo == ingredientNo);
             if (ingredient == null) return false;
 
             try

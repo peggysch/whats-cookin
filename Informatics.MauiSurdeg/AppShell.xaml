@@ -6,4 +6,8 @@
     xmlns:local="clr-namespace:Informatics.MauiSurdeg"
     Shell.FlyoutBehavior="Disabled"
     Title="Informatics.MauiSurdeg">
+
+    <ShellSection Title="Login">
+        <ShellContent ContentTemplate="{DataTemplate local:Pages.LoginPage}" />
+    </ShellSection>
 </Shell>

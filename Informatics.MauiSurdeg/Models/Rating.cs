@@ -10,31 +10,33 @@ public class Rating
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("RatingID")]
-    public int Id { get; set; }
+    public int RatingID { get; set; }
 
     [Required]
     [Column("RatingNo")]
     [MaxLength(50)]
-    public string Number { get; set; }
+    public string RatingNo { get; set; }
 
     [Required]
     [Column("AppUserID")]
-    public int AppUserId { get; set; }
+    public int AppUserID { get; set; }
 
     [Required]
     [Column("RecipeID")]
-    public int RecipeId { get; set; }
+    public int RecipeID { get; set; }
 
     [Required]
     [Column("Stars")]
+    [Range(1, 5)]
     public int Stars { get; set; }
 
     [Column("CreatedAt")]
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; }
 
-    [ForeignKey("AppUserId")]
+    // Navigation properties
+    [ForeignKey("AppUserID")]
     public virtual AppUser AppUser { get; set; }
-
-    [ForeignKey("RecipeId")]
+    
+    [ForeignKey("RecipeID")]
     public virtual Recipe Recipe { get; set; }
 }
