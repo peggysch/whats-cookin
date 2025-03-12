@@ -13,22 +13,23 @@
                FontAttributes="Bold"
                HorizontalOptions="Center"/>
        
-        <Label Text="Create an account'"
+        <Label Text="Create an account"
                FontSize="28"
                FontAttributes="Bold"
                HorizontalOptions="Center"/>
        
         <Label Text="Enter a username and password"
+               TextColor="#FF787474"
                FontSize="20"
                HorizontalOptions="Center"/>
 
         <Entry Placeholder="user123"
-               Text="{Binding Username}"
+               Text="{Binding newUsername}"
                Keyboard="Text"
                WidthRequest="250"/>
 
         <Entry Placeholder="password123"
-               Text="{Binding Password}"
+               Text="{Binding newPassword}"
                IsPassword="True"
                WidthRequest="250"/>
 
