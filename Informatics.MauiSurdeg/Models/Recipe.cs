@@ -11,12 +11,12 @@ public class Recipe
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("RecipeID")]
-    public int Id { get; set; }
+    public int RecipeID { get; set; }
 
     [Required]
     [Column("RecipeNo")]
     [MaxLength(50)]
-    public string Number { get; set; }
+    public string RecipeNo { get; set; }
 
     [Required]
     [Column("Title")]
@@ -25,31 +25,23 @@ public class Recipe
 
     [Required]
     [Column("RecipeDescription")]
-    public string Description { get; set; }
+    public string RecipeDescription { get; set; }
 
     [Required]
     [Column("CookingTime")]
     public int CookingTime { get; set; }
 
     [Column("CreatedAt")]
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; }
 
     [Required]
     [Column("AppUserID")]
-    public int AppUserId { get; set; }
+    public int AppUserID { get; set; }
 
-    [ForeignKey("AppUserId")]
+    // Navigation properties
+    [ForeignKey("AppUserID")]
     public virtual AppUser AppUser { get; set; }
-
-    // Navigation property to access the associated Ratings
-    public virtual ICollection<Rating> Ratings { get; set; }
-
-    // Navigation property to access the associated RecipeIngredients
-    public virtual ICollection<RecipeIngredient> RecipeIngredients { get; set; }
-
-    // Navigation property for associated comments
-    public virtual ICollection<Comment> Comments { get; set; }
-
-    // Define the navigation property for Ingredients
-    public ICollection<Ingredient> Ingredients { get; set; }
+    public virtual ICollection<RecipeIngredient> RecipeIngredients { get; set; } = new List<RecipeIngredient>();
+    public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();
+    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 }

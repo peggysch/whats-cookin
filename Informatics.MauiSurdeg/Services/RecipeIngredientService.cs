@@ -32,7 +32,7 @@ namespace Informatics.MauiSurdeg.Services
         {
             return await _context.RecipeIngredients
                 .AsNoTracking()
-                .Where(ri => ri.RecipeId == recipeId)
+                .Where(ri => ri.RecipeID == recipeId)
                 .Select(ri => ri.Ingredient)
                 .ToListAsync();
         }
@@ -41,7 +41,7 @@ namespace Informatics.MauiSurdeg.Services
         {
             return await _context.RecipeIngredients
                 .AsNoTracking()
-                .Where(ri => ri.IngredientId == ingredientId)
+                .Where(ri => ri.IngredientID == ingredientId)
                 .Select(ri => ri.Recipe)
                 .ToListAsync();
         }
@@ -52,8 +52,8 @@ namespace Informatics.MauiSurdeg.Services
             {
                 var recipeIngredient = new RecipeIngredient
                 {
-                    RecipeId = recipeId,
-                    IngredientId = ingredientId,
+                    RecipeID = recipeId,
+                    IngredientID = ingredientId,
                     Quantity = quantity
                 };
 
@@ -70,7 +70,7 @@ namespace Informatics.MauiSurdeg.Services
         public async Task<bool> RemoveIngredientFromRecipeAsync(int recipeId, int ingredientId) //KOLLA
         {
             var recipeIngredient = await _context.RecipeIngredients
-                .FirstOrDefaultAsync(ri => ri.RecipeId == recipeId && ri.IngredientId == ingredientId);
+                .FirstOrDefaultAsync(ri => ri.RecipeID == recipeId && ri.IngredientID == ingredientId);
             if (recipeIngredient == null) return false;
 
             try

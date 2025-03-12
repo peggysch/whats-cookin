@@ -33,14 +33,14 @@ namespace Informatics.MauiSurdeg.Services
                 .AsNoTracking()
                 .Include(r => r.AppUser)
                 .Include(r => r.Recipe)
-                .FirstOrDefaultAsync(r => r.Id == id);
+                .FirstOrDefaultAsync(r => r.RatingID == id);
         }
 
         public async Task<Rating?> GetUserRatingForRecipeAsync(int userId, int recipeId)
         {
             return await _context.Ratings
                 .AsNoTracking()
-                .FirstOrDefaultAsync(r => r.AppUserId == userId && r.RecipeId == recipeId);
+                .FirstOrDefaultAsync(r => r.AppUserID == userId && r.RatingID == recipeId);
         }
 
         public async Task<Rating> SaveRatingAsync(Rating rating)
@@ -49,7 +49,7 @@ namespace Informatics.MauiSurdeg.Services
 
             try
             {
-                if (rating.Id > 0) // Update existing rating
+                if (rating.RatingID > 0) // Update existing rating
                 {
                     _context.Ratings.Update(rating);
                 }

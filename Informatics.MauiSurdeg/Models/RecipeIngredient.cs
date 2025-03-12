@@ -7,23 +7,22 @@ namespace Informatics.MauiSurdeg.Models;
 [Table("RecipeIngredient")]
 public class RecipeIngredient
 {
-    [Key]
-    [Column(Order = 1)]
-    [ForeignKey("Recipe")]
-    [Required]
-    public int RecipeId { get; set; }
+    // No [Key] attributes here! The composite key will be configured in OnModelCreating
+    [Column("RecipeID")]
+    public int RecipeID { get; set; }
 
-    [Key]
-    [Column(Order = 2)]
-    [ForeignKey("Ingredient")]
-    [Required]
-    public int IngredientId { get; set; }
+    [Column("IngredientID")]
+    public int IngredientID { get; set; }
 
     [Required]
     [Column("Quantity")]
     [MaxLength(50)]
     public string Quantity { get; set; }
 
+    // Navigation properties
+    [ForeignKey("RecipeID")]
     public virtual Recipe Recipe { get; set; }
+    
+    [ForeignKey("IngredientID")]
     public virtual Ingredient Ingredient { get; set; }
 }

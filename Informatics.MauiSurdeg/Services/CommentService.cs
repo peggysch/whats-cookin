@@ -33,14 +33,14 @@ namespace Informatics.MauiSurdeg.Services
                 .AsNoTracking()
                 .Include(c => c.AppUser)
                 .Include(c => c.Recipe)
-                .FirstOrDefaultAsync(c => c.Id == id);
+                .FirstOrDefaultAsync(c => c.CommentID == id);
         }
 
         public async Task<IEnumerable<Comment>> GetCommentsForRecipeAsync(int recipeId)
         {
             return await _context.Comments
                 .AsNoTracking()
-                .Where(c => c.RecipeId == recipeId)
+                .Where(c => c.RecipeID == recipeId)
                 .Include(c => c.AppUser)
                 .ToListAsync();
         }
@@ -51,7 +51,7 @@ namespace Informatics.MauiSurdeg.Services
 
             try
             {
-                if (comment.Id > 0) // Update existing comment
+                if (comment.CommentID > 0) // Update existing comment
                 {
                     _context.Comments.Update(comment);
                 }
