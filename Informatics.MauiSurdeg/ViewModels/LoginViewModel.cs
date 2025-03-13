@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Informatics.MauiSurdeg.Interfaces;
+using Informatics.MauiSurdeg.Pages;
 using System.Windows.Input;
 
 
@@ -11,6 +12,9 @@ namespace Informatics.MauiSurdeg.ViewModels;
 /// </summary>
 public partial class LoginViewModel : BaseViewModel
 {
+    [ObservableProperty]
+    private string newUsername;
+
     [ObservableProperty]
     private string username;
 
@@ -36,15 +40,7 @@ public partial class LoginViewModel : BaseViewModel
     {
         try
         {
-            // Check if service is available
-            if (_userService == null)
-            {
-                ErrorMessage = "Service not available. Please restart the application.";
-                Console.WriteLine("ERROR: _userService is null - service was not injected properly");
-                return;
-            }
-
-            // Clear any previous error messages
+            // Clear previous error messages
             ErrorMessage = null;
             IsBusy = true;
 
@@ -55,39 +51,37 @@ public partial class LoginViewModel : BaseViewModel
                 return;
             }
 
-            // Log attempt
-            Console.WriteLine($"Attempting to find user with username: {Username}");
-
-            // Attempt to retrieve the user from the database
-            var user = await _userService.GetUserByIdAsync(Username);
-
-            // Debug output
-            Console.WriteLine($"User lookup result: {(user != null ? "Found" : "Not found")}");
-
-            if (user != null)
+            // Check if the user exists
+            bool userExists = await _userService.UsernameExistsAsync(Username);
+            if (!userExists)
             {
-                ErrorMessage = "Database connection successful! User found.";
-                Console.WriteLine($"User details: ID={user.AppUserID}, Username={user.Username}");
+                ErrorMessage = "User does not exist.";
+                return;
             }
-            else
+
+            // Authenticate user credentials
+            bool isAuthenticated = await _userService.AuthenticateUserAsync(Username, Password);
+            if (!isAuthenticated)
             {
-                ErrorMessage = "User not found in database.";
-                Console.WriteLine("No matching user found in database.");
+                ErrorMessage = "Invalid username or password.";
+                return;
             }
+
+            // ✅ Successful login, navigate to ProfilePage
+            await Shell.Current.GoToAsync(nameof(ProfilePage));
         }
         catch (Exception ex)
         {
-            ErrorMessage = $"Login error: {ex.Message}";
-            Console.WriteLine($"Login error: {ex.Message}");
-
-            if (ex.InnerException != null)
-            {
-                Console.WriteLine($"Inner error: {ex.InnerException.Message}");
-            }
+            ErrorMessage = $"An error occurred: {ex.Message}";
         }
         finally
         {
             IsBusy = false;
         }
     }
+
+
+    // TODO: men inte nu, Registera konto :)
+    
+   
 }

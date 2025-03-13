@@ -10,4 +10,11 @@
     <ShellSection Title="Login">
         <ShellContent ContentTemplate="{DataTemplate local:Pages.LoginPage}" />
     </ShellSection>
+    
+    <TabBar>
+        <ShellSection Title="Profile">
+            <ShellContent ContentTemplate="{DataTemplate local:Pages.ProfilePage}" />
+        </ShellSection>
+
+    </TabBar>
 </Shell>
