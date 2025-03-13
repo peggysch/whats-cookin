@@ -19,7 +19,7 @@ public partial class LoginViewModel : BaseViewModel
     private string username;
 
     [ObservableProperty]
-    private string password;
+    private string newPassword;
 
     [ObservableProperty]
     private string errorMessage;
@@ -71,7 +71,7 @@ public partial class LoginViewModel : BaseViewModel
             }
 
             // ✅ Successful login, navigate to ProfilePage
-            await Shell.Current.GoToAsync(nameof(ProfilePage));
+            await Shell.Current.GoToAsync(nameof(AddRecipePage));
         }
         catch (Exception ex)
         {

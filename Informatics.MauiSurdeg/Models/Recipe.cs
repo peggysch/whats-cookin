@@ -21,15 +21,23 @@ public class Recipe
     [Required]
     [Column("Title")]
     [MaxLength(255)]
-    public string Title { get; set; }
+    public string RecipeName { get; set; }
 
     [Required]
     [Column("RecipeDescription")]
     public string RecipeDescription { get; set; }
 
     [Required]
+    [Column("Instructions")]
+    public string Instructions { get; set; }
+
+    [Required]
     [Column("CookingTime")]
     public int CookingTime { get; set; }
+
+    [Required]
+    [Column("CostPerPortion")]
+    public decimal CostPerPortion { get; set; }
 
     [Column("CreatedAt")]
     public DateTime CreatedAt { get; set; }

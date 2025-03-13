@@ -3,18 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Informatics.MauiSurdeg.Pages.AddRecipePage"
              Title="Add New Recipe">
-    <StackLayout Padding="20">
+    
+    <VerticalStackLayout Padding="20">
         <Label Text="Enter Recipe Name:" />
         <Entry Text="{Binding RecipeName}" Placeholder="Ex. Pasta Carbonara" />
 
         <Label Text="Enter a short description:" />
-        <Editor Text="{Binding Description}" />
+        <Editor Text="{Binding RecipeDescription}" HeightRequest="100"/>
 
         <Label Text="Instructions:" />
-        <Editor Text="{Binding Instructions}" />
+        <Editor Text="{Binding Instructions}" HeightRequest="100"/>
 
         <Label Text="Time (minutes):" />
-        <Entry Text="{Binding Time}" Keyboard="Numeric" />
+        <Entry Text="{Binding CookingTime}" Keyboard="Numeric" />
 
         <Label Text="Cost per portion in SEK:" />
         <Entry Text="{Binding CostPerPortion}" Keyboard="Numeric" />
@@ -31,15 +32,15 @@
         <CollectionView ItemsSource="{Binding SelectedIngredients}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="{Binding Ingredient.IngredientName}" />
-                        <Label Text=" - " />
+                    <HorizontalStackLayout>
                         <Label Text="{Binding Quantity}" />
-                    </StackLayout>
+                        <Label Text=" " />
+                        <Label Text="{Binding Ingredient.IngredientName}" />    
+                    </HorizontalStackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <Button Text="Add Recipe" Command="{Binding AddRecipeCommand}" />
-    </StackLayout>
+        <Button Text="Add Recipe" Command="{Binding SaveRecipeCommand}" />
+    </VerticalStackLayout>
 </ContentPage>

@@ -7,6 +7,7 @@ namespace Informatics.MauiSurdeg.Interfaces
 {
     public interface ICommentService
     {
+
       
     }
 }

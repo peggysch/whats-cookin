@@ -3,38 +3,49 @@ using System.ComponentModel.DataAnnotations;
 using System.Windows.Input;
 using Informatics.MauiSurdeg.Models;
 using Informatics.MauiSurdeg.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Informatics.MauiSurdeg.Interfaces;
 
 namespace Informatics.MauiSurdeg.ViewModels;
 
 public partial class AddRecipeViewModel : BaseViewModel
 {
-    private readonly IngredientService _ingredientService;
+    private readonly IIngredientService _ingredientService;
+    private readonly IRecipeService _recipeService;
+    private readonly IRecipeIngredientService _recipeIngredientService;
 
-    public AddRecipeViewModel(IngredientService ingredientService)
+    public AddRecipeViewModel(IIngredientService ingredientService, IRecipeService recipeService, IRecipeIngredientService recipeIngredientService)
     {
         _ingredientService = ingredientService;
+        _recipeService = recipeService;
+        _recipeIngredientService = recipeIngredientService;
         LoadIngredients();
         SelectedIngredients = new ObservableCollection<RecipeIngredient>();
-        AddIngredientCommand = new Command(AddIngredient);
-
     }
 
-    [Required]
-    public string RecipeName { get; set; }
-    public string Description { get; set; }
-    public string Instructions { get; set; }
-    public int Time { get; set; }
-    public decimal CostPerPortion { get; set; }
-    public Ingredient SelectedIngredient { get; set; }
-    public string IngredientQuantity { get; set; }
+    [ObservableProperty] 
+    private string recipeName = string.Empty;
 
-    public ICommand AddIngredientCommand { get; }
+    [ObservableProperty] 
+    private string recipeDescription = string.Empty;
 
+    [ObservableProperty] 
+    private string instructions = string.Empty;
+
+    [ObservableProperty] 
+    private int cookingTime;
+    
+    [ObservableProperty] 
+    private decimal costPerPortion;
 
     public ObservableCollection<Ingredient> AvailableIngredients { get; set; } = new();
-
     public ObservableCollection<RecipeIngredient> SelectedIngredients { get; set; }
 
+    [ObservableProperty] private Ingredient? selectedIngredient;
+    [ObservableProperty] private string ingredientQuantity = string.Empty;
+
+    [RelayCommand]
     private async void LoadIngredients()
     {
         var ingredients = await _ingredientService.GetIngredientsAsync();
@@ -44,25 +55,42 @@ public partial class AddRecipeViewModel : BaseViewModel
         }
     }
 
+    [RelayCommand]
     private void AddIngredient()
     {
-        //Ensure selected ingredient is not null
-        if (SelectedIngredient == null)
+        if (SelectedIngredient == null || string.IsNullOrWhiteSpace(IngredientQuantity)) 
+            return;
+        
+        SelectedIngredients.Add(new RecipeIngredient
         {
-            return; //exit the method to prevent errors
-        }
-        if (SelectedIngredient == null && !string.IsNullOrWhiteSpace(IngredientQuantity))
-        {
-            SelectedIngredients.Add(new RecipeIngredient
-            {
-                IngredientID = SelectedIngredient.IngredientID,
-                Ingredient = SelectedIngredient,
-                Quantity = IngredientQuantity
-            });
+            Ingredient = SelectedIngredient,
+            IngredientID = SelectedIngredient.IngredientID,
+            Quantity = IngredientQuantity
+        });
 
-            //Reset input fields
-            IngredientQuantity = string.Empty;
-            OnPropertyChanged(nameof(IngredientQuantity));
-        }
+        IngredientQuantity = string.Empty;
     }
+
+    [RelayCommand]
+    private async void SaveRecipe()
+    {
+        var newRecipe = new Recipe
+        {
+            RecipeName = RecipeName,
+            RecipeDescription = RecipeDescription,
+            Instructions = Instructions,
+            CookingTime = CookingTime,
+            CostPerPortion = CostPerPortion,
+            CreatedAt = DateTime.UtcNow,
+            AppUserID = 1, // TODO: Get the current user ID
+            RecipeIngredients = SelectedIngredients.ToList()
+
+        };
+
+        await _recipeService.SaveRecipeAsync(newRecipe);
+    }
+
+    
+
+
 }

@@ -12,8 +12,8 @@
     </ShellSection>
     
     <TabBar>
-        <ShellSection Title="Profile">
-            <ShellContent ContentTemplate="{DataTemplate local:Pages.ProfilePage}" />
+        <ShellSection Title="Recipes">
+            <ShellContent ContentTemplate="{DataTemplate local:Pages.AddRecipePage}" />
         </ShellSection>
 
     </TabBar>

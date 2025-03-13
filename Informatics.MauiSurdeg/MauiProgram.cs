@@ -21,8 +21,8 @@ public static class MauiProgram
 			.UseMauiApp<App>()
 			.ConfigureFonts(fonts =>
 			{
-				fonts.AddFont("OpenSans-Bold.ttf", "LibreBaskervilleBold");
-				fonts.AddFont("OpenSans-Regular.ttf", "LibreBaskervilleRegular");
+				fonts.AddFont("LibreBaskerville-Bold.ttf", "LibreBaskervilleBold");
+				fonts.AddFont("LibreBaskerville-Regular.ttf", "LibreBaskervilleRegular");
 			});
 
 		var assembly = Assembly.GetExecutingAssembly();
@@ -55,14 +55,17 @@ public static class MauiProgram
 		builder.Services.AddScoped<ICommentService, CommentService>();
 		builder.Services.AddScoped<IIngredientService, IngredientService>();
 		builder.Services.AddScoped<IRatingService, RatingService>();
+		builder.Services.AddScoped<IRecipeIngredientService, RecipeIngredientService>();
 
 		// Register ViewModels
 		builder.Services.AddTransient<LoginViewModel>();
 		builder.Services.AddTransient<ProfileViewModel>();
+		builder.Services.AddTransient<AddRecipeViewModel>();
 
 		// Register Pages
 		builder.Services.AddTransient<LoginPage>();
 		builder.Services.AddTransient<ProfilePage>();
+		builder.Services.AddTransient<AddRecipePage>();
 
 
 
