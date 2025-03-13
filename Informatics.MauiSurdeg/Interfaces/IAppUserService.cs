@@ -15,6 +15,7 @@ namespace Informatics.MauiSurdeg.Interfaces
         Task<bool> DeleteUserByNoAsync(string userNo);
         Task<bool> UsernameExistsAsync(string username);
         Task<bool> AuthenticateUserAsync(string username, string password);
+        Task<AppUser> AddNewUserAsync(string username, string password);
     }
 }
 
