@@ -23,18 +23,20 @@
                FontSize="20"
                HorizontalOptions="Center"/>
 
+        <!-- Create NEW user, username -->
         <Entry Placeholder="user123"
-               Text="{Binding newUsername}"
+               Text="{Binding NewUsername}"
                Keyboard="Text"
                WidthRequest="250"/>
 
+        <!-- Create NEW user, password -->
         <Entry Placeholder="password123"
-               Text="{Binding newPassword}"
+               Text="{Binding NewPassword}"
                IsPassword="True"
                WidthRequest="250"/>
 
         <Button Text="Create account"
-                Command="{Binding LoginCommand}"
+                Command="{Binding CreateUserCommand}"
                 BackgroundColor="#FF51A888"
                 TextColor="White"
                 CornerRadius="10"
@@ -45,11 +47,13 @@
                FontSize="20"
                HorizontalOptions="Center"/>
 
+        <!-- EXISTING user, username -->
         <Entry Placeholder="Username"
                Text="{Binding Username}"
                Keyboard="Text"
                WidthRequest="250"/>
 
+        <!-- EXISTING user, password -->
         <Entry Placeholder="Password"
                Text="{Binding Password}"
                IsPassword="True"
