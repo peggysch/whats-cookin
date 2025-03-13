@@ -98,7 +98,7 @@ public class AppUserService : IAppUserService
         }
     }
 
-    public async Task<bool> DeleteUserByNoAsync(string userNo) //KOLLA
+    public async Task<bool> DeleteUserByNoAsync(string userNo)
     {
         var user = await _context.AppUsers.FirstOrDefaultAsync(u => u.UserNo == userNo);
         if (user == null) return false;
@@ -119,7 +119,7 @@ public class AppUserService : IAppUserService
     private async Task<string> GenerateNextUserNoAsync()
     {
         var latestUser = await _context.AppUsers
-            .OrderByDescending(u => u.UserNo)
+            .OrderByDescending(u => u.UserNo) // Senaste först
             .FirstOrDefaultAsync();
 
         if (latestUser == null || string.IsNullOrEmpty(latestUser.UserNo))
