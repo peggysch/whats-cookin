@@ -20,6 +20,9 @@ public partial class LoginViewModel : BaseViewModel
     [ObservableProperty]
     private string errorMessage;
 
+    [ObservableProperty]
+    private string password;
+
     private readonly IAppUserService _userService;
 
     public ICommand LoginCommand { get; }
