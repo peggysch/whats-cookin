@@ -4,6 +4,10 @@ using Informatics.MauiSurdeg.Interfaces;
 using Informatics.MauiSurdeg.Pages;
 using System.Windows.Input;
 
+//Profile
+using Microsoft.Maui.Storage;
+using Informatics.MauiSurdeg.Models;
+
 
 namespace Informatics.MauiSurdeg.ViewModels;
 
@@ -27,6 +31,7 @@ public partial class LoginViewModel : BaseViewModel
     private readonly IAppUserService _userService;
 
     public ICommand LoginCommand { get; }
+
     public LoginViewModel(IAppUserService userService)
     {
         _userService = userService ?? throw new ArgumentNullException(nameof(userService));
@@ -67,8 +72,16 @@ public partial class LoginViewModel : BaseViewModel
                 return;
             }
 
-            // ✅ Successful login, navigate to ProfilePage
-            await Shell.Current.GoToAsync(nameof(ProfilePage));
+            // Retrieve the authenticated user ID
+            var userId = await _userService.GetAuthenticatedUserIdAsync(Username);
+            if (userId == null)
+            {
+                ErrorMessage = "Failed to retrieve user ID.";
+                return;
+            }
+
+            // Navigate to ProfilePage and pass the user ID
+            await Shell.Current.GoToAsync($"{nameof(ProfilePage)}?userId={userId}");
         }
         catch (Exception ex)
         {
@@ -81,7 +94,8 @@ public partial class LoginViewModel : BaseViewModel
     }
 
 
+
     // TODO: men inte nu, Registera konto :)
-    
-   
+
+
 }

@@ -1,20 +1,29 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<Shell
-    x:Class="Informatics.MauiSurdeg.AppShell"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:Informatics.MauiSurdeg"
-    Shell.FlyoutBehavior="Disabled"
-    Title="Informatics.MauiSurdeg">
+<?xml version="1.0" encoding="utf-8" ?>
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      xmlns:local="clr-namespace:Informatics.MauiSurdeg"
+      x:Class="Informatics.MauiSurdeg.AppShell"
+      FlyoutBehavior="Disabled"> <!-- Initially hides the flyout -->
 
-    <ShellSection Title="Login">
-        <ShellContent ContentTemplate="{DataTemplate local:Pages.LoginPage}" />
-    </ShellSection>
-    
-    <TabBar>
-        <ShellSection Title="Profile">
-            <ShellContent ContentTemplate="{DataTemplate local:Pages.ProfilePage}" />
-        </ShellSection>
+    <!-- LOGIN PAGE (First Page) -->
+    <ShellContent Title="Login" Route="login" ContentTemplate="{DataTemplate local:Pages.LoginPage}" />
 
-    </TabBar>
+    <!-- MAIN NAVIGATION PAGES (Initially Hidden) -->
+    <FlyoutItem Title="Profile" IsVisible="{Binding IsUserLoggedIn, Source={x:Static local:AppShell.Current}}">
+        <ShellContent Title="Profile" Route="profile" ContentTemplate="{DataTemplate local:Pages.ProfilePage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Feed" IsVisible="{Binding IsUserLoggedIn, Source={x:Static local:AppShell.Current}}">
+        <ShellContent Title="Feed" Route="feed" ContentTemplate="{DataTemplate local:Pages.FeedPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Add Recipe" IsVisible="{Binding IsUserLoggedIn, Source={x:Static local:AppShell.Current}}">
+        <ShellContent Title="Add Recipe" Route="addrecipe" ContentTemplate="{DataTemplate local:Pages.AddRecipePage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Settings" IsVisible="{Binding IsUserLoggedIn, Source={x:Static local:AppShell.Current}}">
+        <ShellContent Title="Settings" Route="settings" ContentTemplate="{DataTemplate local:Pages.SettingsPage}" />
+    </FlyoutItem>
+
 </Shell>
+

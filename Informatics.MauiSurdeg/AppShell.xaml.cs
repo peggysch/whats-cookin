@@ -1,14 +1,34 @@
-﻿using Informatics.MauiSurdeg.Pages;
+﻿using Microsoft.Maui.Controls;
 
-namespace Informatics.MauiSurdeg;
-public partial class AppShell : Shell
+namespace Informatics.MauiSurdeg
 {
-public AppShell()
-	{
-		InitializeComponent();
+    public partial class AppShell : Shell
+    {
+        private static AppShell _current;
+        public static AppShell Current => _current ??= new AppShell();
 
-		Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
-		Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
-		//Routing.RegisterRoute(nameof(FeedPage), typeof(FeedPage))
-	}
+        private bool _isUserLoggedIn;
+        public bool IsUserLoggedIn
+        {
+            get => _isUserLoggedIn;
+            set
+            {
+                if (_isUserLoggedIn != value)
+                {
+                    _isUserLoggedIn = value;
+                    OnPropertyChanged(nameof(IsUserLoggedIn));
+
+                    // Enable Flyout when logged in
+                    FlyoutBehavior = value ? FlyoutBehavior.Locked : FlyoutBehavior.Disabled;
+                }
+            }
+        }
+
+        public AppShell()
+        {
+            InitializeComponent();
+            _current = this;
+            BindingContext = this;
+        }
+    }
 }

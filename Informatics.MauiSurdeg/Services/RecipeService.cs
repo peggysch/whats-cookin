@@ -1,6 +1,6 @@
 using System;
 using Informatics.MauiSurdeg.Contexts;
-using System.Collections.Generic;   
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Informatics.MauiSurdeg.Interfaces;
 using Informatics.MauiSurdeg.Models;
@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Informatics.MauiSurdeg.Services
 {
-public class RecipeService : IRecipeService
+    public class RecipeService : IRecipeService
     {
         private readonly UniversityContext _context;
 
@@ -99,5 +99,13 @@ public class RecipeService : IRecipeService
                 throw new InvalidOperationException("Error deleting recipe.", ex);
             }
         }
+
+        public async Task<List<Recipe>> GetRecipesByUserIdAsync(int userId)
+        {
+            return await _context.Recipes
+                .Where(r => r.AppUserID == userId)
+                .ToListAsync();
+        }
+
     }
 }
