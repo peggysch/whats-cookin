@@ -1,9 +1,20 @@
-namespace Informatics.MauiSurdeg.Pages;
+using Informatics.MauiSurdeg.ViewModels;
 
-public partial class ProfilePage : ContentPage
+namespace Informatics.MauiSurdeg.Pages
 {
-	public ProfilePage()
-	{
-		InitializeComponent();
-	}
+    public partial class ProfilePage : ContentPage
+    {
+        public ProfilePage(ProfileViewModel viewModel)
+        {
+            InitializeComponent();
+            BindingContext = viewModel;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            var viewModel = BindingContext as ProfileViewModel;
+            //viewModel?.LoadUserDataCommand.Execute(null);
+        }
+    }
 }

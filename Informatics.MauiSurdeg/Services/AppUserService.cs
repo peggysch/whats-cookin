@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using Informatics.MauiSurdeg.Interfaces;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Informatics.MauiSurdeg.Services;
 
@@ -22,13 +24,6 @@ public class AppUserService : IAppUserService
             return await _context.AppUsers
                 .AsNoTracking()
                 .ToListAsync();
-        }
-
-        public async Task<AppUser?> GetUserByIdAsync(string username)
-        {
-            return await _context.AppUsers
-                .AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Username == username);
         }
 
         public async Task<AppUser?> GetUserByNoAsync(string userNo)
@@ -95,4 +90,36 @@ public class AppUserService : IAppUserService
                 throw new InvalidOperationException("Error deleting user.", ex);
             }
         }
+
+       // ✅ Check if a username exists in the database
+        public async Task<bool> UsernameExistsAsync(string username)
+        {
+            return await _context.AppUsers.AnyAsync(u => u.Username == username);
+        }
+
+        // ✅ Authenticate a user by verifying username & password
+        public async Task<bool> AuthenticateUserAsync(string username, string password)
+        {
+            var user = await _context.AppUsers.FirstOrDefaultAsync(u => u.Username == username);
+            if (user == null) return false;
+
+            return VerifyHashedPassword(user.PasswordHash, password);
+        }
+
+        // ✅ Hash password using PBKDF2 (you should call this when storing passwords)
+        private byte[] HashPassword(string password)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                return sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+            }
+        }
+
+        // ✅ Verify if the hashed password matches the stored hash
+        private bool VerifyHashedPassword(byte[] storedHash, string password)
+        {
+            byte[] inputHash = HashPassword(password);
+            return storedHash.SequenceEqual(inputHash);
+        }
+       
     }

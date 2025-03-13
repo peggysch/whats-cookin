@@ -8,5 +8,7 @@ public AppShell()
 		InitializeComponent();
 
 		Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
+		Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
+		//Routing.RegisterRoute(nameof(FeedPage), typeof(FeedPage))
 	}
 }
