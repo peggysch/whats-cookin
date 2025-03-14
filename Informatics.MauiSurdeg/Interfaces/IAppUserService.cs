@@ -18,4 +18,3 @@ namespace Informatics.MauiSurdeg.Interfaces
         Task<AppUser> AddNewUserAsync(string username, string password);
     }
 }
-
