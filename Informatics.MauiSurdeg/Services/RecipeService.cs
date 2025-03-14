@@ -99,5 +99,13 @@ namespace Informatics.MauiSurdeg.Services
                 throw new InvalidOperationException("Error deleting recipe.", ex);
             }
         }
+
+        public async Task<List<Recipe>> GetRecipesByUserIdAsync(int userId)
+        {
+            return await _context.Recipes
+                .Where(r => r.AppUserID == userId)
+                .ToListAsync();
+        }
+
     }
 }
