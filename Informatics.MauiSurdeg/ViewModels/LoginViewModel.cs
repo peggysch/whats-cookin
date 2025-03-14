@@ -72,16 +72,18 @@ public partial class LoginViewModel : BaseViewModel
                 return;
             }
 
-            // Retrieve the authenticated user ID
-            var userId = await _userService.GetAuthenticatedUserIdAsync(Username);
-            if (userId == null)
+            // Retrieve the authenticated user ID which is nullable
+            int? userIdNullable = await _userService.GetAuthenticatedUserIdAsync(Username);
+            if (userIdNullable == null)
             {
                 ErrorMessage = "Failed to retrieve user ID.";
                 return;
             }
 
+            int loggedinUserId = userIdNullable.Value; // converting from nullable int to int
+
             // Byt till MainShell
-            await App.NavigateToMainShell();
+            await App.NavigateToMainShell(loggedinUserId);
         }
         catch (Exception ex)
         {

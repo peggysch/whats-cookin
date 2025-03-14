@@ -14,9 +14,6 @@ public partial class ProfileViewModel : BaseViewModel
     private readonly IRecipeService _recipeService;
 
     [ObservableProperty]
-    private int userId; // Now storing UserId, which is passed from the LoginViewModel
-
-    [ObservableProperty]
     private ObservableCollection<Recipe> userRecipes;
 
     [ObservableProperty]
@@ -33,36 +30,31 @@ public partial class ProfileViewModel : BaseViewModel
 
         UserRecipes = new ObservableCollection<Recipe>();
 
-        // Right-side tab event handler
+        LoadUserProfileCommand = new AsyncRelayCommand(LoadUserProfileAsync);
+        SelectRecipeCommand = new AsyncRelayCommand<int>(SelectRecipeAsync);
+        EditRecipeCommand = new AsyncRelayCommand(EditRecipeAsync);
+        DeleteRecipeCommand = new AsyncRelayCommand(DeleteRecipeAsync);
+
+        /* Force update of recipes if new recipe is added in recipe add page. Could be of good use later.
         Shell.Current.Navigated += async (sender, args) =>
         {
             if (args.Current.Location.ToString().Contains("profile"))
             {
                 await LoadUserProfileAsync();
             }
-        };
-
-        LoadUserProfileCommand = new AsyncRelayCommand(LoadUserProfileAsync);
-        SelectRecipeCommand = new AsyncRelayCommand<int>(SelectRecipeAsync);
-        EditRecipeCommand = new AsyncRelayCommand(EditRecipeAsync);
-        DeleteRecipeCommand = new AsyncRelayCommand(DeleteRecipeAsync);
+        };*/
     }
 
-    public async Task SetUserIdAsync(int id)
-    {
-        UserId = id;
-        await LoadUserProfileAsync(); // Fetch user recipes immediately when ID is set
-    }
-
-    private async Task LoadUserProfileAsync()
+    public async Task LoadUserProfileAsync()
     {
         try
         {
             IsBusy = true;
 
-            if (UserId > 0) // Ensure valid user ID is set
+            int userId = App.UserId; // Hämta UserId globalt från App
+            if (userId > 0) // Kontrollera att UserId är giltigt
             {
-                var recipes = await _recipeService.GetRecipesByUserIdAsync(UserId);
+                var recipes = await _recipeService.GetRecipesByUserIdAsync(userId);
                 UserRecipes.Clear();
                 foreach (var recipe in recipes)
                 {
