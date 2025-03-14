@@ -57,9 +57,8 @@ public static class MauiProgram
 		builder.Services.AddScoped<IRecipeIngredientService, RecipeIngredientService>();
 
 		// Register ViewModels
-		builder.Services.AddTransient<LoginViewModel>();
-		builder.Services.AddTransient<ProfileViewModel>();
-		builder.Services.AddTransient<AddRecipeViewModel>();
+		builder.Services.AddSingleton<LoginViewModel>();
+		builder.Services.AddSingleton<ProfileViewModel>();
 
 		// Register Pages
 		builder.Services.AddTransient<LoginPage>();

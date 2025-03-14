@@ -1,20 +1,23 @@
+using Informatics.MauiSurdeg.Interfaces;
+using Informatics.MauiSurdeg.Models;
 using Informatics.MauiSurdeg.ViewModels;
 
 namespace Informatics.MauiSurdeg.Pages
 {
     public partial class ProfilePage : ContentPage
     {
+        private readonly ProfileViewModel _viewModel;
+
         public ProfilePage(ProfileViewModel viewModel)
         {
             InitializeComponent();
-            BindingContext = viewModel;
+            BindingContext = _viewModel = viewModel;
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
-            var viewModel = BindingContext as ProfileViewModel;
-            //viewModel?.LoadUserDataCommand.Execute(null);
+            await _viewModel.LoadUserProfileAsync(); // Load recipes for a specific users
         }
     }
 }

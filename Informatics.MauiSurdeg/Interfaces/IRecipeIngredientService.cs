@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Informatics.MauiSurdeg.Models;
 namespace Informatics.MauiSurdeg.Interfaces
 {
-
     public interface IRecipeIngredientService
     {
         Task<IEnumerable<RecipeIngredient>> GetRecipeIngredientsAsync();

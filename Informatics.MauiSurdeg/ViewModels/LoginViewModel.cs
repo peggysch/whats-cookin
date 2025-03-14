@@ -5,6 +5,10 @@ using Informatics.MauiSurdeg.Pages;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
+//Profile
+using Microsoft.Maui.Storage;
+using Informatics.MauiSurdeg.Models;
+
 
 namespace Informatics.MauiSurdeg.ViewModels;
 
@@ -35,6 +39,7 @@ public partial class LoginViewModel : BaseViewModel
 
     public ICommand LoginCommand { get; } //Command for logging in
     public ICommand CreateUserCommand { get; } // Command for creating a new user
+
     public LoginViewModel(IAppUserService userService)
     {
         _userService = userService ?? throw new ArgumentNullException(nameof(userService));
@@ -76,8 +81,18 @@ public partial class LoginViewModel : BaseViewModel
                 return;
             }
 
-            // ✅ Successful login, navigate to ProfilePage
-            await Shell.Current.GoToAsync(nameof(AddRecipePage));
+            // Retrieve the authenticated user ID which is nullable
+            int? userIdNullable = await _userService.GetAuthenticatedUserIdAsync(Username);
+            if (userIdNullable == null)
+            {
+                ErrorMessage = "Failed to retrieve user ID.";
+                return;
+            }
+
+            int loggedinUserId = userIdNullable.Value; // converting from nullable int to int
+
+            // Byt till MainShell
+            await App.NavigateToMainShell(loggedinUserId);
         }
         catch (Exception ex)
         {

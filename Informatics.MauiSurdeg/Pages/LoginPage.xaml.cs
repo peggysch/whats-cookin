@@ -1,19 +1,25 @@
 using Informatics.MauiSurdeg.ViewModels;
+using Microsoft.Maui.Controls;
+using System;
+using System.Threading.Tasks;
 
 namespace Informatics.MauiSurdeg.Pages;
 
 public partial class LoginPage : ContentPage
 {
-	public LoginPage(LoginViewModel viewModel)
-	{
-		InitializeComponent();
-		BindingContext = viewModel;
-	}
+    private readonly LoginViewModel _viewModel;
 
-	protected override void OnAppearing()
-	{
-		base.OnAppearing();
-		var viewModel = BindingContext as LoginViewModel;
-	}
+    public LoginPage(LoginViewModel viewModel)
+    {
+        InitializeComponent();
+        BindingContext = viewModel;
+        _viewModel = viewModel;
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+    }
+
+    
 }
-

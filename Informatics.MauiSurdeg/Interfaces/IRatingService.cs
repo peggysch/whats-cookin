@@ -7,6 +7,10 @@ namespace Informatics.MauiSurdeg.Interfaces
 {
     public interface IRatingService
     {
-       
+        Task<IEnumerable<Rating>> GetRatingsAsync();
+        Task<Rating?> GetRatingByIdAsync(int id);
+        Task<Rating?> GetUserRatingForRecipeAsync(int userId, int recipeId);
+        Task<Rating> SaveRatingAsync(Rating rating);
+        Task<bool> DeleteRatingByIdAsync(int id);
     }
 }

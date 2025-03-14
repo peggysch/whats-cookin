@@ -7,6 +7,7 @@ using Informatics.MauiSurdeg.Interfaces;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Text;
+using System.Collections.ObjectModel;
 
 namespace Informatics.MauiSurdeg.Services;
 
@@ -98,7 +99,7 @@ public class AppUserService : IAppUserService
         }
     }
 
-    public async Task<bool> DeleteUserByNoAsync(string userNo)
+    public async Task<bool> DeleteUserByNoAsync(string userNo) //KOLLA
     {
         var user = await _context.AppUsers.FirstOrDefaultAsync(u => u.UserNo == userNo);
         if (user == null) return false;
@@ -159,11 +160,28 @@ public class AppUserService : IAppUserService
         }
     }
 
-    // ✅ Verify if the hashed password matches the stored hash
+    // Verify if the hashed password matches the stored hash
     private bool VerifyHashedPassword(byte[] storedHash, string password)
     {
         byte[] inputHash = HashPassword(password);
         return storedHash.SequenceEqual(inputHash);
     }
 
+    //Se till så att Profile är kopplad till personen som loggar in 
+    public async Task<int?> GetAuthenticatedUserIdAsync(string username)
+    {
+        return await _context.AppUsers
+            .Where(u => u.Username == username)
+            .Select(u => u.AppUserID)
+            .FirstOrDefaultAsync();
+    }
+
+    //Profile 
+    public async Task<IEnumerable<Recipe>> GetUserRecipesAsync(int userId)
+    {
+        return await _context.Recipes
+            .AsNoTracking()
+            .Where(r => r.AppUserID == userId)
+            .ToListAsync();
+    }
 }
