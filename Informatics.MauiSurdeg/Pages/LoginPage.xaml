@@ -4,68 +4,73 @@
              x:Class="Informatics.MauiSurdeg.Pages.LoginPage"
              Title="Login">
 
-    <VerticalStackLayout Padding="30" Spacing="15"
-                         VerticalOptions="Center"
-                         HorizontalOptions="Center">
-        
-        <Label Text="Welcome to What's Cookin'"
-               FontSize="40"
-               FontAttributes="Bold"
-               HorizontalOptions="Center"/>
-       
-        <Label Text="Create an account"
-               FontSize="28"
-               FontAttributes="Bold"
-               HorizontalOptions="Center"/>
-       
-        <Label Text="Enter a username and password"
-               TextColor="#FF787474"
-               FontSize="20"
-               HorizontalOptions="Center"/>
+       <VerticalStackLayout Padding="30"
+                            Spacing="15"
+                            VerticalOptions="Center"
+                            HorizontalOptions="Center">
 
-        <Entry Placeholder="user123"
-               Text="{Binding newUsername}"
-               Keyboard="Text"
-               WidthRequest="250"/>
+              <Label Text="Welcome to What's Cookin'"
+                     FontSize="40"
+                     FontAttributes="Bold"
+                     HorizontalOptions="Center"/>
 
-        <Entry Placeholder="password123"
-               Text="{Binding newPassword}"
-               IsPassword="True"
-               WidthRequest="250"/>
+              <Label Text="Create an account"
+                     FontSize="28"
+                     FontAttributes="Bold"
+                     HorizontalOptions="Center"/>
 
-        <Button Text="Create account"
-                Command="{Binding LoginCommand}"
-                BackgroundColor="#FF51A888"
-                TextColor="White"
-                CornerRadius="10"
-                WidthRequest="250"/>
-        
-        <Label Text="Already have an account?"
-               TextColor="#FF787474"
-               FontSize="20"
-               HorizontalOptions="Center"/>
+              <Label Text="Enter a username and password"
+                     TextColor="#FF787474"
+                     FontSize="20"
+                     HorizontalOptions="Center"/>
 
-        <Entry Placeholder="Username"
-               Text="{Binding Username}"
-               Keyboard="Text"
-               WidthRequest="250"/>
+              <!-- Create NEW user, username -->
+              <Entry Placeholder="user123"
+                     Text="{Binding NewUsername}"
+                     Keyboard="Text"
+                     WidthRequest="250"/>
 
-        <Entry Placeholder="Password"
-               Text="{Binding Password}"
-               IsPassword="True"
-               WidthRequest="250"/>
+              <!-- Create NEW user, password -->
+              <Entry Placeholder="password123"
+                     Text="{Binding NewPassword}"
+                     IsPassword="True"
+                     WidthRequest="250"/>
 
-        <Button Text="Log In"
-                Command="{Binding LoginCommand}"
-                BackgroundColor="#FF51A888"
-                TextColor="White"
-                CornerRadius="10"
-                WidthRequest="250"/>
-        
-        <!-- Display Error Message -->
-        <Label Text="{Binding ErrorMessage}"
-               TextColor="Red"
-               FontSize="14"
-               HorizontalOptions="Center"/>
-    </VerticalStackLayout>
+              <Button Text="Create account"
+                      Command="{Binding CreateUserCommand}"
+                      BackgroundColor="#FF51A888"
+                      TextColor="White"
+                      CornerRadius="10"
+                      WidthRequest="250"/>
+
+              <Label Text="Already have an account?"
+                     TextColor="#FF787474"
+                     FontSize="20"
+                     HorizontalOptions="Center"/>
+
+              <!-- EXISTING user, username -->
+              <Entry Placeholder="Username"
+                     Text="{Binding Username}"
+                     Keyboard="Text"
+                     WidthRequest="250"/>
+
+              <!-- EXISTING user, password -->
+              <Entry Placeholder="Password"
+                     Text="{Binding Password}"
+                     IsPassword="True"
+                     WidthRequest="250"/>
+
+              <Button Text="Log In"
+                      Command="{Binding LoginCommand}"
+                      BackgroundColor="#FF51A888"
+                      TextColor="White"
+                      CornerRadius="10"
+                      WidthRequest="250"/>
+
+              <!-- Display Error Message -->
+              <Label Text="{Binding ErrorMessage}"
+                     TextColor="Red"
+                     FontSize="14"
+                     HorizontalOptions="Center"/>
+       </VerticalStackLayout>
 </ContentPage>

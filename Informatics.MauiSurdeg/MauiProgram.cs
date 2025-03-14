@@ -54,7 +54,6 @@ public static class MauiProgram
 		builder.Services.AddScoped<IRatingService, RatingService>();
 		builder.Services.AddScoped<ICommentService, CommentService>();
 		builder.Services.AddScoped<IIngredientService, IngredientService>();
-		builder.Services.AddScoped<IRatingService, RatingService>();
 
 		// Register ViewModels
 		builder.Services.AddSingleton<LoginViewModel>();

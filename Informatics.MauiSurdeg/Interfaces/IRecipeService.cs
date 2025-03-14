@@ -13,6 +13,9 @@ namespace Informatics.MauiSurdeg.Interfaces
 
         //Profile -> hämta alla recept 
         Task<List<Recipe>> GetRecipesByUserIdAsync(int userId);
-
+        Task<Recipe?> GetRecipeByIdAsync(int id);
+        Task<Recipe?> GetRecipeByNoAsync(string recipeNo);
+        Task<Recipe> SaveRecipeAsync(Recipe recipe);
+        Task<bool> DeleteRecipeByIdAsync(int id);
     }
 }

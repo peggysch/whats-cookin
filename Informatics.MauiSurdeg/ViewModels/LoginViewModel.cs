@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Informatics.MauiSurdeg.Interfaces;
 using Informatics.MauiSurdeg.Pages;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 //Profile
@@ -17,7 +18,10 @@ namespace Informatics.MauiSurdeg.ViewModels;
 public partial class LoginViewModel : BaseViewModel
 {
     [ObservableProperty]
-    private string newUsername;
+    private string newUsername; 
+
+    [ObservableProperty]
+    private string newPassword; 
 
     [ObservableProperty]
     private string username;
@@ -26,27 +30,29 @@ public partial class LoginViewModel : BaseViewModel
     private string password;
 
     [ObservableProperty]
-    private string errorMessage;
+    private string errorMessage; 
 
     private readonly IAppUserService _userService;
 
-    public ICommand LoginCommand { get; }
+    public ICommand LoginCommand { get; } //Command for logging in
+    public ICommand CreateUserCommand { get; } // Command for creating a new user
 
     public LoginViewModel(IAppUserService userService)
     {
         _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         LoginCommand = new AsyncRelayCommand(LoginAsync);
+        CreateUserCommand = new AsyncRelayCommand(CreateUserAsync);
     }
 
     /// <summary>
-    /// Simulates user authentication.
+    /// Simulates user login logic.
     /// </summary>
     private async Task LoginAsync()
     {
         try
         {
             // Clear previous error messages
-            ErrorMessage = null;
+            ErrorMessage = string.Empty;
             IsBusy = true;
 
             // Basic validation
@@ -94,10 +100,58 @@ public partial class LoginViewModel : BaseViewModel
             IsBusy = false;
         }
     }
+    /// <summary>
+    /// Handles new user registration.
+    /// </summary>
+    private async Task CreateUserAsync()
+    {
+        try
+        {
+            // Clear any previous error messages
+            ErrorMessage = string.Empty;
 
+            if (string.IsNullOrWhiteSpace(NewUsername) || string.IsNullOrWhiteSpace(NewPassword))
+            {
+                ErrorMessage = "Username and password cannot be empty.";
+                return;
+            }
 
+            if (NewUsername.Length < 5) //Denna går såklart att ta bort men tycker det är bra att ha en minsta längd 
+            {
+                ErrorMessage = "Username must be at least 5 characters long.";
+                return;
+            }
 
-    // TODO: men inte nu, Registera konto :)
+            // Check if username already exists
+            bool userExists = await _userService.UsernameExistsAsync(NewUsername);
+            if (userExists)
+            {
+                ErrorMessage = "Username already exists.";
+                return;
+            }
 
+            // Register the new user
+            var newUser = await _userService.AddNewUserAsync(NewUsername, NewPassword);
+            if (newUser != null)
+            {
+                await Shell.Current.DisplayAlert("Success", "Account created! Please log in.", "OK");
 
+                //Clear input fields
+                NewUsername = string.Empty;
+                NewPassword = string.Empty; //KOLLA PÅ DETTA
+            }
+            else 
+            {
+                ErrorMessage = "Failed to create user.";
+            }
+        }
+        catch (InvalidOperationException ex) when (ex.Message.Contains("Username already exists"))
+        {
+            ErrorMessage = "Username already exists.";
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"An unexpected error occurred, please try again: {ex.Message}";
+        }
+    }
 }

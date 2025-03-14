@@ -19,6 +19,6 @@ namespace Informatics.MauiSurdeg.Interfaces
         //Profile 
         Task<int?> GetAuthenticatedUserIdAsync(string username);
         Task<IEnumerable<Recipe>> GetUserRecipesAsync(int userId);
+        Task<AppUser> AddNewUserAsync(string username, string password);
     }
 }
-
