@@ -9,10 +9,8 @@ namespace Informatics.MauiSurdeg.Interfaces
     {
         Task<IEnumerable<Rating>> GetRatingsAsync();
         Task<Rating?> GetRatingByIdAsync(int id);
-        Task<Rating?> GetRatingByNoAsync(string ratingNo);
         Task<Rating?> GetUserRatingForRecipeAsync(int userId, int recipeId);
         Task<Rating> SaveRatingAsync(Rating rating);
         Task<bool> DeleteRatingByIdAsync(int id);
-        Task<bool> DeleteRatingByNoAsync(string ratingNo);
     }
 }
