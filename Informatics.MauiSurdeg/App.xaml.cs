@@ -5,13 +5,23 @@ namespace Informatics.MauiSurdeg;
 
 public partial class App : Application
 {
-	public App()
-	{
-		InitializeComponent();
-	}
+    private static App _instance;
 
-	protected override Window CreateWindow(IActivationState? activationState)
-	{
-		return new Window(new AppShell());
-	}
+    public App()
+    {
+        InitializeComponent();
+        MainPage = new LoginShell();
+        _instance = this; // Spara referensen till instansen av appen
+    }
+
+    public static async Task NavigateToMainShell()
+    {
+        if (_instance?.MainPage != null)
+        {
+            await _instance.MainPage.Dispatcher.DispatchAsync(() =>
+            {
+                _instance.MainPage = new MainShell();
+            });
+        }
+    }
 }

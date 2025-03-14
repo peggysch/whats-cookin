@@ -80,8 +80,8 @@ public partial class LoginViewModel : BaseViewModel
                 return;
             }
 
-            // Navigate to ProfilePage and pass the user ID
-            await Shell.Current.GoToAsync($"{nameof(ProfilePage)}?userId={userId}");
+            // Byt till MainShell
+            await App.NavigateToMainShell();
         }
         catch (Exception ex)
         {

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      xmlns:local="clr-namespace:Informatics.MauiSurdeg"
+      x:Class="Informatics.MauiSurdeg.MainShell"
+      FlyoutBehavior="Locked"> <!-- Initially hides the flyout -->
+
+    <!-- MAIN NAVIGATION PAGES  -->
+    <FlyoutItem Title="Profile" >
+        <ShellContent Title="Profile" Route="profile" ContentTemplate="{DataTemplate local:Pages.ProfilePage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Feed" >
+        <ShellContent Title="Feed" Route="feed" ContentTemplate="{DataTemplate local:Pages.FeedPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Add Recipe" >
+        <ShellContent Title="Add Recipe" Route="addrecipe" ContentTemplate="{DataTemplate local:Pages.AddRecipePage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Settings" >
+        <ShellContent Title="Settings" Route="settings" ContentTemplate="{DataTemplate local:Pages.SettingsPage}" />
+    </FlyoutItem>
+
+</Shell>
