@@ -58,10 +58,12 @@ public static class MauiProgram
 		// Register ViewModels
 		builder.Services.AddSingleton<LoginViewModel>();
 		builder.Services.AddSingleton<ProfileViewModel>();
+		builder.Services.AddSingleton<FeedViewModel>();
 
 		// Register Pages
 		builder.Services.AddTransient<LoginPage>();
 		builder.Services.AddTransient<ProfilePage>();
+		builder.Services.AddTransient<FeedPage>();
 
 
 
