@@ -5,110 +5,110 @@
              Title="SettingsPage"
              BackgroundColor="White">
 
-    <!-- Main Content Area -->
-    <Grid RowDefinitions="Auto,*">
+       <!-- Main Content Area -->
+       <Grid RowDefinitions="Auto,*">
 
-        <!-- Header with Title and Log Out Button -->
-        <Grid Grid.Row="0"
-              ColumnDefinitions="*,Auto"
-              Padding="40,30">
+              <!-- Header with Title and Log Out Button -->
+              <Grid Grid.Row="0"
+                    ColumnDefinitions="*,Auto"
+                    Padding="40,30">
 
-            <Label Grid.Column="0"
-                   Text="Your Profile"
-                   FontSize="28"
-                   FontAttributes="Bold"/>
+                     <Label Grid.Column="0"
+                            Text="Your Profile"
+                            FontSize="28"
+                            FontAttributes="Bold"/>
 
-            <Button Grid.Column="1"
-                    Text="Log Out"
-                    Command="{Binding LogoutCommand}"
-                    BackgroundColor="#6B937E"
-                    TextColor="White"
-                    HeightRequest="48"/>
-        </Grid>
+                     <Button Grid.Column="1"
+                             Text="Log Out"
+                             Command="{Binding LogoutCommand}"
+                             BackgroundColor="#6B937E"
+                             TextColor="White"
+                             HeightRequest="48"/>
+              </Grid>
 
-        <!-- Main Form Content -->
-        <ScrollView Grid.Row="1">
-            <Grid HorizontalOptions="Center"
-                  Margin="40,0,40,40">
+              <!-- Main Form Content -->
+              <ScrollView Grid.Row="1">
+                     <Grid HorizontalOptions="Center"
+                           Margin="40,0,40,40">
 
-                <!-- Profile Form Card -->
-                <Border StrokeThickness="1"
-                        Stroke="#E0E0E0"
-                        BackgroundColor="White"
-                        Padding="40">
+                            <!-- Profile Form Card -->
+                            <Border StrokeThickness="1"
+                                    Stroke="#E0E0E0"
+                                    BackgroundColor="White"
+                                    Padding="40">
 
-                    <VerticalStackLayout Spacing="40"
-                                         HorizontalOptions="Center"
-                                         WidthRequest="500">
+                                   <VerticalStackLayout Spacing="40"
+                                                        HorizontalOptions="Center"
+                                                        WidthRequest="500">
 
-                        <!-- Username Field -->
-                        <VerticalStackLayout Spacing="12">
-                            <Label Text="Change Username:"
-                                   FontAttributes="Bold"
-                                   FontSize="18"/>
-                            <Entry Text="{Binding Username}"
-                                   Placeholder="Ex. CookingMaster"
-                                   BackgroundColor="#F8F8F8"
-                                   HeightRequest="48"
-                                   Margin="0,6,0,0"/>
-                            <!-- Username Button -->
-                            <Button Text="Change Username"
-                                    Command="{Binding SaveUsernameCommand}"
-                                    IsEnabled="{Binding CanExecuteSaveUsername}"
-                                    BackgroundColor="#6B937E"
-                                    TextColor="White"
-                                    HeightRequest="48"
-                                    FontSize="16"
-                                    WidthRequest="200"
-                                    HorizontalOptions="Center"
-                                    Margin="0,20,0,0"/>
-                        </VerticalStackLayout>
+                                          <!-- Username Field -->
+                                          <VerticalStackLayout Spacing="12">
+                                                 <Label Text="Change Username:"
+                                                        FontAttributes="Bold"
+                                                        FontSize="18"/>
+                                                 <Entry Text="{Binding Username}"
+                                                        Placeholder="Ex. CookingMaster"
+                                                        BackgroundColor="#F8F8F8"
+                                                        HeightRequest="48"
+                                                        Margin="0,6,0,0"/>
+                                                 <!-- Username Button -->
+                                                 <Button Text="Change Username"
+                                                         Command="{Binding SaveUsernameCommand}"
+                                                         IsEnabled="{Binding CanExecuteSaveUsername}"
+                                                         BackgroundColor="#6B937E"
+                                                         TextColor="White"
+                                                         HeightRequest="48"
+                                                         FontSize="16"
+                                                         WidthRequest="200"
+                                                         HorizontalOptions="Center"
+                                                         Margin="0,20,0,0"/>
+                                          </VerticalStackLayout>
 
-                        <!-- Password Field -->
-                        <VerticalStackLayout Spacing="12">
-                            <Label Text="Change Password:"
-                                   FontAttributes="Bold"
-                                   FontSize="18"/>
-                            <Entry Text="{Binding Password}"
-                                   IsPassword="True"
-                                   Placeholder="Enter new password"
-                                   BackgroundColor="#F8F8F8"
-                                   HeightRequest="48"
-                                   Margin="0,6,0,0"/>
-                        </VerticalStackLayout>
+                                          <!-- Password Field -->
+                                          <VerticalStackLayout Spacing="12">
+                                                 <Label Text="Change Password:"
+                                                        FontAttributes="Bold"
+                                                        FontSize="18"/>
+                                                 <Entry Text="{Binding Password}"
+                                                        IsPassword="True"
+                                                        Placeholder="Enter new password (min. 5 characters)"
+                                                        BackgroundColor="#F8F8F8"
+                                                        HeightRequest="48"
+                                                        Margin="0,6,0,0"/>
+                                          </VerticalStackLayout>
 
-                        <!-- Confirm Password Field -->
-                        <VerticalStackLayout Spacing="12">
-                            <Label Text="Confirm Password:"
-                                   FontAttributes="Bold"
-                                   FontSize="18"/>
-                            <Entry Text="{Binding ConfirmPassword}"
-                                   IsPassword="True"
-                                   Placeholder="Confirm new password"
-                                   BackgroundColor="#F8F8F8"
-                                   HeightRequest="48"
-                                   Margin="0,6,0,0"/>
-                            <!-- Password Button -->
-                            <Button Text="Change Password"
-                                    Command="{Binding SavePasswordCommand}"
-                                    IsEnabled="{Binding CanExecuteSavePassword}"
-                                    BackgroundColor="#6B937E"
-                                    TextColor="White"
-                                    HeightRequest="48"
-                                    FontSize="16"
-                                    WidthRequest="200"
-                                    HorizontalOptions="Center"
-                                    Margin="0,20,0,0"/>
-                        </VerticalStackLayout>
+                                          <!-- Confirm Password Field -->
+                                          <VerticalStackLayout Spacing="12">
+                                                 <Label Text="Confirm Password:"
+                                                        FontAttributes="Bold"
+                                                        FontSize="18"/>
+                                                 <Entry Text="{Binding ConfirmPassword}"
+                                                        IsPassword="True"
+                                                        Placeholder="Confirm new password"
+                                                        BackgroundColor="#F8F8F8"
+                                                        HeightRequest="48"
+                                                        Margin="0,6,0,0"/>
 
-                        <!-- Activity Indicator -->
-                        <ActivityIndicator IsRunning="{Binding IsBusy}"
-                                           IsVisible="{Binding IsBusy}"
-                                           HorizontalOptions="Center"
-                                           Color="#6B937E"/>
-                    </VerticalStackLayout>
-                </Border>
-            </Grid>
-        </ScrollView>
-    </Grid>
+                                                 <!-- Password Button (Always Clickable) -->
+                                                 <Button Text="Change Password"
+                                                         Command="{Binding SavePasswordCommand}"
+                                                         BackgroundColor="#6B937E"
+                                                         TextColor="White"
+                                                         HeightRequest="48"
+                                                         FontSize="16"
+                                                         WidthRequest="200"
+                                                         HorizontalOptions="Center"
+                                                         Margin="0,20,0,0"/>
+                                          </VerticalStackLayout>
+
+                                          <!-- Activity Indicator -->
+                                          <ActivityIndicator IsRunning="{Binding IsBusy}"
+                                                             IsVisible="{Binding IsBusy}"
+                                                             HorizontalOptions="Center"
+                                                             Color="#6B937E"/>
+                                   </VerticalStackLayout>
+                            </Border>
+                     </Grid>
+              </ScrollView>
+       </Grid>
 </ContentPage>

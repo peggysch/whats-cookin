@@ -211,4 +211,30 @@ public class AppUserService : IAppUserService
             throw new InvalidOperationException("Error updating username.", ex);
         }
     }
+    public async Task<bool> UpdatePasswordAsync(int userId, string newPassword)
+    {
+        if (string.IsNullOrWhiteSpace(newPassword))
+            throw new ArgumentException("Password cannot be empty.");
+
+        if (string.IsNullOrWhiteSpace(newPassword) || newPassword.Length < 5)
+            throw new ArgumentException("Password must be at least 5 characters long.");
+
+        var user = await _context.AppUsers.FindAsync(userId);
+        if (user == null)
+            return false;
+
+        // Hash the new password before storing it
+        user.PasswordHash = HashPassword(newPassword);
+
+        try
+        {
+            _context.AppUsers.Update(user);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (DbUpdateException ex)
+        {
+            throw new InvalidOperationException("Error updating password.", ex);
+        }
+    }
 }

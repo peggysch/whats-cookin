@@ -15,17 +15,28 @@ namespace Informatics.MauiSurdeg.ViewModels
         [ObservableProperty]
         private bool isBusy;
 
+        [ObservableProperty]
+        private string password;
+
+        [ObservableProperty]
+        private string confirmPassword;
+
+        [ObservableProperty]
+        private bool canExecuteSavePassword;
+
         private readonly IAppUserService _userService;
         private readonly ProfileViewModel _profileViewModel;
+
+        public ICommand SaveUsernameCommand { get; }
+        public ICommand SavePasswordCommand { get; }
 
         public SettingsViewModel(IAppUserService userService, ProfileViewModel profileViewModel)
         {
             _userService = userService;
             _profileViewModel = profileViewModel;
             SaveUsernameCommand = new AsyncRelayCommand(SaveUsernameAsync);
+            SavePasswordCommand = new AsyncRelayCommand(SavePasswordAsync);
         }
-
-        public ICommand SaveUsernameCommand { get; }
 
         public async Task LoadUserProfileAsync()
         {
@@ -40,7 +51,10 @@ namespace Informatics.MauiSurdeg.ViewModels
                     var user = await _userService.GetUserByNoAsync(userId.ToString());
                     if (user != null)
                     {
-                        Username = user.Username; // Populate username field
+                        // Ensure passwords are reset when profile loads
+                        Password = string.Empty;
+                        ConfirmPassword = string.Empty;
+                        CanExecuteSavePassword = false;
                     }
                 }
             }
@@ -88,12 +102,70 @@ namespace Informatics.MauiSurdeg.ViewModels
                     await Shell.Current.DisplayAlert("Success", "Username updated successfully!", "OK");
 
                     Username = string.Empty; // Clear username field
-                    
+
                     await LoadUserProfileAsync(); // Reload user profile
                 }
                 else
                 {
                     await Shell.Current.DisplayAlert("Error", "Failed to update username.", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"Unexpected error: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+
+        private async Task SavePasswordAsync()
+        {
+            if (string.IsNullOrWhiteSpace(Password) || string.IsNullOrWhiteSpace(ConfirmPassword))
+            {
+                await Shell.Current.DisplayAlert("Error", "Password fields cannot be empty.", "OK");
+                return;
+            }
+
+            if (Password.Length < 5)
+            {
+                await Shell.Current.DisplayAlert("Error", "Password must be at least 5 characters long.", "OK");
+                return;
+            }
+
+            if (Password != ConfirmPassword)
+            {
+                await Shell.Current.DisplayAlert("Error", "Passwords do not match.", "OK");
+                return;
+            }
+
+            try
+            {
+                IsBusy = true;
+                int userId = App.UserId;
+
+                if (userId == 0)
+                {
+                    await Shell.Current.DisplayAlert("Error", "User not found.", "OK");
+                    return;
+                }
+                //Calls the UpdatePasswordAsync method in the AppUserService
+                bool success = await _userService.UpdatePasswordAsync(userId, Password);
+
+                if (success)
+                {
+                    await Shell.Current.DisplayAlert("Success", "Password updated successfully!", "OK");
+
+                    // Reset fields
+                    Password = string.Empty;
+                    ConfirmPassword = string.Empty;
+                    CanExecuteSavePassword = false;
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlert("Error", "Failed to update password.", "OK");
                 }
             }
             catch (Exception ex)
@@ -123,5 +195,20 @@ namespace Informatics.MauiSurdeg.ViewModels
                 IsBusy = false;
             }
         }
+        //         partial void OnPasswordChanged(string value)
+        //         {
+        //             CanExecuteSavePassword = !string.IsNullOrWhiteSpace(Password)
+        //                                     && Password.Length >= 5
+        //                                     && !string.IsNullOrWhiteSpace(ConfirmPassword)
+        //                                     && Password == ConfirmPassword;
+        //         }
+
+        //         partial void OnConfirmPasswordChanged(string value)
+        //         {
+        //             CanExecuteSavePassword = !string.IsNullOrWhiteSpace(Password)
+        //                                     && Password.Length >= 5
+        //                                     && !string.IsNullOrWhiteSpace(ConfirmPassword)
+        //                                     && Password == ConfirmPassword;
+        //         }
     }
 }
