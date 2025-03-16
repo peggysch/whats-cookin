@@ -8,15 +8,23 @@
        <!-- Main Content Area -->
        <Grid RowDefinitions="Auto,*">
 
-              <!-- Header with Title and Log Out Button -->
+              <!-- Header with Title, Display Name, and Log Out Button -->
               <Grid Grid.Row="0"
                     ColumnDefinitions="*,Auto"
                     Padding="40,30">
 
-                     <Label Grid.Column="0"
-                            Text="Your Profile"
-                            FontSize="28"
-                            FontAttributes="Bold"/>
+                     <VerticalStackLayout Grid.Column="0">
+                            <Label Text="Your Profile"
+                                   FontSize="28"
+                                   FontAttributes="Bold"/>
+
+                            <Label Text="{Binding DisplayUsername}"
+                                   FontSize="18"
+                                   TextColor="Gray"
+                                   FontAttributes="Italic"
+                                   Margin="0,5,0,0"/>
+                     </VerticalStackLayout>
+
 
                      <Button Grid.Column="1"
                              Text="Log Out"

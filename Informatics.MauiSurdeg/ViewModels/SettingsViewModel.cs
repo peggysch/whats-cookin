@@ -13,6 +13,9 @@ namespace Informatics.MauiSurdeg.ViewModels
         private string username;
 
         [ObservableProperty]
+        private string displayUsername;
+
+        [ObservableProperty]
         private bool isBusy;
 
         [ObservableProperty]
@@ -26,6 +29,7 @@ namespace Informatics.MauiSurdeg.ViewModels
 
         private readonly IAppUserService _userService;
         private readonly ProfileViewModel _profileViewModel;
+
 
         public ICommand SaveUsernameCommand { get; }
         public ICommand SavePasswordCommand { get; }
@@ -48,8 +52,11 @@ namespace Informatics.MauiSurdeg.ViewModels
                 int userId = App.UserId; // Retrieve user ID globally from App
                 if (userId > 0)
                 {
-                    var user = await _userService.GetUserByNoAsync(userId.ToString());
-
+                    var user = await _userService.GetUserByIdAsync(userId);
+                    if (user != null)
+                    {
+                        DisplayUsername = user.Username; // Set the Username property
+                    }
                     ClearFields();
                 }
             }

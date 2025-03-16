@@ -27,11 +27,11 @@ public class AppUserService : IAppUserService
             .ToListAsync();
     }
 
-    public async Task<AppUser?> GetUserByNoAsync(string userNo)
+    public async Task<AppUser?> GetUserByIdAsync(int userId)
     {
         return await _context.AppUsers
             .AsNoTracking()
-            .FirstOrDefaultAsync(u => u.UserNo == userNo);
+            .FirstOrDefaultAsync(u => u.AppUserID == userId);
     }
 
     public async Task<AppUser> SaveUserAsync(AppUser user)
