@@ -27,11 +27,11 @@ public class AppUserService : IAppUserService
             .ToListAsync();
     }
 
-    public async Task<AppUser?> GetUserByNoAsync(string userNo)
+    public async Task<AppUser?> GetUserByIdAsync(int userId)
     {
         return await _context.AppUsers
             .AsNoTracking()
-            .FirstOrDefaultAsync(u => u.UserNo == userNo);
+            .FirstOrDefaultAsync(u => u.AppUserID == userId);
     }
 
     public async Task<AppUser> SaveUserAsync(AppUser user)
@@ -183,5 +183,46 @@ public class AppUserService : IAppUserService
             .AsNoTracking()
             .Where(r => r.AppUserID == userId)
             .ToListAsync();
+    }
+    public async Task<bool> UpdateUsernameAsync(int userId, string newUsername)
+    {
+
+        var user = await _context.AppUsers.FindAsync(userId);
+        if (user == null)
+            return false;
+
+        user.Username = newUsername;
+
+        try
+        {
+            _context.AppUsers.Update(user);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (DbUpdateException ex)
+        {
+            throw new InvalidOperationException("Error updating username.", ex);
+        }
+    }
+    public async Task<bool> UpdatePasswordAsync(int userId, string newPassword)
+    {
+
+        var user = await _context.AppUsers.FindAsync(userId);
+        if (user == null)
+            return false;
+
+        // Hash the new password before storing it
+        user.PasswordHash = HashPassword(newPassword);
+
+        try
+        {
+            _context.AppUsers.Update(user);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (DbUpdateException ex)
+        {
+            throw new InvalidOperationException("Error updating password.", ex);
+        }
     }
 }
