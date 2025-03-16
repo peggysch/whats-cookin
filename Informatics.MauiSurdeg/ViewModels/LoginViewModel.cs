@@ -8,6 +8,7 @@ using System.Windows.Input;
 //Profile
 using Microsoft.Maui.Storage;
 using Informatics.MauiSurdeg.Models;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace Informatics.MauiSurdeg.ViewModels;
