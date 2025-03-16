@@ -184,4 +184,31 @@ public class AppUserService : IAppUserService
             .Where(r => r.AppUserID == userId)
             .ToListAsync();
     }
+    public async Task<bool> UpdateUsernameAsync(int userId, string newUsername)
+    {
+        if (string.IsNullOrWhiteSpace(newUsername))
+            throw new ArgumentException("Username cannot be empty.");
+
+        // Use the existing method to check if the username already exists
+        bool exists = await UsernameExistsAsync(newUsername);
+        if (exists)
+            throw new InvalidOperationException("Username already exists.");
+
+        var user = await _context.AppUsers.FindAsync(userId);
+        if (user == null)
+            return false;
+
+        user.Username = newUsername;
+
+        try
+        {
+            _context.AppUsers.Update(user);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (DbUpdateException ex)
+        {
+            throw new InvalidOperationException("Error updating username.", ex);
+        }
+    }
 }
