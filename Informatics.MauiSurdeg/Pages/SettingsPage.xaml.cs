@@ -18,15 +18,4 @@ public partial class SettingsPage : ContentPage
         base.OnAppearing();
         await _viewModel.LoadUserProfileAsync();
     }
-    // private void OnPasswordTextChanged(object sender, TextChangedEventArgs e)
-    // {
-    //     var viewModel = BindingContext as SettingsViewModel;
-    //     if (viewModel != null)
-    //     {
-    //         viewModel.CanExecuteSavePassword = !string.IsNullOrWhiteSpace(viewModel.Password)
-    //                                         && viewModel.Password.Length >= 5
-    //                                         && !string.IsNullOrWhiteSpace(viewModel.ConfirmPassword)
-    //                                         && viewModel.Password == viewModel.ConfirmPassword;
-    //     }
-    // }
 }

@@ -195,20 +195,5 @@ namespace Informatics.MauiSurdeg.ViewModels
                 IsBusy = false;
             }
         }
-        //         partial void OnPasswordChanged(string value)
-        //         {
-        //             CanExecuteSavePassword = !string.IsNullOrWhiteSpace(Password)
-        //                                     && Password.Length >= 5
-        //                                     && !string.IsNullOrWhiteSpace(ConfirmPassword)
-        //                                     && Password == ConfirmPassword;
-        //         }
-
-        //         partial void OnConfirmPasswordChanged(string value)
-        //         {
-        //             CanExecuteSavePassword = !string.IsNullOrWhiteSpace(Password)
-        //                                     && Password.Length >= 5
-        //                                     && !string.IsNullOrWhiteSpace(ConfirmPassword)
-        //                                     && Password == ConfirmPassword;
-        //         }
     }
 }
