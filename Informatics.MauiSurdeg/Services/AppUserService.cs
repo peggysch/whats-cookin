@@ -213,11 +213,6 @@ public class AppUserService : IAppUserService
     }
     public async Task<bool> UpdatePasswordAsync(int userId, string newPassword)
     {
-        if (string.IsNullOrWhiteSpace(newPassword))
-            throw new ArgumentException("Password cannot be empty.");
-
-        if (string.IsNullOrWhiteSpace(newPassword) || newPassword.Length < 5)
-            throw new ArgumentException("Password must be at least 5 characters long.");
 
         var user = await _context.AppUsers.FindAsync(userId);
         if (user == null)
