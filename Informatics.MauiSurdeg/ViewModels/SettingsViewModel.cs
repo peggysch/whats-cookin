@@ -49,13 +49,8 @@ namespace Informatics.MauiSurdeg.ViewModels
                 if (userId > 0)
                 {
                     var user = await _userService.GetUserByNoAsync(userId.ToString());
-                    if (user != null)
-                    {
-                        // Ensure passwords are reset when profile loads
-                        Password = string.Empty;
-                        ConfirmPassword = string.Empty;
-                        CanExecuteSavePassword = false;
-                    }
+
+                    ClearFields();
                 }
             }
             catch (Exception ex)
@@ -101,9 +96,8 @@ namespace Informatics.MauiSurdeg.ViewModels
                 {
                     await Shell.Current.DisplayAlert("Success", "Username updated successfully!", "OK");
 
-                    Username = string.Empty; // Clear username field
+                    ClearFields();
 
-                    await LoadUserProfileAsync(); // Reload user profile
                 }
                 else
                 {
@@ -158,10 +152,8 @@ namespace Informatics.MauiSurdeg.ViewModels
                 {
                     await Shell.Current.DisplayAlert("Success", "Password updated successfully!", "OK");
 
-                    // Reset fields
-                    Password = string.Empty;
-                    ConfirmPassword = string.Empty;
-                    CanExecuteSavePassword = false;
+                    ClearFields();
+
                 }
                 else
                 {
@@ -194,6 +186,12 @@ namespace Informatics.MauiSurdeg.ViewModels
             {
                 IsBusy = false;
             }
+        }
+        private void ClearFields()
+        {
+            Username = string.Empty;
+            Password = string.Empty;
+            ConfirmPassword = string.Empty;
         }
     }
 }
