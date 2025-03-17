@@ -10,7 +10,7 @@
                                    AbsoluteLayout.LayoutFlags="None"
                                    Padding="20"
                                    Spacing="15"
-                                   BackgroundColor="White"
+                                   BackgroundColor="WhiteSmoke"
                                    WidthRequest="1000"
                                    HeightRequest="800">
 
@@ -20,17 +20,19 @@
                      <Entry Text="{Binding RecipeName}"
                             FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
                             Placeholder="Ex. Pasta Carbonara"
+                            TextColor="White"
                             WidthRequest="760"
-                            HorizontalOptions="Start"/>
+                            HorizontalOptions="Start"
+                            BackgroundColor="#FF8DB6AC"/>
 
                      <!-- Description and Instructions Layout -->
                      <HorizontalStackLayout Spacing="20">
-                            <VerticalStackLayout WidthRequest="380">
+                            <VerticalStackLayout WidthRequest="370">
                                    <Label Text="Enter a short description of your recipe:"
-                                          FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+                                          FontFamily="LibreBaskerville-Bold.ttf#LibreBaskervilleBold"/>
                                    <Border Stroke="Gray"
                                            StrokeThickness="1"
-                                           Background="WhiteSmoke"
+                                           Background="#FF8DB6AC"
                                            Padding="1"
                                            HeightRequest="110">
                                           <Border.StrokeShape>
@@ -38,92 +40,111 @@
                                           </Border.StrokeShape>
                                           <Editor Text="{Binding RecipeDescription}"
                                                   FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
-                                                  BackgroundColor="Transparent"/>
+                                                  BackgroundColor="#FF8DB6AC"
+                                                  TextColor="White"/>
                                    </Border>
                             </VerticalStackLayout>
 
-                            <VerticalStackLayout WidthRequest="380">
+                            <VerticalStackLayout WidthRequest="370">
                                    <Label Text="Enter a summarized text of instructions:"
-                                          FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+                                          FontFamily="LibreBaskerville-Bold.ttf#LibreBaskervilleBold"/>
                                    <Border Stroke="Gray"
                                            StrokeThickness="1"
-                                           Background="WhiteSmoke"
+                                           Background="#FF8DB6AC"
                                            Padding="1"
                                            HeightRequest="110">
                                           <Border.StrokeShape>
                                                  <RoundRectangle CornerRadius="5"/>
                                           </Border.StrokeShape>
-                                          <Editor Text="{Binding Instructions}"
+                                          <Editor Text="{Binding RecipeInstructions}"
                                                   FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
-                                                  BackgroundColor="Transparent"/>
+                                                  BackgroundColor="#FF8DB6AC"
+                                                  TextColor="White"/>
                                    </Border>
                             </VerticalStackLayout>
                      </HorizontalStackLayout>
 
                      <!-- Time & Cost -->
                      <HorizontalStackLayout Spacing="20">
-                            <VerticalStackLayout WidthRequest="380">
+                            <VerticalStackLayout WidthRequest="370">
                                    <Label Text="Time (minutes):"
-                                          FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+                                          FontFamily="LibreBaskerville-Bold.ttf#LibreBaskervilleBold"/>
                                    <Entry Text="{Binding CookingTime}"
-                                                 Keyboard="Numeric"
-                                                 WidthRequest="360"/>
+                                          Keyboard="Numeric"
+                                          WidthRequest="370"
+                                          BackgroundColor="#FF8DB6AC"
+                                          TextColor="White"/>
                             </VerticalStackLayout>
 
-                            <VerticalStackLayout WidthRequest="380">
+                            <VerticalStackLayout WidthRequest="370">
                                    <Label Text="Cost per portion in SEK:"
-                                          FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
-                                   <Entry Text="{Binding CostPerPortion}"
-                                                 Keyboard="Numeric"
-                                                 WidthRequest="360"/>
+                                          FontFamily="LibreBaskerville-Bold.ttf#LibreBaskervilleBold"/>
+                                   <Entry Text="{Binding RecipeCost}"
+                                          Keyboard="Numeric"
+                                          WidthRequest="370"
+                                          BackgroundColor="#FF8DB6AC"
+                                          TextColor="White"/>
                             </VerticalStackLayout>
                      </HorizontalStackLayout>
 
                      <!-- Ingredients Section -->
                      <Label Text="Ingredients:"
-                            FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
-                     <HorizontalStackLayout>
+                            FontFamily="LibreBaskerville-Bold.ttf#LibreBaskervilleBold"/>
+                     <HorizontalStackLayout Spacing="20">
                             <Picker ItemsSource="{Binding AvailableIngredients}"
                                     ItemDisplayBinding="{Binding IngredientName}"
                                     SelectedItem="{Binding SelectedIngredient}"
-                                    WidthRequest="500"/>
+                                    WidthRequest="370"
+                                    BackgroundColor="#FF8DB6AC"/>
+
                             <Entry Text="{Binding IngredientQuantity}"
                                    FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
                                    Placeholder="Quantity"
-                                   WidthRequest="180"/>
+                                   WidthRequest="150"
+                                   BackgroundColor="#FF8DB6AC"/>
+                            <Button Text="Add Ingredient"
+                                    BackgroundColor="#FF306356"
+                                    TextColor="White"
+                                    CornerRadius="10"
+                                    WidthRequest="200"
+                                    Command="{Binding AddIngredientCommand}"
+                                    FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
+                                    HorizontalOptions="Start"/>
+
                      </HorizontalStackLayout>
 
-                     <Button Text="Add Ingredient"
-                             BackgroundColor="#FF51A888"
-                             TextColor="White"
-                             CornerRadius="10"
-                             WidthRequest="250"
-                             Command="{Binding AddIngredientCommand}"/>
 
                      <!-- Selected Ingredients List -->
                      <Label Text="Selected Ingredients:"
-                            FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
-                     <CollectionView ItemsSource="{Binding SelectedIngredients}"
-                                     HeightRequest="100"
-                                     WidthRequest="760">
-                            <CollectionView.ItemTemplate>
+                            FontFamily="LibreBaskerville-Bold.ttf#LibreBaskervilleBold"/>
+
+                     <VerticalStackLayout BindableLayout.ItemsSource="{Binding SelectedIngredients}"
+                                          HorizontalOptions="Start"
+                                          Spacing="5">
+                            <BindableLayout.ItemTemplate>
                                    <DataTemplate>
-                                          <HorizontalStackLayout>
-                                                 <Label Text="{Binding Quantity}"
+                                          <Grid ColumnDefinitions="60, *">
+                                                 <Label Grid.Column="0"
+                                                        Text="{Binding Quantity}"
                                                         FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
-                                                        HorizontalOptions="Start"/>
-                                                 <Label Text="   "/>
-                                                 <Label Text="{Binding IngredientName}"
-                                                        FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>                                  
-                                          </HorizontalStackLayout>
+                                                        HorizontalOptions="Start"
+                                                        VerticalOptions="Center"
+                                                        TextColor="#5D8D81"/>
+
+                                                 <Label Grid.Column="1"
+                                                        Text="{Binding IngredientID, Converter={StaticResource IngredientNameConverter}}"
+                                                        FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
+                                                        HorizontalOptions="Start"
+                                                        VerticalOptions="Center"/>
+                                          </Grid>
                                    </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                     </CollectionView>
+                            </BindableLayout.ItemTemplate>
+                     </VerticalStackLayout>
 
                      <!-- Add Recipe Button -->
                      <Button Text="Add Recipe"
                              FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
-                             BackgroundColor="#FF51A888"
+                             BackgroundColor="#5D8D81"
                              TextColor="White"
                              CornerRadius="10"
                              WidthRequest="250"

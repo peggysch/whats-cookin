@@ -1,5 +1,7 @@
 namespace Informatics.MauiSurdeg.Pages;
 using Informatics.MauiSurdeg.ViewModels;
+using Informatics.MauiSurdeg.Converters;
+
 
 public partial class AddRecipePage : ContentPage
 {
@@ -7,5 +9,7 @@ public partial class AddRecipePage : ContentPage
 	{
 		InitializeComponent();
 		BindingContext = viewModel;
+
+		Resources.Add("IngredientNameConverter", new IngredientNameConverter(viewModel.AvailableIngredients));
 	}
 }
