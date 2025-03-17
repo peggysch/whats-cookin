@@ -53,19 +53,6 @@ public partial class AddRecipeViewModel : BaseViewModel
         SelectedIngredients = new ObservableCollection<RecipeIngredient>();
     }
 
-    // Computed property for displaying selected ingredients with names
-    /*public IEnumerable<(string IngredientName, string Quantity)> DisplayedIngredients
-    {
-        get
-        {
-            return SelectedIngredients.Select(ri =>
-            {
-                var ingredient = AvailableIngredients.FirstOrDefault(i => i.IngredientID == ri.IngredientID);
-                return (ingredient?.IngredientName ?? "Unknown", ri.Quantity);
-            });
-        }
-    }*/
-
     private async void LoadIngredients()
     {
         var ingredients = await _ingredientService.GetIngredientsAsync();
