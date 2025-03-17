@@ -33,6 +33,8 @@ namespace Informatics.MauiSurdeg.ViewModels
 
         public ICommand SaveUsernameCommand { get; }
         public ICommand SavePasswordCommand { get; }
+        public ICommand LogoutCommand { get; }
+        public ICommand DeleteUserCommand { get; }
 
         public SettingsViewModel(IAppUserService userService, ProfileViewModel profileViewModel)
         {
@@ -40,6 +42,8 @@ namespace Informatics.MauiSurdeg.ViewModels
             _profileViewModel = profileViewModel;
             SaveUsernameCommand = new AsyncRelayCommand(SaveUsernameAsync);
             SavePasswordCommand = new AsyncRelayCommand(SavePasswordAsync);
+            LogoutCommand = new AsyncRelayCommand(LogoutAsync);
+            DeleteUserCommand = new AsyncRelayCommand(DeleteUserAsync);
         }
 
         public async Task LoadUserProfileAsync()
@@ -177,8 +181,6 @@ namespace Informatics.MauiSurdeg.ViewModels
                 IsBusy = false;
             }
         }
-
-        [RelayCommand]
         private async Task LogoutAsync()
         {
             try
@@ -202,5 +204,50 @@ namespace Informatics.MauiSurdeg.ViewModels
             Password = string.Empty;
             ConfirmPassword = string.Empty;
         }
+
+        private async Task DeleteUserAsync()
+        {
+            bool confirm = await Shell.Current.DisplayAlert(
+                "Confirm Deletion",
+                "Are you sure you want to delete your account? This action cannot be undone.",
+                "Yes, Delete",
+                "Cancel");
+
+            if (!confirm) return;
+
+            try
+            {
+                IsBusy = true;
+
+                int userId = App.UserId;
+                if (userId == 0)
+                {
+                    await Shell.Current.DisplayAlert("Error", "User not found.", "OK");
+                    return;
+                }
+
+                bool success = await _userService.DeleteUserByIdAsync(userId);
+
+                if (success)
+                {
+                    await Shell.Current.DisplayAlert("Success", "Your account has been deleted.", "OK");
+                    await App.NavigateToLoginShell();
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlert("Error", "Failed to delete account.", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"Unexpected error: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+
     }
 }
