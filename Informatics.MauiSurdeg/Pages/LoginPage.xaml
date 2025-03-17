@@ -9,18 +9,21 @@
                             VerticalOptions="Center"
                             HorizontalOptions="Center">
 
-              <Label Text="Welcome to What's Cookin'"
-                     FontSize="40"
+              <Label Text="What's Cookin'"
+                     FontFamily="LibreBaskerville-Bold.ttf#LibreBaskervilleBold"
+               FontSize="40"
                      FontAttributes="Bold"
                      HorizontalOptions="Center"/>
 
               <Label Text="Create an account"
-                     FontSize="28"
+                     FontFamily="LibreBaskerville-Bold.ttf#LibreBaskervilleBold"
+               FontSize="28"
                      FontAttributes="Bold"
                      HorizontalOptions="Center"/>
 
               <Label Text="Enter a username and password"
-                     TextColor="#FF787474"
+                     FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
+               TextColor="#FF787474"
                      FontSize="20"
                      HorizontalOptions="Center"/>
 
@@ -37,14 +40,16 @@
                      WidthRequest="250"/>
 
               <Button Text="Create account"
-                      Command="{Binding CreateUserCommand}"
+                      FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
+                Command="{Binding CreateUserCommand}"
                       BackgroundColor="#FF51A888"
                       TextColor="White"
                       CornerRadius="10"
                       WidthRequest="250"/>
 
               <Label Text="Already have an account?"
-                     TextColor="#FF787474"
+                     FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
+               TextColor="#FF787474"
                      FontSize="20"
                      HorizontalOptions="Center"/>
 
@@ -63,7 +68,8 @@
               <Button Text="Log In"
                       Command="{Binding LoginCommand}"
                       BackgroundColor="#FF51A888"
-                      TextColor="White"
+                      FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
+                TextColor="White"
                       CornerRadius="10"
                       WidthRequest="250"/>
 

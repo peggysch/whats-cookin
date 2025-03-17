@@ -9,7 +9,7 @@ using Informatics.MauiSurdeg.Models;
 
 namespace Informatics.MauiSurdeg.Services
 {
-    
+
     public class RecipeIngredientService : IRecipeIngredientService
     {
         private readonly UniversityContext _context;
@@ -84,5 +84,26 @@ namespace Informatics.MauiSurdeg.Services
                 throw new InvalidOperationException("Error removing ingredient from recipe.", ex);
             }
         }
+
+        public async Task<RecipeIngredient> AddRecipeIngredientAsync(RecipeIngredient newRecipeIngredient)
+        {
+            if (newRecipeIngredient == null)
+            {
+                throw new ArgumentNullException(nameof(newRecipeIngredient), "RecipeIngredient cannot be null.");
+            }
+
+            try
+            {
+                await _context.RecipeIngredients.AddAsync(newRecipeIngredient);
+                await _context.SaveChangesAsync();
+                return newRecipeIngredient; // Return the saved entity with assigned ID
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new InvalidOperationException("Error saving RecipeIngredient to the database.", ex);
+            }
+        }
+
+
     }
 }

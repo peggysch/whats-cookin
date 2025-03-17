@@ -28,10 +28,10 @@ public partial class LoginViewModel : BaseViewModel
     private string username;
 
     [ObservableProperty]
-    private string password;
+    private string errorMessage;
 
     [ObservableProperty]
-    private string errorMessage;
+    private string password;
 
     private readonly IAppUserService _userService;
 
