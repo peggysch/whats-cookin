@@ -26,4 +26,15 @@ public partial class App : Application
             });
         }
     }
+
+    public static async Task NavigateToLoginShell()
+    {
+        if (_instance?.MainPage != null)
+        {
+            await _instance.MainPage.Dispatcher.DispatchAsync(() =>
+            {
+                _instance.MainPage = new LoginShell();
+            });
+        }
+    }
 }
