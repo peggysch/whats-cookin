@@ -114,6 +114,17 @@
                                                              IsVisible="{Binding IsBusy}"
                                                              HorizontalOptions="Center"
                                                              Color="#6B937E"/>
+
+                                          <!-- Delete User Button -->
+                                          <Button Text="Delete User"
+                                                  Command="{Binding DeleteUserCommand}"
+                                                  BackgroundColor="#E74C3C"
+                                                  TextColor="White"
+                                                  HeightRequest="48"
+                                                  FontSize="16"
+                                                  WidthRequest="200"
+                                                  HorizontalOptions="Center"
+                                                  Margin="0,10,0,0"/>
                                    </VerticalStackLayout>
                             </Border>
                      </Grid>
