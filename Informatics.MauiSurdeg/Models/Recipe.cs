@@ -28,19 +28,20 @@ public class Recipe
     public string RecipeDescription { get; set; }
 
     [Required]
-    [Column("Instructions")]
-    public string Instructions { get; set; }
-
-    [Required]
     [Column("CookingTime")]
     public int CookingTime { get; set; }
 
     [Required]
-    [Column("CostPerPortion")]
-    public decimal CostPerPortion { get; set; }
-
     [Column("CreatedAt")]
     public DateTime CreatedAt { get; set; }
+
+    [Required]
+    [Column("RecipeInstructions")]
+    public string RecipeInstructions { get; set; }
+
+    [Required]
+    [Column("RecipeCost")]
+    public int RecipeCost { get; set; }
 
     [Required]
     [Column("AppUserID")]

@@ -62,7 +62,7 @@ public class AppUserService : IAppUserService
     public async Task<AppUser> AddNewUserAsync(string username, string password)
     {
         if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
-            throw new ArgumentException("Username and password cannot be empty.");
+            throw new ArgumentException("Username and password cannot be empty.");  // remove this? why do we have userinput validation here?
 
         if (await UsernameExistsAsync(username))
             throw new InvalidOperationException("Username already exists.");

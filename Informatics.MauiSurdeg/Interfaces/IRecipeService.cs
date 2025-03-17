@@ -17,5 +17,6 @@ namespace Informatics.MauiSurdeg.Interfaces
         Task<Recipe?> GetRecipeByNoAsync(string recipeNo);
         Task<Recipe> SaveRecipeAsync(Recipe recipe);
         Task<bool> DeleteRecipeByIdAsync(int id);
+        Task<Recipe> AddNewRecipeAsync(Recipe newRecipe);
     }
 }

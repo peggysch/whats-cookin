@@ -107,5 +107,32 @@ namespace Informatics.MauiSurdeg.Services
                 .ToListAsync();
         }
 
+        public async Task<Recipe> AddNewRecipeAsync(Recipe newRecipe)
+        {
+            // Generate new RecipeNo
+            newRecipe.RecipeNo = await GenerateNextRecipeNoAsync();
+
+            return await SaveRecipeAsync(newRecipe); // Save to database
+        }
+
+        private async Task<string> GenerateNextRecipeNoAsync()
+        {
+            var latestRecipe = await _context.Recipes
+                .OrderByDescending(r => r.RecipeNo) // Senaste först
+                .FirstOrDefaultAsync();
+
+            if (latestRecipe == null || string.IsNullOrEmpty(latestRecipe.RecipeNo))
+                return "R001"; // First user
+
+            // Extract numeric part from "UXXX"
+            string latestNumberStr = latestRecipe.RecipeNo.Substring(1); // Remove 'U'
+            if (int.TryParse(latestNumberStr, out int latestNumber))
+            {
+                return $"R{(latestNumber + 1):D3}"; // Format as UXXX
+            }
+
+            throw new InvalidOperationException("Failed to generate RecipeNo.");
+        }
+
     }
 }

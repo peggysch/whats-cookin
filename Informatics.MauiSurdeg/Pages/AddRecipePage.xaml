@@ -2,45 +2,133 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Informatics.MauiSurdeg.Pages.AddRecipePage"
-             Title="Add New Recipe">
-    
-    <VerticalStackLayout Padding="20">
-        <Label Text="Enter Recipe Name:" />
-        <Entry Text="{Binding RecipeName}" Placeholder="Ex. Pasta Carbonara" />
+             Title="Add Recipe"
+             BackgroundColor="White">
 
-        <Label Text="Enter a short description:" />
-        <Editor Text="{Binding RecipeDescription}" HeightRequest="100"/>
+       <AbsoluteLayout>
+              <VerticalStackLayout AbsoluteLayout.LayoutBounds="0,0,1000,800"
+                                   AbsoluteLayout.LayoutFlags="None"
+                                   Padding="20"
+                                   Spacing="15"
+                                   BackgroundColor="White"
+                                   WidthRequest="1000"
+                                   HeightRequest="800">
 
-        <Label Text="Instructions:" />
-        <Editor Text="{Binding Instructions}" HeightRequest="100"/>
+                     <!-- Recipe Name -->
+                     <Label Text="Enter Recipe Name:"
+                            FontFamily="LibreBaskerville-Bold.ttf#LibreBaskervilleBold"/>
+                     <Entry Text="{Binding RecipeName}"
+                            FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
+                            Placeholder="Ex. Pasta Carbonara"
+                            WidthRequest="760"
+                            HorizontalOptions="Start"/>
 
-        <Label Text="Time (minutes):" />
-        <Entry Text="{Binding CookingTime}" Keyboard="Numeric" />
+                     <!-- Description and Instructions Layout -->
+                     <HorizontalStackLayout Spacing="20">
+                            <VerticalStackLayout WidthRequest="380">
+                                   <Label Text="Enter a short description of your recipe:"
+                                          FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+                                   <Border Stroke="Gray"
+                                           StrokeThickness="1"
+                                           Background="WhiteSmoke"
+                                           Padding="1"
+                                           HeightRequest="110">
+                                          <Border.StrokeShape>
+                                                 <RoundRectangle CornerRadius="5"/>
+                                          </Border.StrokeShape>
+                                          <Editor Text="{Binding RecipeDescription}"
+                                                  FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
+                                                  BackgroundColor="Transparent"/>
+                                   </Border>
+                            </VerticalStackLayout>
 
-        <Label Text="Cost per portion in SEK:" />
-        <Entry Text="{Binding CostPerPortion}" Keyboard="Numeric" />
+                            <VerticalStackLayout WidthRequest="380">
+                                   <Label Text="Enter a summarized text of instructions:"
+                                          FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+                                   <Border Stroke="Gray"
+                                           StrokeThickness="1"
+                                           Background="WhiteSmoke"
+                                           Padding="1"
+                                           HeightRequest="110">
+                                          <Border.StrokeShape>
+                                                 <RoundRectangle CornerRadius="5"/>
+                                          </Border.StrokeShape>
+                                          <Editor Text="{Binding Instructions}"
+                                                  FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
+                                                  BackgroundColor="Transparent"/>
+                                   </Border>
+                            </VerticalStackLayout>
+                     </HorizontalStackLayout>
 
-        <Label Text="Ingredients:" />
-        <Picker ItemsSource="{Binding AvailableIngredients}" 
-                ItemDisplayBinding="{Binding IngredientName}" 
-                SelectedItem="{Binding SelectedIngredient}" />
+                     <!-- Time & Cost -->
+                     <HorizontalStackLayout Spacing="20">
+                            <VerticalStackLayout WidthRequest="380">
+                                   <Label Text="Time (minutes):"
+                                          FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+                                   <Entry Text="{Binding CookingTime}"
+                                                 Keyboard="Numeric"
+                                                 WidthRequest="360"/>
+                            </VerticalStackLayout>
 
-        <Entry Text="{Binding IngredientQuantity}" Placeholder="Quantity" />
-        <Button Text="Add Ingredient" Command="{Binding AddIngredientCommand}" />
+                            <VerticalStackLayout WidthRequest="380">
+                                   <Label Text="Cost per portion in SEK:"
+                                          FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+                                   <Entry Text="{Binding CostPerPortion}"
+                                                 Keyboard="Numeric"
+                                                 WidthRequest="360"/>
+                            </VerticalStackLayout>
+                     </HorizontalStackLayout>
 
-        <Label Text="Selected Ingredients:" />
-        <CollectionView ItemsSource="{Binding SelectedIngredients}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <HorizontalStackLayout>
-                        <Label Text="{Binding Quantity}" />
-                        <Label Text=" " />
-                        <Label Text="{Binding Ingredient.IngredientName}" />    
-                    </HorizontalStackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                     <!-- Ingredients Section -->
+                     <Label Text="Ingredients:"
+                            FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+                     <HorizontalStackLayout>
+                            <Picker ItemsSource="{Binding AvailableIngredients}"
+                                    ItemDisplayBinding="{Binding IngredientName}"
+                                    SelectedItem="{Binding SelectedIngredient}"
+                                    WidthRequest="500"/>
+                            <Entry Text="{Binding IngredientQuantity}"
+                                   FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
+                                   Placeholder="Quantity"
+                                   WidthRequest="180"/>
+                     </HorizontalStackLayout>
 
-        <Button Text="Add Recipe" Command="{Binding SaveRecipeCommand}" />
-    </VerticalStackLayout>
+                     <Button Text="Add Ingredient"
+                             BackgroundColor="#FF51A888"
+                             TextColor="White"
+                             CornerRadius="10"
+                             WidthRequest="250"
+                             Command="{Binding AddIngredientCommand}"/>
+
+                     <!-- Selected Ingredients List -->
+                     <Label Text="Selected Ingredients:"
+                            FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+                     <CollectionView ItemsSource="{Binding SelectedIngredients}"
+                                     HeightRequest="100"
+                                     WidthRequest="760">
+                            <CollectionView.ItemTemplate>
+                                   <DataTemplate>
+                                          <HorizontalStackLayout>
+                                                 <Label Text="{Binding Quantity}"
+                                                        FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
+                                                        HorizontalOptions="Start"/>
+                                                 <Label Text="   "/>
+                                                 <Label Text="{Binding IngredientName}"
+                                                        FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>                                  
+                                          </HorizontalStackLayout>
+                                   </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                     </CollectionView>
+
+                     <!-- Add Recipe Button -->
+                     <Button Text="Add Recipe"
+                             FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
+                             BackgroundColor="#FF51A888"
+                             TextColor="White"
+                             CornerRadius="10"
+                             WidthRequest="250"
+                             Command="{Binding SaveRecipeCommand}"/>
+
+              </VerticalStackLayout>
+       </AbsoluteLayout>
 </ContentPage>

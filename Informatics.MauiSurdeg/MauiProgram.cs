@@ -20,7 +20,7 @@ public static class MauiProgram
 		builder
 			.UseMauiApp<App>()
 			.ConfigureFonts(fonts =>
-			{
+			{				
 				fonts.AddFont("LibreBaskerville-Bold.ttf", "LibreBaskervilleBold");
 				fonts.AddFont("LibreBaskerville-Regular.ttf", "LibreBaskervilleRegular");
 			});
@@ -59,6 +59,8 @@ public static class MauiProgram
 		// Register ViewModels
 		builder.Services.AddSingleton<LoginViewModel>();
 		builder.Services.AddSingleton<ProfileViewModel>();
+		builder.Services.AddSingleton<AddRecipeViewModel>();
+
 
 		// Register Pages
 		builder.Services.AddTransient<LoginPage>();

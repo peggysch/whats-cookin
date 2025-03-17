@@ -27,9 +27,6 @@ public partial class LoginViewModel : BaseViewModel
     private string username;
 
     [ObservableProperty]
-    private string newPassword;
-
-    [ObservableProperty]
     private string errorMessage; 
 
     [ObservableProperty]
