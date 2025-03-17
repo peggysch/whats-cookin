@@ -19,10 +19,10 @@ namespace Informatics.MauiSurdeg.ViewModels;
 public partial class LoginViewModel : BaseViewModel
 {
     [ObservableProperty]
-    private string newUsername; 
+    private string newUsername;
 
     [ObservableProperty]
-    private string newPassword; 
+    private string newPassword;
 
     [ObservableProperty]
     private string username;
@@ -31,7 +31,7 @@ public partial class LoginViewModel : BaseViewModel
     private string password;
 
     [ObservableProperty]
-    private string errorMessage; 
+    private string errorMessage;
 
     private readonly IAppUserService _userService;
 
@@ -89,8 +89,13 @@ public partial class LoginViewModel : BaseViewModel
 
             int loggedinUserId = userIdNullable.Value; // converting from nullable int to int
 
+            // Clear stored username and password before navigating to login page
+            Username = string.Empty;
+            Password = string.Empty;
+
             // Byt till MainShell
             await App.NavigateToMainShell(loggedinUserId);
+
         }
         catch (Exception ex)
         {
@@ -141,7 +146,7 @@ public partial class LoginViewModel : BaseViewModel
                 NewUsername = string.Empty;
                 NewPassword = string.Empty; //KOLLA PÅ DETTA
             }
-            else 
+            else
             {
                 ErrorMessage = "Failed to create user.";
             }

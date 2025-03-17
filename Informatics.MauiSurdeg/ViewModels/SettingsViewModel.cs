@@ -185,13 +185,6 @@ namespace Informatics.MauiSurdeg.ViewModels
             {
                 IsBusy = true;
 
-                // Clear stored username and password before navigating to login page
-                var loginViewModel = App.Current.Handler.MauiContext.Services.GetService<LoginViewModel>();
-                if (loginViewModel != null)
-                {
-                    loginViewModel.Username = string.Empty;
-                    loginViewModel.Password = string.Empty;
-                }
                 await App.NavigateToLoginShell();
             }
             catch (Exception ex)
