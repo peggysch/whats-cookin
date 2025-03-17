@@ -2,11 +2,96 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Informatics.MauiSurdeg.Pages.FeedPage"
-             Title="FeedPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Recipe Feed">
+
+       <ContentPage.ToolbarItems>
+              <ToolbarItem Text="⟳"
+                           Command="{Binding LoadRecipesCommand}"
+                           Priority="0"
+                           Order="Primary"/>
+       </ContentPage.ToolbarItems>
+
+       <ContentPage.Content>
+              <Grid Padding="20"
+                    RowDefinitions="Auto, Auto, *">
+                     <!-- Page Title -->
+                     <Label Text="Recipe Feed"
+                            FontSize="32"
+                            FontAttributes="Bold"
+                            TextColor="Black"
+                            Grid.Row="0"/>
+
+                     <!-- Subtitle -->
+                     <Label Text="Discover new recipes!"
+                            FontSize="18"
+                            TextColor="Gray"
+                            Margin="0,0,0,20"
+                            Grid.Row="1"/>
+
+                     <!-- CollectionView for Recipes -->
+                     <CollectionView Grid.Row="2"
+                                     ItemsSource="{Binding Recipes}">
+                            <!-- Add Vertical Spacing -->
+                            <CollectionView.ItemsLayout>
+                                   <LinearItemsLayout Orientation="Vertical"
+                                                 ItemSpacing="30"/>
+                            </CollectionView.ItemsLayout>
+
+                            <CollectionView.ItemTemplate>
+                                   <DataTemplate>
+                                          <Border Stroke="LightGray"
+                                                  StrokeThickness="1"
+                                                  BackgroundColor="White"
+                                                  Margin="10,5"
+                                                  Padding="20"
+                                                  StrokeShape="RoundRectangle 15">
+                                                 <!-- Add slight margin -->
+                                                 <StackLayout Spacing="15">
+                                                        <!-- Recipe Title -->
+                                                        <Label Text="{Binding Title}"
+                                                               FontSize="24"
+                                                               FontAttributes="Bold"
+                                                               TextColor="Black"/>
+
+                                                        <!-- User -->
+                                                        <Label Text="{Binding AppUser.Username}"
+                                                               FontSize="16"
+                                                               TextColor="Gray"/>
+
+                                                        <!-- Created At -->
+                                                        <Label Text="{Binding CreatedAt, StringFormat='Created at: {0:dd MMM yyyy HH:mm}'}"
+                                                               FontSize="14"
+                                                               TextColor="Gray"/>
+
+                                                        <!-- Recipe Description -->
+                                                        <Label Text="{Binding RecipeDescription}"
+                                                               FontSize="18"
+                                                               TextColor="Black"
+                                                               LineBreakMode="WordWrap"/>
+
+                                                        <!-- Cooking Time and Cost -->
+                                                        <StackLayout Orientation="Horizontal"
+                                                                     Spacing="30">
+                                                               <Label Text="{Binding CookingTime, StringFormat='Time: {0} min'}"
+                                                                      FontSize="16"
+                                                                      TextColor="Black"/>
+                                                               <Label Text="Cost/portion: 45 kr"
+                                                                      FontSize="16"
+                                                                      TextColor="Black"/>
+                                                        </StackLayout>
+
+                                                        <!-- Go to Recipe Button -->
+                                                        <Button Text="Go to Recipe"
+                                                                BackgroundColor="#4CAF50"
+                                                                TextColor="White"
+                                                                CornerRadius="10"
+                                                                HeightRequest="50"
+                                                                FontSize="18"/>
+                                                 </StackLayout>
+                                          </Border>
+                                   </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                     </CollectionView>
+              </Grid>
+       </ContentPage.Content>
 </ContentPage>

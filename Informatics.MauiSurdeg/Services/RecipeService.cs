@@ -18,13 +18,15 @@ namespace Informatics.MauiSurdeg.Services
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<IEnumerable<Recipe>> GetRecipesAsync()
+        public async Task<IEnumerable<Recipe>> GetAllRecipesAsync()
         {
             return await _context.Recipes
                 .AsNoTracking()
                 .Include(r => r.AppUser) // Include related user data
+                .OrderByDescending(r => r.CreatedAt) // Sort by newest first
                 .ToListAsync();
         }
+
 
         public async Task<Recipe?> GetRecipeByIdAsync(int id)
         {

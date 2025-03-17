@@ -7,7 +7,7 @@ namespace Informatics.MauiSurdeg.Interfaces
     public interface IRecipeService
     {
         //Profile 
-        Task<IEnumerable<Recipe>> GetRecipesAsync();
+        Task<IEnumerable<Recipe>> GetAllRecipesAsync();
         Task<bool> DeleteRecipeByNoAsync(string recipeNo);
 
 
