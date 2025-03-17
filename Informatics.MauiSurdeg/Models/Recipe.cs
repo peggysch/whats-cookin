@@ -21,7 +21,7 @@ public class Recipe
     [Required]
     [Column("Title")]
     [MaxLength(255)]
-    public string Title { get; set; }
+    public string RecipeName { get; set; }
 
     [Required]
     [Column("RecipeDescription")]
@@ -31,8 +31,17 @@ public class Recipe
     [Column("CookingTime")]
     public int CookingTime { get; set; }
 
+    [Required]
     [Column("CreatedAt")]
     public DateTime CreatedAt { get; set; }
+
+    [Required]
+    [Column("RecipeInstructions")]
+    public string RecipeInstructions { get; set; }
+
+    [Required]
+    [Column("RecipeCost")]
+    public int RecipeCost { get; set; }
 
     [Required]
     [Column("AppUserID")]
