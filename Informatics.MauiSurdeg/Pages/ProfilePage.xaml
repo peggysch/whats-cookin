@@ -61,17 +61,24 @@
                         Padding="10"
                         Margin="10">
                         <StackLayout>
-                                <Label Text="{Binding SelectedRecipe.Title}"
+                                <!-- Titel --> 
+                                <Entry Text="{Binding SelectedRecipe.Title}"
                                        FontSize="20"
                                        FontAttributes="Bold"
                                        HorizontalOptions="Center"/>
-                                <Label Text="{Binding SelectedRecipe.CreatedAt, StringFormat='{0:dd MMM - kl. HH:mm}'}"
-                                       FontSize="14"
-                                       HorizontalOptions="Center"/>
-                                <Label Text="{Binding SelectedRecipe.RecipeDescription}"
+                                <!-- Datum --> 
+                                <Label Text="Date"/>
+                                <DatePicker Date="{Binding SelectedRecipe.CreatedAt, Mode=TwoWay}"
+                                        Format="dd MMM yyyy"
+                                        MinimumDate="2000-01-01"
+                                        MaximumDate="{Binding MaxDate}"
+                                        FontSize="14"
+                                        HorizontalOptions="Center"/>
+                                <!-- beskrivning --> 
+                                <Entry Text="{Binding SelectedRecipe.RecipeDescription}"
                                        FontSize="16"
                                        HorizontalOptions="Center"/>
-
+                                <!-- Ingridienser --> 
                                 <Label Text="Ingredients:"
                                        FontSize="16"
                                        FontAttributes="Bold"/>
@@ -84,12 +91,15 @@
                                         </CollectionView.ItemTemplate>
                                 </CollectionView>
 
+                                <!-- Tid --> 
                                 <Label Text="Time"
                                        FontSize="16"
                                        FontAttributes="Bold"/>
-                                <Label Text="{Binding SelectedRecipe.CookingTime, StringFormat='{0} min'}"
-                                       FontSize="14"/>
+                                <Entry Text="{Binding SelectedRecipe.CookingTime, Mode=TwoWay}"
+                                       FontSize="14"
+                                       Keyboard="Numeric"/>
 
+                                <!-- Rating --> 
                                 <Label Text="Ratings"
                                        FontSize="16"
                                        FontAttributes="Bold"/>
@@ -101,7 +111,8 @@
                                         BackgroundColor="#FF51A888"
                                         CornerRadius="8"
                                         WidthRequest="180"
-                                        HorizontalOptions="Center"/>
+                                        HorizontalOptions="Center"
+                                        IsEnabled="{Binding IsRecipeSelected}"/>
 
                                 <Button Text="Delete Recipe"
                                         Command="{Binding DeleteRecipeCommand}"

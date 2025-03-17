@@ -68,7 +68,9 @@ namespace Informatics.MauiSurdeg.Services
 
         public async Task<bool> DeleteRecipeByIdAsync(int id) //KOLLA
         {
-            var recipe = await _context.Recipes.FindAsync(id);
+            var recipe = await _context.Recipes
+                .FirstOrDefaultAsync(r => r.RecipeID == id);
+            
             if (recipe == null) return false;
 
             try

@@ -88,9 +88,81 @@ public partial class ProfileViewModel : BaseViewModel
         SelectedRecipe = UserRecipes.FirstOrDefault(r => r.RecipeID == recipeId);
     }
 
+    public string CookingTimeString
+    {
+        get => SelectedRecipe?.CookingTime.ToString() ?? "";
+        set
+        {
+            if(SelectedRecipe != null && int.TryParse(value, out int time))
+            {
+                SelectedRecipe.CookingTime = time; 
+                OnPropertyChanged(nameof(CookingTimeString));
+            }
+        }
+    }
+
+    public DateTime MaxDate => DateTime.Today;
+    public DateTime CreatedAtDate
+    {
+        get => SelectedRecipe?.CreatedAt.Date ?? DateTime.Today;
+        set
+        {
+            if(value > DateTime.Today)
+            value = DateTime.Today;
+
+            SelectedRecipe.CreatedAt = value + SelectedRecipe.CreatedAt.TimeOfDay;
+            OnPropertyChanged(nameof(CreatedAtDate));
+
+        }
+    }
+
     private async Task EditRecipeAsync()
     {
+        if(SelectedRecipe == null)
+        {
+            return;
+        }
 
+        bool isConfirmed = await Shell.Current.DisplayAlert(
+            "Confirm Edit",
+            "Are you sure you want to save the changes to this recipe?",
+            "Yes",
+            "No"
+        );
+        if(!isConfirmed)
+        {
+            return;
+        }
+
+        try
+        {
+            IsBusy = true;
+
+            var updatedRecipe = await _recipeService.SaveRecipeAsync(SelectedRecipe);
+
+            if(updatedRecipe != null)
+            {
+                await Shell.Current.DisplayAlert("Success", "Recipe updated successfully!.", "OK");
+            }
+            else 
+            {
+                await Shell.Current.DisplayAlert("Error", "Failed to update recipe.", "OK");
+            }
+
+            var index = UserRecipes.IndexOf(SelectedRecipe);
+            if(index >= 0)
+            {
+                UserRecipes[index] = updatedRecipe;
+            }
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Error", "Something went wrong!", "OK");
+        }
+        finally 
+        {
+            IsBusy = false; 
+        }
     }
 
     public async Task DeleteRecipeAsync()
