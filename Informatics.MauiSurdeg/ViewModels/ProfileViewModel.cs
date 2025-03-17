@@ -18,6 +18,13 @@ public partial class ProfileViewModel : BaseViewModel
 
     [ObservableProperty]
     private Recipe selectedRecipe;
+    public bool IsRecipeSelected => SelectedRecipe != null;
+
+    partial void OnSelectedRecipeChanged(Recipe value)
+    {
+        OnPropertyChanged(nameof(IsRecipeSelected));
+        OnPropertyChanged(nameof(SelectedRecipe));
+    }
 
     public ICommand LoadUserProfileCommand { get; }
     public ICommand SelectRecipeCommand { get; }
@@ -78,16 +85,52 @@ public partial class ProfileViewModel : BaseViewModel
 
     private async Task SelectRecipeAsync(int recipeId)
     {
-        // Implement logic for selecting a recipe
+        SelectedRecipe = UserRecipes.FirstOrDefault(r => r.RecipeID == recipeId);
     }
 
     private async Task EditRecipeAsync()
     {
-        // Implement logic for editing a recipe
+
     }
 
-    private async Task DeleteRecipeAsync()
+    public async Task DeleteRecipeAsync()
     {
-        // Implement logic for deleting a recipe
+        if (SelectedRecipe == null)
+        {
+            return; // Ingen selektion = inget att ta bort
+        }
+
+        bool isConfirmed = await Shell.Current.DisplayAlert("Confirm Delete",
+            $"Are you sure you want to delete {SelectedRecipe.Title}?", "Yes", "No");
+
+        if (!isConfirmed)
+        {
+            return; // Om användaren avbryter raderingen, gör inget
+        }
+
+        try
+        {
+            IsBusy = true;
+
+            bool isDeleted = await _recipeService.DeleteRecipeByIdAsync(SelectedRecipe.RecipeID);
+            if (isDeleted)
+            {
+                UserRecipes.Remove(SelectedRecipe);
+                SelectedRecipe = null;
+            }
+            else
+            {
+                await Shell.Current.DisplayAlert("Error", "Recipe could not be deleted", "Ok");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error deleting recipe: {ex.Message}");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
+
 }

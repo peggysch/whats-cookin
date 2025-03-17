@@ -5,111 +5,114 @@
              xmlns:local="clr-namespace:Informatics.MauiSurdeg.ViewModels"
              NavigationPage.HasBackButton="False">
 
-    <Grid RowDefinitions="Auto, Auto, *, Auto">
-        <!-- Username -->
-        <Label Text="Your Profile"
-               FontSize="24"
-               FontAttributes="Bold"
-               Padding="10"
-               HorizontalOptions="Center"/>
+        <Grid RowDefinitions="Auto, Auto, *, Auto">
+                <!-- Username -->
+                <Label Text="Your Profile"
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       Padding="10"
+                       HorizontalOptions="Center"/>
 
-        <Label Text="{Binding Username}"
-               FontSize="20"
-               FontAttributes="Bold"
-               Padding="10"
-               Grid.Row="1"
-               HorizontalOptions="Center"/>
+                <Label Text="{Binding Username}"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       Padding="10"
+                       Grid.Row="1"
+                       HorizontalOptions="Center"/>
 
-        <!-- List of User Recipes -->
-        <ScrollView Grid.Row="2"
-                    HeightRequest="250"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center">
-            <CollectionView ItemsSource="{Binding UserRecipes}"
-                            SelectionMode="Single"
-                            SelectedItem="{Binding SelectedRecipe, Mode=TwoWay}"
-                            HorizontalOptions="Center">
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical"/>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame Padding="10"
-                                Margin="5">
-                            <StackLayout HorizontalOptions="Center">
-                                <Label Text="{Binding Title}"
-                                        FontSize="16"
+                <!-- List of User Recipes -->
+                <ScrollView Grid.Row="2"
+                            HeightRequest="250"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center">
+                        <CollectionView ItemsSource="{Binding UserRecipes}"
+                                        SelectionMode="Single"
+                                        SelectedItem="{Binding SelectedRecipe, Mode=TwoWay}"
+                                        HorizontalOptions="Center">
+                                <CollectionView.ItemsLayout>
+                                        <LinearItemsLayout Orientation="Vertical"/>
+                                </CollectionView.ItemsLayout>
+                                <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                                <Frame Padding="20"
+                                                       Margin="5">
+                                                        <StackLayout HorizontalOptions="Center">
+                                                                <Label Text="{Binding Title}"
+                                                                       FontSize="16"
+                                                                       HorizontalOptions="Center"/>
+                                                                <Label Text="{Binding CreatedAt, StringFormat='{0:dd MMM yyyy}'}"
+                                                                       FontSize="12"
+                                                                       HorizontalOptions="Center"/>
+                                                                <Label Text="{Binding CookingTime, StringFormat='{0} min'}"
+                                                                       FontSize="14"
+                                                                       HorizontalOptions="Center"/>
+                                                                <Label Text="{Binding Ratings.Count, StringFormat='{0} Ratings'}"
+                                                                       FontSize="12"
+                                                                       HorizontalOptions="Center"/>
+                                                        </StackLayout>
+                                                </Frame>
+                                        </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                        </CollectionView>
+                </ScrollView>
+
+                <!-- Selected Recipe Details (Fixed Position, Not Overlapping) -->
+                <Border Grid.Row="3"
+                        Padding="10"
+                        Margin="10">
+                        <StackLayout>
+                                <Label Text="{Binding SelectedRecipe.Title}"
+                                       FontSize="20"
+                                       FontAttributes="Bold"
+                                       HorizontalOptions="Center"/>
+                                <Label Text="{Binding SelectedRecipe.CreatedAt, StringFormat='{0:dd MMM - kl. HH:mm}'}"
+                                       FontSize="14"
+                                       HorizontalOptions="Center"/>
+                                <Label Text="{Binding SelectedRecipe.RecipeDescription}"
+                                       FontSize="16"
+                                       HorizontalOptions="Center"/>
+
+                                <Label Text="Ingredients:"
+                                       FontSize="16"
+                                       FontAttributes="Bold"/>
+                                <CollectionView ItemsSource="{Binding SelectedRecipe.RecipeIngredients}">
+                                        <CollectionView.ItemTemplate>
+                                                <DataTemplate>
+                                                        <Label Text="{Binding IngredientName}"
+                                                               FontSize="14"/>
+                                                </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                </CollectionView>
+
+                                <Label Text="Time"
+                                       FontSize="16"
+                                       FontAttributes="Bold"/>
+                                <Label Text="{Binding SelectedRecipe.CookingTime, StringFormat='{0} min'}"
+                                       FontSize="14"/>
+
+                                <Label Text="Ratings"
+                                       FontSize="16"
+                                       FontAttributes="Bold"/>
+                                <Label Text="{Binding SelectedRecipe.Ratings.Count, StringFormat='{0} Ratings'}"
+                                       FontSize="14"/>
+
+                                <Button Text="Edit Recipe"
+                                        Command="{Binding EditRecipeCommand}"
+                                        BackgroundColor="#FF51A888"
+                                        CornerRadius="8"
+                                        WidthRequest="180"
                                         HorizontalOptions="Center"/>
-                                <Label Text="{Binding CreatedAt, StringFormat='{0:dd MMM yyyy}'}"
-                                        FontSize="12"
-                                        HorizontalOptions="Center"/>
-                                <Label Text="{Binding CookingTime, StringFormat='{0} min'}"
-                                        FontSize="14"
-                                        HorizontalOptions="Center"/>
-                                <Label Text="{Binding Ratings.Count, StringFormat='{0} Ratings'}"
-                                        FontSize="12"
-                                        HorizontalOptions="Center"/>
-                            </StackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </ScrollView>
 
-        <!-- Selected Recipe Details (Fixed Position, Not Overlapping) -->
-        <Frame Grid.Row="3"
-                Padding="10"
-                Margin="10">
-            <StackLayout>
-                <Label Text="{Binding SelectedRecipe.Title}"
-                        FontSize="20"
-                        FontAttributes="Bold"
-                        HorizontalOptions="Center"/>
-                <Label Text="{Binding SelectedRecipe.CreatedAt, StringFormat='{0:dd MMM - kl. HH:mm}'}"
-                        FontSize="14"
-                        HorizontalOptions="Center"/>
-                <Label Text="{Binding SelectedRecipe.RecipeDescription}"
-                        FontSize="16"
-                        HorizontalOptions="Center"/>
-
-                <Label Text="Ingredients:"
-                        FontSize="16"
-                        FontAttributes="Bold"/>
-                <CollectionView ItemsSource="{Binding SelectedRecipe.RecipeIngredients}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Label Text="{Binding IngredientName}"
-                                    FontSize="14"/>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-
-                <Label Text="Time"
-                        FontSize="16"
-                        FontAttributes="Bold"/>
-                <Label Text="{Binding SelectedRecipe.CookingTime, StringFormat='{0} min'}"
-                        FontSize="14"/>
-
-                <Label Text="Ratings"
-                        FontSize="16"
-                        FontAttributes="Bold"/>
-                <Label Text="{Binding SelectedRecipe.Ratings.Count, StringFormat='{0} Ratings'}"
-                        FontSize="14"/>
-
-                <Button Text="Edit Recipe"
-                        Command="{Binding EditRecipeCommand}"
-                        BackgroundColor="#FF51A888"
-                        CornerRadius="10"
-                        WidthRequest="250"
-                        HorizontalOptions="Center"/>
-
-                <Button Text="Delete Recipe"
-                        Command="{Binding DeleteRecipeCommand}"
-                        BackgroundColor="#FFC56B6B"
-                        CornerRadius="10"
-                        WidthRequest="250"
-                        HorizontalOptions="Center"/>
-            </StackLayout>
-        </Frame>
-    </Grid>
+                                <Button Text="Delete Recipe"
+                                        Command="{Binding DeleteRecipeCommand}"
+                                        BackgroundColor="#FFC56B6B"
+                                        CornerRadius="8"
+                                        WidthRequest="180"
+                                        HorizontalOptions="Center"
+                                        IsEnabled="{Binding IsRecipeSelected}">
+                                        
+                                </Button>         
+                        </StackLayout>
+                </Border>
+        </Grid>
 </ContentPage>
