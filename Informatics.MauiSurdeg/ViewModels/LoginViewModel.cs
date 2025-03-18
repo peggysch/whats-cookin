@@ -122,6 +122,12 @@ public partial class LoginViewModel : BaseViewModel
                 return;
             }
 
+            if (NewUsername.Length < 5 && NewPassword.Length < 5)
+            {
+                ErrorMessage = "Username and password must be at least 5 characters long.";
+                return;
+            }
+
             if (NewUsername.Length < 5) //Denna går såklart att ta bort men tycker det är bra att ha en minsta längd 
             {
                 ErrorMessage = "Username must be at least 5 characters long.";
