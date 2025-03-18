@@ -35,9 +35,11 @@
                                 <CollectionView.ItemTemplate>
                                         <DataTemplate>
                                                 <Frame Padding="20"
-                                                       Margin="5">
+                                                       Margin="5"
+                                                       BackgroundColor="White"
+                                                       BorderColor="Gray">
                                                         <StackLayout HorizontalOptions="Center">
-                                                                <Label Text="{Binding Title}"
+                                                                <Label Text="{Binding RecipeName}"
                                                                        FontSize="16"
                                                                        HorizontalOptions="Center"/>
                                                                 <Label Text="{Binding CreatedAt, StringFormat='{0:dd MMM yyyy}'}"
@@ -61,37 +63,90 @@
                         Padding="10"
                         Margin="10">
                         <StackLayout>
-                                <!-- Titel --> 
-                                <Entry Text="{Binding SelectedRecipe.Title}"
+                                <Label Text="Selected Reciep Details"
+                                       FontSize="18"
+                                       FontAttributes="Bold"/>
+                                <!-- Titel -->
+                                <Entry Text="{Binding SelectedRecipe.RecipeName, Mode=TwoWay}"
                                        FontSize="20"
                                        FontAttributes="Bold"
                                        HorizontalOptions="Center"/>
-                                <!-- Datum --> 
+                                <!-- Datum -->
                                 <Label Text="Date"/>
                                 <DatePicker Date="{Binding SelectedRecipe.CreatedAt, Mode=TwoWay}"
-                                        Format="dd MMM yyyy"
-                                        MinimumDate="2000-01-01"
-                                        MaximumDate="{Binding MaxDate}"
+                                            Format="dd MMM yyyy"
+                                            MinimumDate="2000-01-01"
+                                            MaximumDate="{Binding MaxDate}"
+                                            FontSize="14"
+                                            HorizontalOptions="Center"/>
+                                <!-- beskrivning -->
+                                <Label Text="Description"/>
+                                <Editor Text="{Binding SelectedRecipe.RecipeDescription}"
                                         FontSize="14"
-                                        HorizontalOptions="Center"/>
-                                <!-- beskrivning --> 
-                                <Entry Text="{Binding SelectedRecipe.RecipeDescription}"
-                                       FontSize="16"
-                                       HorizontalOptions="Center"/>
-                                <!-- Ingridienser --> 
+                                        BackgroundColor="#FF8DB6AC"
+                                        TextColor="White"/>
+                                <!-- Ingridienser -->
                                 <Label Text="Ingredients:"
                                        FontSize="16"
                                        FontAttributes="Bold"/>
-                                <CollectionView ItemsSource="{Binding SelectedRecipe.RecipeIngredients}">
+                                <Label Text="{Binding RecipeIngredients.Count, StringFormat='Antal ingredienser: {0}'}"/>
+                                
+                                <CollectionView ItemsSource="{Binding RecipeIngredients}"
+                                                HeightRequest="200"
+                                                SelectionMode="None">
                                         <CollectionView.ItemTemplate>
                                                 <DataTemplate>
-                                                        <Label Text="{Binding IngredientName}"
-                                                               FontSize="14"/>
+                                                        <Grid ColumnDefinitions="100, *, 50"
+                                                              Padding="5">
+                                                                <!-- Ingrediensens namn -->
+                                                                <Label Grid.Column="1"
+                                                                       Text="{Binding Ingredient.IngredientName}"
+                                                                       FontSize="14"
+                                                                       FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
+                                                                       VerticalOptions="Center"/>
+
+                                                                <!-- Mängd (redigerbar) -->
+                                                                <Entry Grid.Column="0"
+                                                                       Text="{Binding Quantity, Mode=TwoWay}"
+                                                                       FontSize="14"
+                                                                       Keyboard="Numeric"
+                                                                       BackgroundColor="#FF8DB6AC"
+                                                                       TextColor="White"/>
+                                                        </Grid>
                                                 </DataTemplate>
                                         </CollectionView.ItemTemplate>
                                 </CollectionView>
 
-                                <!-- Tid --> 
+
+                                <!-- Lägg till ingrediens -->
+                                <Label Text="Add New Ingredient:"
+                                                FontSize="16"
+                                                FontAttributes="Bold"/>
+
+                                <HorizontalStackLayout Spacing="20">
+                                        <Picker ItemsSource="{Binding AvailableIngredients}"
+                                                ItemDisplayBinding="{Binding IngredientName}"
+                                                SelectedItem="{Binding SelectedIngredient}"
+                                                WidthRequest="370"
+                                                BackgroundColor="#FF8DB6AC"/>
+
+                                        <Entry Text="{Binding NewIngredientQuantity}"
+                                               Placeholder="Quantity"
+                                               WidthRequest="150"
+                                               Keyboard="Numeric"
+                                               BackgroundColor="#FF8DB6AC"/>
+
+                                        <Button Text="Add Ingredient"
+                                                BackgroundColor="#FF306356"
+                                                TextColor="White"
+                                                CornerRadius="10"
+                                                WidthRequest="200"
+                                                Command="{Binding AddIngredientCommand}"
+                                                FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
+                                                IsEnabled="{Binding IsRecipeSelected}"/>
+                                </HorizontalStackLayout>
+
+                                <!-- Tid -->
                                 <Label Text="Time"
                                        FontSize="16"
                                        FontAttributes="Bold"/>
@@ -99,7 +154,7 @@
                                        FontSize="14"
                                        Keyboard="Numeric"/>
 
-                                <!-- Rating --> 
+                                <!-- Rating -->
                                 <Label Text="Ratings"
                                        FontSize="16"
                                        FontAttributes="Bold"/>
@@ -121,8 +176,8 @@
                                         WidthRequest="180"
                                         HorizontalOptions="Center"
                                         IsEnabled="{Binding IsRecipeSelected}">
-                                        
-                                </Button>         
+
+                                </Button>
                         </StackLayout>
                 </Border>
         </Grid>

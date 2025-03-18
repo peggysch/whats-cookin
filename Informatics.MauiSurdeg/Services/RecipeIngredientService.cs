@@ -19,11 +19,21 @@ namespace Informatics.MauiSurdeg.Services
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<IEnumerable<RecipeIngredient>> GetRecipeIngredientsAsync()
+        /*public async Task<IEnumerable<RecipeIngredient>> GetRecipeIngredientsAsync()
         {
             return await _context.RecipeIngredients
                 .AsNoTracking()
                 .Include(ri => ri.Recipe)
+                .Include(ri => ri.Ingredient)
+                .ToListAsync();
+        }*/
+
+        //Behöver denna till att ladda alla ingredineser för ett recept i Profile - KOLLA om den över behövs??
+        public async Task<IEnumerable<RecipeIngredient>> GetRecipeIngredientsAsync(int recipeId)
+        {
+            return await _context.RecipeIngredients
+                .AsNoTracking()
+                .Where(ri => ri.RecipeID == recipeId)
                 .Include(ri => ri.Ingredient)
                 .ToListAsync();
         }

@@ -6,24 +6,43 @@ using Informatics.MauiSurdeg.Interfaces;
 using Informatics.MauiSurdeg.Models;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.Specialized;
+using Informatics.MauiSurdeg.Services;
 
 namespace Informatics.MauiSurdeg.ViewModels;
 
 public partial class ProfileViewModel : BaseViewModel
 {
     private readonly IRecipeService _recipeService;
+    private readonly IIngredientService _ingredientService;
+
+    private readonly IRecipeIngredientService _recipeingredientsService;
 
     [ObservableProperty]
     private ObservableCollection<Recipe> userRecipes;
 
     [ObservableProperty]
+    private ObservableCollection<Ingredient> availableIngredients;
+
+    [ObservableProperty]
+    private ObservableCollection<RecipeIngredient> recipeIngredients;
+
+    [ObservableProperty]
     private Recipe selectedRecipe;
     public bool IsRecipeSelected => SelectedRecipe != null;
+
+    public Ingredient SelectedIngredient { get; set; }
+    public string NewIngredientQuantity { get; set; }
 
     partial void OnSelectedRecipeChanged(Recipe value)
     {
         OnPropertyChanged(nameof(IsRecipeSelected));
         OnPropertyChanged(nameof(SelectedRecipe));
+
+        if (value != null)
+        {
+            LoadRecipeIngredientsAsync(selectedRecipe.RecipeID);
+        }
     }
 
     public ICommand LoadUserProfileCommand { get; }
@@ -31,16 +50,31 @@ public partial class ProfileViewModel : BaseViewModel
     public ICommand EditRecipeCommand { get; }
     public ICommand DeleteRecipeCommand { get; }
 
-    public ProfileViewModel(IRecipeService recipeService)
+    //Regigera ett recept 
+    public ICommand AddIngredientCommand { get; }
+    public ICommand RemoveIngredientCommand { get; }
+
+
+    public ProfileViewModel(IRecipeService recipeService, IIngredientService ingredientService, IRecipeIngredientService recipeIngredientService)
     {
         _recipeService = recipeService ?? throw new ArgumentNullException(nameof(recipeService));
+        _ingredientService = ingredientService ?? throw new ArgumentException(nameof(ingredientService));
+        _recipeingredientsService = recipeIngredientService ?? throw new ArgumentException(nameof(recipeIngredientService));
 
         UserRecipes = new ObservableCollection<Recipe>();
+        RecipeIngredients = new ObservableCollection<RecipeIngredient>();
+        AvailableIngredients = new ObservableCollection<Ingredient>();
 
         LoadUserProfileCommand = new AsyncRelayCommand(LoadUserProfileAsync);
-        SelectRecipeCommand = new AsyncRelayCommand<int>(SelectRecipeAsync);
+        //SelectRecipeCommand = new AsyncRelayCommand<int>(SelectRecipeAsync);
         EditRecipeCommand = new AsyncRelayCommand(EditRecipeAsync);
         DeleteRecipeCommand = new AsyncRelayCommand(DeleteRecipeAsync);
+
+        AddIngredientCommand = new RelayCommand(AddIngredient);
+        RemoveIngredientCommand = new RelayCommand(RemoveIngredient);
+
+        LoadAvailableIngredientsAsync();
+
 
         /* Force update of recipes if new recipe is added in recipe add page. Could be of good use later.
         Shell.Current.Navigated += async (sender, args) =>
@@ -67,6 +101,7 @@ public partial class ProfileViewModel : BaseViewModel
                 {
                     UserRecipes.Add(recipe);
                 }
+
             }
             else
             {
@@ -83,19 +118,80 @@ public partial class ProfileViewModel : BaseViewModel
         }
     }
 
-    private async Task SelectRecipeAsync(int recipeId)
+    //hämta alla ingredienser 
+    private async void LoadAvailableIngredientsAsync()
     {
-        SelectedRecipe = UserRecipes.FirstOrDefault(r => r.RecipeID == recipeId);
+        try
+        {
+            var ingredients = await _ingredientService.GetIngredientsAsync();
+            AvailableIngredients.Clear();
+            foreach (var ingredient in ingredients)
+            {
+                AvailableIngredients.Add(ingredient);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading ingredients: {ex.Message}");
+        }
     }
+
+    // hämtart alla ingredienser för ett recept 
+    private async void LoadRecipeIngredientsAsync(int recipeId)
+    {
+        try
+        {
+            var recipeIngredients = await _recipeingredientsService.GetRecipeIngredientsAsync(recipeId);
+            RecipeIngredients.Clear();
+
+            foreach (var ingredient in recipeIngredients)
+            {
+                RecipeIngredients.Add(ingredient);
+            }
+            OnPropertyChanged(nameof(RecipeIngredients));
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading recipe ingredients: {ex.Message}");
+        }
+
+    }
+
+
+    /*private async Task SelectRecipeAsync(int recipeId)
+    {
+        //SelectedRecipe = UserRecipes.FirstOrDefault(r => r.RecipeID == recipeId);
+
+        var recipe = await _recipeService.GetRecipeByIdAsync(recipeId);
+
+        if (recipe != null)
+        {
+            if (recipe.RecipeIngredients.Count == 0)
+            {
+                Console.WriteLine("RecipeIngredients är tomt!");
+            }
+            SelectedRecipe = recipe;
+            RecipeIngredients.Clear();
+            foreach(var ingredinet in recipe.RecipeIngredients)
+            {
+                RecipeIngredients.Add(ingredinet);
+                
+            }
+
+            OnPropertyChanged(nameof(SelectedRecipe));
+            OnPropertyChanged(nameof(RecipeIngredients));
+        }
+    }*/
 
     public string CookingTimeString
     {
         get => SelectedRecipe?.CookingTime.ToString() ?? "";
         set
         {
-            if(SelectedRecipe != null && int.TryParse(value, out int time))
+            if (SelectedRecipe != null && int.TryParse(value, out int time))
             {
-                SelectedRecipe.CookingTime = time; 
+                SelectedRecipe.CookingTime = time;
                 OnPropertyChanged(nameof(CookingTimeString));
             }
         }
@@ -107,8 +203,8 @@ public partial class ProfileViewModel : BaseViewModel
         get => SelectedRecipe?.CreatedAt.Date ?? DateTime.Today;
         set
         {
-            if(value > DateTime.Today)
-            value = DateTime.Today;
+            if (value > DateTime.Today)
+                value = DateTime.Today;
 
             SelectedRecipe.CreatedAt = value + SelectedRecipe.CreatedAt.TimeOfDay;
             OnPropertyChanged(nameof(CreatedAtDate));
@@ -117,52 +213,117 @@ public partial class ProfileViewModel : BaseViewModel
     }
 
     private async Task EditRecipeAsync()
+{
+    if (SelectedRecipe == null)
     {
-        if(SelectedRecipe == null)
+        return;
+    }
+
+    bool isConfirmed = await Shell.Current.DisplayAlert(
+        "Confirm Edit",
+        "Are you sure you want to save the changes to this recipe?",
+        "Yes",
+        "No"
+    );
+    if (!isConfirmed)
+    {
+        return;
+    }
+
+    try
+    {
+        IsBusy = true;
+
+        // Steg 1: Uppdatera receptet i databasen
+        var updatedRecipe = await _recipeService.SaveRecipeAsync(SelectedRecipe);
+
+        if (updatedRecipe == null)
         {
+            await Shell.Current.DisplayAlert("Error", "Failed to update recipe.", "OK");
             return;
         }
 
-        bool isConfirmed = await Shell.Current.DisplayAlert(
-            "Confirm Edit",
-            "Are you sure you want to save the changes to this recipe?",
-            "Yes",
-            "No"
-        );
-        if(!isConfirmed)
+        // Uppdatera UI så att den senaste versionen av receptet visas
+        var index = UserRecipes.IndexOf(SelectedRecipe);
+        if (index >= 0)
         {
+            UserRecipes[index] = updatedRecipe;
+        }
+
+        // Steg 2: Hämta nuvarande ingredienser från databasen
+        var existingIngredients = await _recipeingredientsService.GetRecipeIngredientsAsync(SelectedRecipe.RecipeID);
+
+        // Steg 4: Lägg till eller uppdatera ingredienser
+        foreach (var ingredient in RecipeIngredients)
+        {
+            var existing = existingIngredients.FirstOrDefault(i => i.Ingredient.IngredientID == ingredient.Ingredient.IngredientID);
+
+            if (existing == null)
+            {
+                // Om ingrediensen inte fanns tidigare, lägg till den
+                var newIngredient = new RecipeIngredient
+                {
+                    RecipeID = SelectedRecipe.RecipeID,
+                    IngredientID = ingredient.Ingredient.IngredientID,
+                    Quantity = ingredient.Quantity
+                };
+                await _recipeingredientsService.AddRecipeIngredientAsync(newIngredient);
+            }
+        }
+
+        await Shell.Current.DisplayAlert("Success", "Recipe updated successfully!", "OK");
+    }
+    catch (Exception ex)
+    {
+        await Shell.Current.DisplayAlert("Error", $"Something went wrong: {ex.Message}", "OK");
+    }
+    finally
+    {
+        IsBusy = false;
+    }
+}
+
+
+
+    private void AddIngredient()
+    {
+        if (SelectedIngredient == null || string.IsNullOrWhiteSpace(NewIngredientQuantity))
             return;
-        }
 
-        try
+        var existingIngredient = RecipeIngredients.FirstOrDefault(i => i.Ingredient.IngredientID == SelectedIngredient.IngredientID);
+
+        if (existingIngredient != null)
         {
-            IsBusy = true;
-
-            var updatedRecipe = await _recipeService.SaveRecipeAsync(SelectedRecipe);
-
-            if(updatedRecipe != null)
-            {
-                await Shell.Current.DisplayAlert("Success", "Recipe updated successfully!.", "OK");
-            }
-            else 
-            {
-                await Shell.Current.DisplayAlert("Error", "Failed to update recipe.", "OK");
-            }
-
-            var index = UserRecipes.IndexOf(SelectedRecipe);
-            if(index >= 0)
-            {
-                UserRecipes[index] = updatedRecipe;
-            }
+            // Uppdatera mängden om ingrediensen redan finns
+            existingIngredient.Quantity = NewIngredientQuantity;
         }
-        catch (Exception ex)
+        else
         {
-            await Shell.Current.DisplayAlert("Error", "Something went wrong!", "OK");
+            // Lägg till den nya ingrediensen i listan
+            var newRecipeIngredient = new RecipeIngredient
+            {
+                RecipeID = SelectedRecipe.RecipeID,
+                Ingredient = SelectedIngredient,
+                Quantity = NewIngredientQuantity
+            };
+
+            RecipeIngredients.Add(newRecipeIngredient);
         }
-        finally 
-        {
-            IsBusy = false; 
-        }
+
+        // Rensa input-fälten
+        SelectedIngredient = null;
+        NewIngredientQuantity = "";
+
+        // Uppdatera UI
+        OnPropertyChanged(nameof(SelectedIngredient));
+        OnPropertyChanged(nameof(NewIngredientQuantity));
+        OnPropertyChanged(nameof(RecipeIngredients));
+    }
+
+
+    private void RemoveIngredient()
+    {
+
     }
 
     public async Task DeleteRecipeAsync()
@@ -173,7 +334,7 @@ public partial class ProfileViewModel : BaseViewModel
         }
 
         bool isConfirmed = await Shell.Current.DisplayAlert("Confirm Delete",
-            $"Are you sure you want to delete {SelectedRecipe.Title}?", "Yes", "No");
+            $"Are you sure you want to delete {SelectedRecipe.RecipeName}?", "Yes", "No");
 
         if (!isConfirmed)
         {
