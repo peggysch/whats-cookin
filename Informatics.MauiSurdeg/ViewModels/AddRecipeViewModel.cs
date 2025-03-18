@@ -48,12 +48,12 @@ public partial class AddRecipeViewModel : BaseViewModel
         _recipeService = recipeService;
         _recipeIngredientService = recipeIngredientService;
         AddIngredientCommand = new RelayCommand(AddIngredient);
-        SaveRecipeCommand = new AsyncRelayCommand(SaveRecipe);
-        LoadIngredients();
+        SaveRecipeCommand = new AsyncRelayCommand(SaveRecipeAsync);
+        LoadIngredientsAsync();
         SelectedIngredients = new ObservableCollection<RecipeIngredient>();
     }
 
-    private async void LoadIngredients()
+    private async void LoadIngredientsAsync()
     {
         var ingredients = await _ingredientService.GetIngredientsAsync();
         foreach (var ingredient in ingredients)
@@ -87,7 +87,7 @@ public partial class AddRecipeViewModel : BaseViewModel
     }
 
     //add error handling
-    private async Task SaveRecipe()
+    private async Task SaveRecipeAsync()
     {
         // Step 1: Create and save the Recipe
         var newRecipe = new Recipe
@@ -124,6 +124,14 @@ public partial class AddRecipeViewModel : BaseViewModel
             await _recipeIngredientService.AddRecipeIngredientAsync(recipeIngredient);
         }
 
-        Console.WriteLine("Recipe and ingredients saved successfully!");
+        await Shell.Current.DisplayAlert("Success", "Recipe created!", "OK");
+
+                //Clear input fields
+                RecipeName = string.Empty;
+                RecipeDescription = string.Empty;
+                CookingTime = 0;
+                RecipeInstructions = string.Empty;
+                RecipeCost = 0;
+                SelectedIngredients.Clear();
     }
 }

@@ -43,12 +43,6 @@ public static class MauiProgram
 			options.UseSqlServer(connectionString);
 		});
 
-		var connectionString = builder.Configuration.GetConnectionString("UniversityDatabase");
-		Console.WriteLine($"Connection string loaded: {connectionString != null}");
-		// Only print first few chars to avoid showing credentials in logs
-		if (connectionString != null)
-			Console.WriteLine($"Connection starts with: {connectionString.Substring(0, Math.Min(15, connectionString.Length))}...");
-
 		builder.Services.AddScoped<IRecipeService, RecipeService>();
 		builder.Services.AddScoped<IAppUserService, AppUserService>();
 		builder.Services.AddScoped<IRatingService, RatingService>();

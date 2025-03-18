@@ -48,7 +48,7 @@
                                                  <!-- Add slight margin -->
                                                  <StackLayout Spacing="15">
                                                         <!-- Recipe Title -->
-                                                        <Label Text="{Binding Title}"
+                                                        <Label Text="{Binding RecipeName}"
                                                                FontSize="24"
                                                                FontAttributes="Bold"
                                                                TextColor="Black"/>
