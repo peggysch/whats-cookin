@@ -74,7 +74,6 @@ public partial class ProfileViewModel : BaseViewModel
         AvailableIngredients = new ObservableCollection<Ingredient>();
 
         LoadUserProfileCommand = new AsyncRelayCommand(LoadUserProfileAsync);
-        //SelectRecipeCommand = new AsyncRelayCommand<int>(SelectRecipeAsync);
         EditRecipeCommand = new AsyncRelayCommand(EditRecipeAsync);
         DeleteRecipeCommand = new AsyncRelayCommand(DeleteRecipeAsync);
 
@@ -83,15 +82,6 @@ public partial class ProfileViewModel : BaseViewModel
 
         LoadAvailableIngredientsAsync();
 
-
-        /* Force update of recipes if new recipe is added in recipe add page. Could be of good use later.
-        Shell.Current.Navigated += async (sender, args) =>
-        {
-            if (args.Current.Location.ToString().Contains("profile"))
-            {
-                await LoadUserProfileAsync();
-            }
-        };*/
     }
 
     public async Task LoadUserProfileAsync()
@@ -165,32 +155,6 @@ public partial class ProfileViewModel : BaseViewModel
         }
 
     }
-
-
-    /*private async Task SelectRecipeAsync(int recipeId)
-    {
-        //SelectedRecipe = UserRecipes.FirstOrDefault(r => r.RecipeID == recipeId);
-
-        var recipe = await _recipeService.GetRecipeByIdAsync(recipeId);
-
-        if (recipe != null)
-        {
-            if (recipe.RecipeIngredients.Count == 0)
-            {
-                Console.WriteLine("RecipeIngredients är tomt!");
-            }
-            SelectedRecipe = recipe;
-            RecipeIngredients.Clear();
-            foreach(var ingredinet in recipe.RecipeIngredients)
-            {
-                RecipeIngredients.Add(ingredinet);
-                
-            }
-
-            OnPropertyChanged(nameof(SelectedRecipe));
-            OnPropertyChanged(nameof(RecipeIngredients));
-        }
-    }*/
 
     public string CookingTimeString
     {
@@ -450,6 +414,21 @@ public partial class ProfileViewModel : BaseViewModel
         {
             IsBusy = false;
         }
+    }
+
+    public void ClearData()
+    {
+        SelectedRecipe = null;
+        UserRecipes?.Clear();
+        RecipeIngredients?.Clear();
+        SelectedIngredient = null;
+
+        OnPropertyChanged(nameof(SelectedRecipe));
+        OnPropertyChanged(nameof(UserRecipes));
+        OnPropertyChanged(nameof(RecipeIngredients));
+        OnPropertyChanged(nameof(SelectedIngredient));
+        OnPropertyChanged(nameof(NewIngredientQuantity));
+
     }
 
 }

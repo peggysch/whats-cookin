@@ -126,12 +126,37 @@ public partial class AddRecipeViewModel : BaseViewModel
 
         await Shell.Current.DisplayAlert("Success", "Recipe created!", "OK");
 
-                //Clear input fields
-                RecipeName = string.Empty;
-                RecipeDescription = string.Empty;
-                CookingTime = 0;
-                RecipeInstructions = string.Empty;
-                RecipeCost = 0;
-                SelectedIngredients.Clear();
+        //Clear input fields
+        RecipeName = string.Empty;
+        RecipeDescription = string.Empty;
+        CookingTime = 0;
+        RecipeInstructions = string.Empty;
+        RecipeCost = 0;
+        SelectedIngredients.Clear();
+    }
+
+    public void ClearData()
+    {
+        RecipeName = string.Empty;
+        RecipeDescription = string.Empty;
+        CookingTime = 0;
+        RecipeInstructions = string.Empty;
+        RecipeCost = 0;
+        SelectedIngredient = null;
+        IngredientQuantity = string.Empty;
+        SelectedIngredients?.Clear();
+        AvailableIngredients?.Clear();
+
+        // Notify UI
+        OnPropertyChanged(nameof(RecipeName));
+        OnPropertyChanged(nameof(RecipeDescription));
+        OnPropertyChanged(nameof(CookingTime));
+        OnPropertyChanged(nameof(RecipeInstructions));
+        OnPropertyChanged(nameof(RecipeCost));
+        OnPropertyChanged(nameof(SelectedIngredient));
+        OnPropertyChanged(nameof(IngredientQuantity));
+        OnPropertyChanged(nameof(SelectedIngredients));
+        OnPropertyChanged(nameof(AvailableIngredients));
+
     }
 }
