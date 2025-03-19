@@ -13,5 +13,6 @@ namespace Informatics.MauiSurdeg.Interfaces
         Task<bool> AddIngredientToRecipeAsync(int recipeId, int ingredientId, string quantity);
         Task<bool> RemoveIngredientFromRecipeAsync(int recipeId, int ingredientId);
         Task<RecipeIngredient> AddRecipeIngredientAsync(RecipeIngredient newRecipeIngredient);
+        Task<RecipeIngredient?> UpdateRecipeIngredientAsync(RecipeIngredient updatedRecipeIngredient);
     }
 }

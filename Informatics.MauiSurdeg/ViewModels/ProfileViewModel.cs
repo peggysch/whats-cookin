@@ -71,7 +71,7 @@ public partial class ProfileViewModel : BaseViewModel
         DeleteRecipeCommand = new AsyncRelayCommand(DeleteRecipeAsync);
 
         AddIngredientCommand = new RelayCommand(AddIngredient);
-        RemoveIngredientCommand = new RelayCommand(RemoveIngredient);
+        RemoveIngredientCommand = new AsyncRelayCommand<RecipeIngredient>(RemoveIngredientAsync);
 
         LoadAvailableIngredientsAsync();
 
@@ -213,75 +213,101 @@ public partial class ProfileViewModel : BaseViewModel
     }
 
     private async Task EditRecipeAsync()
-{
-    if (SelectedRecipe == null)
     {
-        return;
-    }
-
-    bool isConfirmed = await Shell.Current.DisplayAlert(
-        "Confirm Edit",
-        "Are you sure you want to save the changes to this recipe?",
-        "Yes",
-        "No"
-    );
-    if (!isConfirmed)
-    {
-        return;
-    }
-
-    try
-    {
-        IsBusy = true;
-
-        // Steg 1: Uppdatera receptet i databasen
-        var updatedRecipe = await _recipeService.SaveRecipeAsync(SelectedRecipe);
-
-        if (updatedRecipe == null)
+        if (SelectedRecipe == null)
         {
-            await Shell.Current.DisplayAlert("Error", "Failed to update recipe.", "OK");
             return;
         }
 
-        // Uppdatera UI så att den senaste versionen av receptet visas
-        var index = UserRecipes.IndexOf(SelectedRecipe);
-        if (index >= 0)
+        bool isConfirmed = await Shell.Current.DisplayAlert(
+            "Confirm Edit",
+            "Are you sure you want to save the changes to this recipe?",
+            "Yes",
+            "No"
+        );
+        if (!isConfirmed)
         {
-            UserRecipes[index] = updatedRecipe;
+            return;
         }
 
-        // Steg 2: Hämta nuvarande ingredienser från databasen
-        var existingIngredients = await _recipeingredientsService.GetRecipeIngredientsAsync(SelectedRecipe.RecipeID);
-
-        // Steg 4: Lägg till eller uppdatera ingredienser
-        foreach (var ingredient in RecipeIngredients)
+        try
         {
-            var existing = existingIngredients.FirstOrDefault(i => i.Ingredient.IngredientID == ingredient.Ingredient.IngredientID);
+            IsBusy = true;
 
-            if (existing == null)
+            // Steg 1: Uppdatera receptet i databasen
+            var updatedRecipe = await _recipeService.SaveRecipeAsync(SelectedRecipe);
+
+            if (updatedRecipe == null)
             {
-                // Om ingrediensen inte fanns tidigare, lägg till den
-                var newIngredient = new RecipeIngredient
-                {
-                    RecipeID = SelectedRecipe.RecipeID,
-                    IngredientID = ingredient.Ingredient.IngredientID,
-                    Quantity = ingredient.Quantity
-                };
-                await _recipeingredientsService.AddRecipeIngredientAsync(newIngredient);
+                await Shell.Current.DisplayAlert("Error", "Failed to update recipe.", "OK");
+                return;
             }
-        }
 
-        await Shell.Current.DisplayAlert("Success", "Recipe updated successfully!", "OK");
+            // Uppdatera UI så att den senaste versionen av receptet visas
+            var index = UserRecipes.IndexOf(SelectedRecipe);
+            if (index >= 0)
+            {
+                UserRecipes[index] = updatedRecipe;
+            }
+            // Steg 2: Hämta nuvarande ingredienser från databasen
+            var existingIngredients = await _recipeingredientsService.GetRecipeIngredientsAsync(SelectedRecipe.RecipeID);
+
+            //steg 3: tar bort ingredines från recipe 
+            foreach(var existingIngredient in existingIngredients)
+            {
+                var stillExists = RecipeIngredients.Any(i => i.Ingredient.IngredientID == existingIngredient.Ingredient.IngredientID);
+                if(!stillExists)
+                {
+                    bool removed = await _recipeingredientsService.RemoveIngredientFromRecipeAsync(SelectedRecipe.RecipeID, existingIngredient.IngredientID);
+
+                    if(removed)
+                    {
+                        await MainThread.InvokeOnMainThreadAsync(() =>
+                        {
+                            var ingredientToRemove = RecipeIngredients.FirstOrDefault(i => i.Ingredient.IngredientID == existingIngredient.Ingredient.IngredientID);
+                            if (ingredientToRemove != null)
+                            {
+                                RecipeIngredients.Remove(ingredientToRemove);
+                            }
+                        });
+                    }
+                }
+            }
+
+            // Steg 4: Lägg till eller uppdatera ingredienser
+            foreach (var ingredient in RecipeIngredients)
+            {
+                var existing = existingIngredients.FirstOrDefault(i => i.Ingredient.IngredientID == ingredient.Ingredient.IngredientID);
+
+                if (existing == null)
+                {
+                    // Om ingrediensen inte fanns tidigare, lägg till den
+                    var newIngredient = new RecipeIngredient
+                    {
+                        RecipeID = SelectedRecipe.RecipeID,
+                        IngredientID = ingredient.Ingredient.IngredientID,
+                        Quantity = ingredient.Quantity
+                    };
+                    await _recipeingredientsService.AddRecipeIngredientAsync(newIngredient);
+                }
+                else if (existing.Quantity != ingredient.Quantity)
+                {
+                    existing.Quantity = ingredient.Quantity;
+                    await _recipeingredientsService.UpdateRecipeIngredientAsync(existing);
+                }
+            }
+
+            await Shell.Current.DisplayAlert("Success", "Recipe updated successfully!", "OK");
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Error", $"Something went wrong: {ex.Message}", "OK");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
-    catch (Exception ex)
-    {
-        await Shell.Current.DisplayAlert("Error", $"Something went wrong: {ex.Message}", "OK");
-    }
-    finally
-    {
-        IsBusy = false;
-    }
-}
 
 
 
@@ -321,8 +347,60 @@ public partial class ProfileViewModel : BaseViewModel
     }
 
 
-    private void RemoveIngredient()
+    private async Task RemoveIngredientAsync(RecipeIngredient ingredient)
     {
+        if(SelectedRecipe == null || ingredient == null)
+        {
+            return;
+        }
+
+        bool isConfirmed = await Shell.Current.DisplayAlert(
+            "Confirm Removal",
+            $"Are you sure you want to remove {ingredient.Ingredient.IngredientName} from this recipe",
+            "Yes",
+            "No"
+
+        );
+
+        if(!isConfirmed)
+        {
+            return;
+        }
+
+        try
+        {
+            IsBusy = true; 
+            bool removed = await _recipeingredientsService.RemoveIngredientFromRecipeAsync(
+                SelectedRecipe.RecipeID, ingredient.Ingredient.IngredientID
+            );
+
+            if(removed)
+            {
+                var ingredientRemove = RecipeIngredients.FirstOrDefault(i => i.Ingredient.IngredientID == ingredient.IngredientID);
+                if(ingredientRemove != null)
+                {
+                    RecipeIngredients.Remove(ingredient);
+                    OnPropertyChanged(nameof(RecipeIngredients));
+                }
+                
+                
+                await Shell.Current.DisplayAlert("Success", "Ingredient removed successfully!", "OK");
+
+            }
+            else 
+            {
+                await Shell.Current.DisplayAlert("Error", "Failed to remove ingredient.", "OK");
+            }
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Error", $"Something went wrong: {ex.Message}", "OK");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+
 
     }
 

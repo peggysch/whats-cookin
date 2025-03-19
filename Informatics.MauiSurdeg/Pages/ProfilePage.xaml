@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Informatics.MauiSurdeg.Pages.ProfilePage"
              Title="Profile"
+             x:Name="ProfilePageRoot"
              xmlns:local="clr-namespace:Informatics.MauiSurdeg.ViewModels"
              NavigationPage.HasBackButton="False">
 
@@ -59,9 +60,9 @@
                 </ScrollView>
 
                 <!-- Selected Recipe Details (Fixed Position, Not Overlapping) -->
-                <Border Grid.Row="3"
+                <Border Grid.Row="4"
                         Padding="10"
-                        Margin="10">
+                        Margin="20">
                         <StackLayout>
                                 <Label Text="Selected Reciep Details"
                                        FontSize="18"
@@ -96,8 +97,10 @@
                                                 SelectionMode="None">
                                         <CollectionView.ItemTemplate>
                                                 <DataTemplate>
-                                                        <Grid ColumnDefinitions="100, *, 50"
-                                                              Padding="5">
+                                                        <Grid ColumnDefinitions="Auto, *, Auto"
+                                                              Padding="5"
+                                                              ColumnSpacing="10"
+                                                              VerticalOptions="Center">
                                                                 <!-- Ingrediensens namn -->
                                                                 <Label Grid.Column="1"
                                                                        Text="{Binding Ingredient.IngredientName}"
@@ -112,6 +115,16 @@
                                                                        Keyboard="Numeric"
                                                                        BackgroundColor="#FF8DB6AC"
                                                                        TextColor="White"/>
+                                                                
+                                                                <Button Grid.Column="2"
+                                                                        Text="Remove"
+                                                                        Command="{Binding Source={x:Reference ProfilePageRoot}, Path=BindingContext.RemoveIngredientCommand}"
+                                                                        CommandParameter="{Binding}"
+                                                                        BackgroundColor="#FFC56B6B"
+                                                                        TextColor="White"
+                                                                        CornerRadius="10"
+                                                                        WidthRequest="100"
+                                                                        FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
                                                         </Grid>
                                                 </DataTemplate>
                                         </CollectionView.ItemTemplate>
@@ -163,10 +176,11 @@
 
                                 <Button Text="Edit Recipe"
                                         Command="{Binding EditRecipeCommand}"
-                                        BackgroundColor="#FF51A888"
+                                        BackgroundColor="#FF306356"
                                         CornerRadius="8"
                                         WidthRequest="180"
                                         HorizontalOptions="Center"
+                                        FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
                                         IsEnabled="{Binding IsRecipeSelected}"/>
 
                                 <Button Text="Delete Recipe"
@@ -175,6 +189,7 @@
                                         CornerRadius="8"
                                         WidthRequest="180"
                                         HorizontalOptions="Center"
+                                        FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
                                         IsEnabled="{Binding IsRecipeSelected}">
 
                                 </Button>

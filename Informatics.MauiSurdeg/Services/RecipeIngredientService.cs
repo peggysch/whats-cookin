@@ -114,6 +114,20 @@ namespace Informatics.MauiSurdeg.Services
             }
         }
 
+        public async Task<RecipeIngredient?> UpdateRecipeIngredientAsync(RecipeIngredient updatedRecipeIngredient)
+        {
+            var existing = await _context.RecipeIngredients
+            .FirstOrDefaultAsync(ri => ri.RecipeID == updatedRecipeIngredient.RecipeID && ri.IngredientID == updatedRecipeIngredient.IngredientID);
+
+            if (existing != null)
+            {
+                existing.Quantity = updatedRecipeIngredient.Quantity;
+                await _context.SaveChangesAsync();
+                return updatedRecipeIngredient;
+            }
+            return null;
+        }
+
 
     }
 }
