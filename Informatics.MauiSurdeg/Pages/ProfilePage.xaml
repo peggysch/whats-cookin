@@ -6,194 +6,240 @@
              xmlns:local="clr-namespace:Informatics.MauiSurdeg.ViewModels"
              NavigationPage.HasBackButton="False">
 
-        <Grid RowDefinitions="Auto, Auto, *, Auto">
-                <!-- Username -->
-                <Label Text="Your Profile"
-                       FontSize="24"
-                       FontAttributes="Bold"
-                       Padding="10"
-                       HorizontalOptions="Center"/>
+        <ScrollView>
+                <VerticalStackLayout Spacing="20"
+                                     Padding="20">
+                        <!-- Username -->
+                        <Label Text="Your Profile"
+                               FontSize="24"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"
+                               FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
+                               Margin="0,10,0,0"/>
 
-                <Label Text="{Binding Username}"
-                       FontSize="20"
-                       FontAttributes="Bold"
-                       Padding="10"
-                       Grid.Row="1"
-                       HorizontalOptions="Center"/>
+                        <Label Text="{Binding Username}"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"
+                               Margin="0,0,0,10"/>
 
-                <!-- List of User Recipes -->
-                <ScrollView Grid.Row="2"
-                            HeightRequest="250"
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center">
-                        <CollectionView ItemsSource="{Binding UserRecipes}"
-                                        SelectionMode="Single"
-                                        SelectedItem="{Binding SelectedRecipe, Mode=TwoWay}"
-                                        HorizontalOptions="Center">
-                                <CollectionView.ItemsLayout>
-                                        <LinearItemsLayout Orientation="Vertical"/>
-                                </CollectionView.ItemsLayout>
-                                <CollectionView.ItemTemplate>
-                                        <DataTemplate>
-                                                <Frame Padding="20"
-                                                       Margin="5"
-                                                       BackgroundColor="White"
-                                                       BorderColor="Gray">
-                                                        <StackLayout HorizontalOptions="Center">
-                                                                <Label Text="{Binding RecipeName}"
-                                                                       FontSize="16"
-                                                                       HorizontalOptions="Center"/>
-                                                                <Label Text="{Binding CreatedAt, StringFormat='{0:dd MMM yyyy}'}"
-                                                                       FontSize="12"
-                                                                       HorizontalOptions="Center"/>
-                                                                <Label Text="{Binding CookingTime, StringFormat='{0} min'}"
-                                                                       FontSize="14"
-                                                                       HorizontalOptions="Center"/>
-                                                                <Label Text="{Binding Ratings.Count, StringFormat='{0} Ratings'}"
-                                                                       FontSize="12"
-                                                                       HorizontalOptions="Center"/>
-                                                        </StackLayout>
-                                                </Frame>
-                                        </DataTemplate>
-                                </CollectionView.ItemTemplate>
-                        </CollectionView>
-                </ScrollView>
-
-                <!-- Selected Recipe Details (Fixed Position, Not Overlapping) -->
-                <Border Grid.Row="4"
-                        Padding="10"
-                        Margin="20">
-                        <StackLayout>
-                                <Label Text="Selected Reciep Details"
-                                       FontSize="18"
-                                       FontAttributes="Bold"/>
-                                <!-- Titel -->
-                                <Entry Text="{Binding SelectedRecipe.RecipeName, Mode=TwoWay}"
-                                       FontSize="20"
-                                       FontAttributes="Bold"
-                                       HorizontalOptions="Center"/>
-                                <!-- Datum -->
-                                <Label Text="Date"/>
-                                <DatePicker Date="{Binding SelectedRecipe.CreatedAt, Mode=TwoWay}"
-                                            Format="dd MMM yyyy"
-                                            MinimumDate="2000-01-01"
-                                            MaximumDate="{Binding MaxDate}"
-                                            FontSize="14"
-                                            HorizontalOptions="Center"/>
-                                <!-- beskrivning -->
-                                <Label Text="Description"/>
-                                <Editor Text="{Binding SelectedRecipe.RecipeDescription}"
-                                        FontSize="14"
-                                        BackgroundColor="#FF8DB6AC"
-                                        TextColor="White"/>
-                                <!-- Ingridienser -->
-                                <Label Text="Ingredients:"
-                                       FontSize="16"
-                                       FontAttributes="Bold"/>
-                                <Label Text="{Binding RecipeIngredients.Count, StringFormat='Antal ingredienser: {0}'}"/>
-                                
-                                <CollectionView ItemsSource="{Binding RecipeIngredients}"
-                                                HeightRequest="200"
-                                                SelectionMode="None">
+                        <!-- List of User Recipes -->
+                        <Label Text="My Recipes"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Start"
+                               Margin="0,10,0,5"
+                               FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+                        <ScrollView Grid.Row="2"
+                                    HeightRequest="250"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center">
+                                <CollectionView ItemsSource="{Binding UserRecipes}"
+                                                SelectionMode="Single"
+                                                SelectedItem="{Binding SelectedRecipe, Mode=TwoWay}"
+                                                HorizontalOptions="Center">
+                                        <CollectionView.ItemsLayout>
+                                                <LinearItemsLayout Orientation="Vertical"/>
+                                        </CollectionView.ItemsLayout>
                                         <CollectionView.ItemTemplate>
                                                 <DataTemplate>
-                                                        <Grid ColumnDefinitions="Auto, *, Auto"
-                                                              Padding="5"
-                                                              ColumnSpacing="10"
-                                                              VerticalOptions="Center">
-                                                                <!-- Ingrediensens namn -->
-                                                                <Label Grid.Column="1"
-                                                                       Text="{Binding Ingredient.IngredientName}"
-                                                                       FontSize="14"
-                                                                       FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
-                                                                       VerticalOptions="Center"/>
-
-                                                                <!-- Mängd (redigerbar) -->
-                                                                <Entry Grid.Column="0"
-                                                                       Text="{Binding Quantity, Mode=TwoWay}"
-                                                                       FontSize="14"
-                                                                       Keyboard="Numeric"
-                                                                       BackgroundColor="#FF8DB6AC"
-                                                                       TextColor="White"/>
-                                                                
-                                                                <Button Grid.Column="2"
-                                                                        Text="Remove"
-                                                                        Command="{Binding Source={x:Reference ProfilePageRoot}, Path=BindingContext.RemoveIngredientCommand}"
-                                                                        CommandParameter="{Binding}"
-                                                                        BackgroundColor="#FFC56B6B"
-                                                                        TextColor="White"
-                                                                        CornerRadius="10"
-                                                                        WidthRequest="100"
-                                                                        FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
-                                                        </Grid>
+                                                        <Border Padding="16"
+                                                                Margin="5"
+                                                                BackgroundColor="#FF9BBEB4"
+                                                                StrokeThickness="1"
+                                                                StrokeShape="RoundRectangle 8,8,8,8">
+                                                                <VerticalStackLayout HorizontalOptions="Center">
+                                                                        <Label Text="{Binding RecipeName}"
+                                                                               FontSize="16"
+                                                                               FontAttributes="Bold"
+                                                                               HorizontalOptions="Center"/>
+                                                                        <Label Text="{Binding CreatedAt, StringFormat='{0:dd MMM yyyy}'}"
+                                                                               FontSize="12"
+                                                                               HorizontalOptions="Center"/>
+                                                                        <Label Text="{Binding CookingTime, StringFormat='{0} min'}"
+                                                                               FontSize="14"
+                                                                               HorizontalOptions="Center"/>
+                                                                        <Label Text="{Binding Ratings.Count, StringFormat='{0} Ratings'}"
+                                                                               FontSize="12"
+                                                                               HorizontalOptions="Center"/>
+                                                                </VerticalStackLayout>
+                                                        </Border>
                                                 </DataTemplate>
                                         </CollectionView.ItemTemplate>
                                 </CollectionView>
+                        </ScrollView>
+
+                        <!-- Selected Recipe Details  -->
+                        <Border IsVisible="{Binding IsRecipeSelected}"
+                                Padding="15"
+                                Margin="0,10,0,20"
+                                BackgroundColor="#f8f8f8"
+                                Stroke="#d0d0d0"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 10,10,10,10">
+                                <VerticalStackLayout>
+                                        <Label Text="Selected Reciep Details"
+                                               FontSize="23"
+                                               FontAttributes="Bold"
+                                               HorizontalOptions="Center"
+                                               FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+                                        <!-- Titel -->
+                                        <Entry Text="{Binding SelectedRecipe.RecipeName, Mode=TwoWay}"
+                                               FontSize="20"
+                                               FontAttributes="Bold"
+                                               BackgroundColor="#F0F0F0"
+                                               FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+                                        <!-- Datum -->
+                                        <Label Text="Date"
+                                               FontAttributes="Bold"
+                                               FontSize="16"
+                                               FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+                                        <DatePicker Date="{Binding SelectedRecipe.CreatedAt, Mode=TwoWay}"
+                                                    Format="dd MMM yyyy"
+                                                    MinimumDate="2000-01-01"
+                                                    MaximumDate="{Binding MaxDate}"
+                                                    FontSize="14"/>
+                                        <!-- beskrivning -->
+                                        <Label Text="Description"
+                                               FontAttributes="Bold"
+                                               FontSize="16"
+                                               FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+                                        <Border StrokeShape="RoundRectangle 8,8,8,8"
+                                                BackgroundColor="#FF8DB6AC"
+                                                Padding="0"
+                                                HorizontalOptions="Start"
+                                                WidthRequest="{OnPlatform iOS=350, Android=300, Default=400}">
+                                                <Editor Text="{Binding SelectedRecipe.RecipeDescription}"
+                                                        HeightRequest="100"
+                                                        FontSize="14"
+                                                        AutoSize="TextChanges"
+                                                        BackgroundColor="Transparent"
+                                                        TextColor="White"/>
+                                        </Border>
+                                        <!-- Ingridienser -->
+                                        <Label Text="Ingredients:"
+                                               FontAttributes="Bold"
+                                               FontSize="16"
+                                               FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+                                        <Label Text="{Binding RecipeIngredients.Count, StringFormat='Antal ingredienser: {0}'}"
+                                               FontSize="14"
+                                               FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+
+                                        <CollectionView ItemsSource="{Binding RecipeIngredients}"
+                                                        HeightRequest="200"
+                                                        SelectionMode="None"
+                                                        EmptyView="No ingredients added yet.">
+                                                <CollectionView.ItemTemplate>
+                                                        <DataTemplate>
+                                                                <Grid ColumnDefinitions="100, *, Auto"
+                                                                      Padding="8"
+                                                                      Margin="0,2"
+                                                                      BackgroundColor="#F0F0F0">
+                                                                        <!-- Ingrediensens namn -->
+                                                                        <Label Grid.Column="1"
+                                                                               Text="{Binding Ingredient.IngredientName}"
+                                                                               FontSize="14"
+                                                                               FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
+                                                                               VerticalOptions="Center"
+                                                                               Padding="10,0,0,0"/>
+
+                                                                        <!-- Mängd (redigerbar) -->
+                                                                        <Entry Grid.Column="0"
+                                                                               Text="{Binding Quantity, Mode=TwoWay}"
+                                                                               FontSize="14"
+                                                                               Keyboard="Numeric"
+                                                                               BackgroundColor="#FF8DB6AC"
+                                                                               TextColor="White"
+                                                                               Placeholder="Quantity"/>
+
+                                                                        <Button Grid.Column="2"
+                                                                                Text="Remove"
+                                                                                Command="{Binding Source={x:Reference ProfilePageRoot}, Path=BindingContext.RemoveIngredientCommand}"
+                                                                                CommandParameter="{Binding}"
+                                                                                BackgroundColor="#FFC56B6B"
+                                                                                TextColor="White"
+                                                                                CornerRadius="8"
+                                                                                WidthRequest="100"
+                                                                                FontSize="12"
+                                                                                Padding="0"
+                                                                                HorizontalOptions="End"
+                                                                                FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+                                                                </Grid>
+                                                        </DataTemplate>
+                                                </CollectionView.ItemTemplate>
+                                        </CollectionView>
 
 
-                                <!-- Lägg till ingrediens -->
-                                <Label Text="Add New Ingredient:"
-                                                FontSize="16"
-                                                FontAttributes="Bold"/>
+                                        <!-- Lägg till ingrediens -->
+                                        <Label Text="Add New Ingredient:"
+                                               FontSize="16"
+                                               FontAttributes="Bold"/>
 
-                                <HorizontalStackLayout Spacing="20">
-                                        <Picker ItemsSource="{Binding AvailableIngredients}"
-                                                ItemDisplayBinding="{Binding IngredientName}"
-                                                SelectedItem="{Binding SelectedIngredient}"
-                                                WidthRequest="370"
-                                                BackgroundColor="#FF8DB6AC"/>
 
-                                        <Entry Text="{Binding NewIngredientQuantity}"
-                                               Placeholder="Quantity"
-                                               WidthRequest="150"
+                                        <HorizontalStackLayout Spacing="20">
+                                                <Picker ItemsSource="{Binding AvailableIngredients}"
+                                                        ItemDisplayBinding="{Binding IngredientName}"
+                                                        SelectedItem="{Binding SelectedIngredient}"
+                                                        WidthRequest="370"
+                                                        BackgroundColor="#FF8DB6AC"/>
+
+
+                                                <Entry Text="{Binding NewIngredientQuantity}"
+                                                       Placeholder="Quantity"
+                                                       WidthRequest="150"
+                                                       Keyboard="Numeric"
+                                                       BackgroundColor="#FF8DB6AC"/>
+
+
+                                                <Button Text="Add Ingredient"
+                                                        BackgroundColor="#FF306356"
+                                                        TextColor="White"
+                                                        CornerRadius="10"
+                                                        WidthRequest="200"
+                                                        Command="{Binding AddIngredientCommand}"
+                                                        FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
+                                                        IsEnabled="{Binding IsRecipeSelected}"/>
+                                        </HorizontalStackLayout>
+
+
+                                        <!-- Tid -->
+                                        <Label Text="Time"
+                                               FontSize="16"
+                                               FontAttributes="Bold"
+                                               Margin="0,10,0,0"/>
+                                        <Entry Text="{Binding SelectedRecipe.CookingTime, Mode=TwoWay}"
+                                               FontSize="14"
                                                Keyboard="Numeric"
-                                               BackgroundColor="#FF8DB6AC"/>
+                                               BackgroundColor="#F0F0F0"
+                                               Placeholder="Cooking time in minutes"/>
 
-                                        <Button Text="Add Ingredient"
-                                                BackgroundColor="#FF306356"
-                                                TextColor="White"
-                                                CornerRadius="10"
-                                                WidthRequest="200"
-                                                Command="{Binding AddIngredientCommand}"
-                                                FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
-                                                IsEnabled="{Binding IsRecipeSelected}"/>
-                                </HorizontalStackLayout>
+                                        <StackLayout Orientation="Horizontal"
+                                                     HorizontalOptions="Center"
+                                                     Spacing="20"
+                                                     Margin="0,15,0,0">
+                                                <Button Text="Edit Recipe"
+                                                        Command="{Binding EditRecipeCommand}"
+                                                        BackgroundColor="#FF306356"
+                                                        CornerRadius="8"
+                                                        WidthRequest="180"
+                                                        HorizontalOptions="Center"
+                                                        FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
+                                                        IsEnabled="{Binding IsRecipeSelected}"/>
 
-                                <!-- Tid -->
-                                <Label Text="Time"
-                                       FontSize="16"
-                                       FontAttributes="Bold"/>
-                                <Entry Text="{Binding SelectedRecipe.CookingTime, Mode=TwoWay}"
-                                       FontSize="14"
-                                       Keyboard="Numeric"/>
+                                                <Button Text="Delete Recipe"
+                                                        Command="{Binding DeleteRecipeCommand}"
+                                                        BackgroundColor="#FFC56B6B"
+                                                        CornerRadius="8"
+                                                        WidthRequest="180"
+                                                        HorizontalOptions="Center"
+                                                        FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
+                                                        IsEnabled="{Binding IsRecipeSelected}">
 
-                                <!-- Rating -->
-                                <Label Text="Ratings"
-                                       FontSize="16"
-                                       FontAttributes="Bold"/>
-                                <Label Text="{Binding SelectedRecipe.Ratings.Count, StringFormat='{0} Ratings'}"
-                                       FontSize="14"/>
+                                                </Button>
+                                        </StackLayout>
+                                </VerticalStackLayout>
+                        </Border>
+                </VerticalStackLayout>
+        </ScrollView>
 
-                                <Button Text="Edit Recipe"
-                                        Command="{Binding EditRecipeCommand}"
-                                        BackgroundColor="#FF306356"
-                                        CornerRadius="8"
-                                        WidthRequest="180"
-                                        HorizontalOptions="Center"
-                                        FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
-                                        IsEnabled="{Binding IsRecipeSelected}"/>
-
-                                <Button Text="Delete Recipe"
-                                        Command="{Binding DeleteRecipeCommand}"
-                                        BackgroundColor="#FFC56B6B"
-                                        CornerRadius="8"
-                                        WidthRequest="180"
-                                        HorizontalOptions="Center"
-                                        FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
-                                        IsEnabled="{Binding IsRecipeSelected}">
-
-                                </Button>
-                        </StackLayout>
-                </Border>
-        </Grid>
 </ContentPage>

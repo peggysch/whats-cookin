@@ -42,6 +42,14 @@ public partial class ProfileViewModel : BaseViewModel
         if (value != null)
         {
             LoadRecipeIngredientsAsync(selectedRecipe.RecipeID);
+
+            // Nollställ ingrediens-val och mängd vid receptbyte
+            SelectedIngredient = null;
+            NewIngredientQuantity = "";
+
+            // Notifiera UI att dessa fält har ändrats
+            OnPropertyChanged(nameof(SelectedIngredient));
+            OnPropertyChanged(nameof(NewIngredientQuantity));
         }
     }
 
@@ -253,14 +261,14 @@ public partial class ProfileViewModel : BaseViewModel
             var existingIngredients = await _recipeingredientsService.GetRecipeIngredientsAsync(SelectedRecipe.RecipeID);
 
             //steg 3: tar bort ingredines från recipe 
-            foreach(var existingIngredient in existingIngredients)
+            foreach (var existingIngredient in existingIngredients)
             {
                 var stillExists = RecipeIngredients.Any(i => i.Ingredient.IngredientID == existingIngredient.Ingredient.IngredientID);
-                if(!stillExists)
+                if (!stillExists)
                 {
                     bool removed = await _recipeingredientsService.RemoveIngredientFromRecipeAsync(SelectedRecipe.RecipeID, existingIngredient.IngredientID);
 
-                    if(removed)
+                    if (removed)
                     {
                         await MainThread.InvokeOnMainThreadAsync(() =>
                         {
@@ -349,7 +357,7 @@ public partial class ProfileViewModel : BaseViewModel
 
     private async Task RemoveIngredientAsync(RecipeIngredient ingredient)
     {
-        if(SelectedRecipe == null || ingredient == null)
+        if (SelectedRecipe == null || ingredient == null)
         {
             return;
         }
@@ -362,32 +370,32 @@ public partial class ProfileViewModel : BaseViewModel
 
         );
 
-        if(!isConfirmed)
+        if (!isConfirmed)
         {
             return;
         }
 
         try
         {
-            IsBusy = true; 
+            IsBusy = true;
             bool removed = await _recipeingredientsService.RemoveIngredientFromRecipeAsync(
                 SelectedRecipe.RecipeID, ingredient.Ingredient.IngredientID
             );
 
-            if(removed)
+            if (removed)
             {
                 var ingredientRemove = RecipeIngredients.FirstOrDefault(i => i.Ingredient.IngredientID == ingredient.IngredientID);
-                if(ingredientRemove != null)
+                if (ingredientRemove != null)
                 {
                     RecipeIngredients.Remove(ingredient);
                     OnPropertyChanged(nameof(RecipeIngredients));
                 }
-                
-                
+
+
                 await Shell.Current.DisplayAlert("Success", "Ingredient removed successfully!", "OK");
 
             }
-            else 
+            else
             {
                 await Shell.Current.DisplayAlert("Error", "Failed to remove ingredient.", "OK");
             }
