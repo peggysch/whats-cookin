@@ -33,8 +33,8 @@ namespace Informatics.MauiSurdeg.Services
             return await _context.Recipes
                 .AsNoTracking()
                 .Include(r => r.RecipeIngredients)
-                    .ThenInclude(ri => ri.Ingredient) // hämta alla relationer med mängded av varje ingrediens 
-                .Include(r => r.AppUser) // ladda alla ingridienser 
+                .ThenInclude(ri => ri.Ingredient) // hämta alla relationer med mängded av varje ingrediens 
+                .Include(r => r.AppUser) 
                 .FirstOrDefaultAsync(r => r.RecipeID == id);
         }
 

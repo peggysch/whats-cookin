@@ -144,10 +144,11 @@
                      <!-- Add Recipe Button -->
                      <Button Text="Add Recipe"
                              FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
-                             BackgroundColor="#5D8D81"
+                             BackgroundColor="#FF306356"
                              TextColor="White"
                              CornerRadius="10"
-                             WidthRequest="250"
+                             WidthRequest="240"
+                             
                              Command="{Binding SaveRecipeCommand}"/>
 
               </VerticalStackLayout>

@@ -89,51 +89,64 @@ public partial class AddRecipeViewModel : BaseViewModel
     //add error handling
     private async Task SaveRecipeAsync()
     {
-        // Step 1: Create and save the Recipe
-        var newRecipe = new Recipe
+        // Validate required fields before proceeding
+        if (string.IsNullOrWhiteSpace(RecipeName) ||
+            string.IsNullOrWhiteSpace(RecipeDescription) ||
+            CookingTime <= 0 ||
+            string.IsNullOrWhiteSpace(RecipeInstructions) ||
+            RecipeCost <= 0)
         {
-            RecipeName = RecipeName,
-            RecipeDescription = RecipeDescription,
-            CookingTime = CookingTime,
-            RecipeInstructions = RecipeInstructions,
-            RecipeCost = RecipeCost,
-            CreatedAt = DateTime.UtcNow,
-            AppUserID = App.UserId // Get the current user ID
-        };
-
-        // Step 2: Save the recipe to the database and get the RecipeID
-        var savedRecipe = await _recipeService.AddNewRecipeAsync(newRecipe);
-
-        if (savedRecipe == null || savedRecipe.RecipeID == 0)
-        {
-            // Handle error: Recipe could not be saved
-            Console.WriteLine("Error: Recipe could not be saved.");
+            await Shell.Current.DisplayAlert("Missing Information",
+                "Please fill in all required fields before adding the recipe.", "OK");
             return;
         }
 
-        // Step 3: Add RecipeIngredients if any were selected
-        foreach (var selectedIngredient in SelectedIngredients)
+        try
         {
-            var recipeIngredient = new RecipeIngredient
+            var newRecipe = new Recipe
             {
-                RecipeID = savedRecipe.RecipeID, // Use the saved RecipeID
-                IngredientID = selectedIngredient.IngredientID,
-                Quantity = selectedIngredient.Quantity
+                RecipeName = RecipeName,
+                RecipeDescription = RecipeDescription,
+                CookingTime = CookingTime,
+                RecipeInstructions = RecipeInstructions,
+                RecipeCost = RecipeCost,
+                CreatedAt = DateTime.UtcNow,
+                AppUserID = App.UserId // Get the current user ID
             };
 
-            await _recipeIngredientService.AddRecipeIngredientAsync(recipeIngredient);
+            var savedRecipe = await _recipeService.AddNewRecipeAsync(newRecipe);
+
+            if (savedRecipe == null || savedRecipe.RecipeID == 0)
+            {
+                await Shell.Current.DisplayAlert("Error", "Recipe could not be saved. Please try again.", "OK");
+                return;
+            }
+
+            // Save ingredients if any were selected
+            foreach (var selectedIngredient in SelectedIngredients)
+            {
+                var recipeIngredient = new RecipeIngredient
+                {
+                    RecipeID = savedRecipe.RecipeID,
+                    IngredientID = selectedIngredient.IngredientID,
+                    Quantity = selectedIngredient.Quantity
+                };
+
+                await _recipeIngredientService.AddRecipeIngredientAsync(recipeIngredient);
+            }
+
+            await Shell.Current.DisplayAlert("Success", "Recipe created successfully!", "OK");
+
+            // rensar all fält med clearData metoden 
+            ClearData();
         }
-
-        await Shell.Current.DisplayAlert("Success", "Recipe created!", "OK");
-
-        //Clear input fields
-        RecipeName = string.Empty;
-        RecipeDescription = string.Empty;
-        CookingTime = 0;
-        RecipeInstructions = string.Empty;
-        RecipeCost = 0;
-        SelectedIngredients.Clear();
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error saving recipe: {ex.Message}");
+            await Shell.Current.DisplayAlert("Error", "Something went wrong. Please try again later.", "OK");
+        }
     }
+
 
     public void ClearData()
     {
@@ -145,7 +158,6 @@ public partial class AddRecipeViewModel : BaseViewModel
         SelectedIngredient = null;
         IngredientQuantity = string.Empty;
         SelectedIngredients?.Clear();
-        AvailableIngredients?.Clear();
 
         // Notify UI
         OnPropertyChanged(nameof(RecipeName));
@@ -156,7 +168,6 @@ public partial class AddRecipeViewModel : BaseViewModel
         OnPropertyChanged(nameof(SelectedIngredient));
         OnPropertyChanged(nameof(IngredientQuantity));
         OnPropertyChanged(nameof(SelectedIngredients));
-        OnPropertyChanged(nameof(AvailableIngredients));
 
     }
 }
