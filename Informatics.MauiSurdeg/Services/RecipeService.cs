@@ -32,7 +32,9 @@ namespace Informatics.MauiSurdeg.Services
         {
             return await _context.Recipes
                 .AsNoTracking()
-                .Include(r => r.AppUser)
+                .Include(r => r.RecipeIngredients)
+                .ThenInclude(ri => ri.Ingredient) // hämta alla relationer med mängded av varje ingrediens 
+                .Include(r => r.AppUser) 
                 .FirstOrDefaultAsync(r => r.RecipeID == id);
         }
 
@@ -52,6 +54,7 @@ namespace Informatics.MauiSurdeg.Services
             {
                 if (recipe.RecipeID > 0) // Update existing recipe
                 {
+                    
                     _context.Recipes.Update(recipe);
                 }
                 else // New recipe
@@ -67,10 +70,11 @@ namespace Informatics.MauiSurdeg.Services
                 throw new InvalidOperationException("Error saving recipe.", ex);
             }
         }
-
         public async Task<bool> DeleteRecipeByIdAsync(int id) //KOLLA
         {
-            var recipe = await _context.Recipes.FindAsync(id);
+            var recipe = await _context.Recipes
+                .FirstOrDefaultAsync(r => r.RecipeID == id);
+
             if (recipe == null) return false;
 
             try

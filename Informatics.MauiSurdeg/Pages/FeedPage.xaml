@@ -75,14 +75,14 @@
                                                                <Label Text="{Binding CookingTime, StringFormat='Time: {0} min'}"
                                                                       FontSize="16"
                                                                       TextColor="Black"/>
-                                                               <Label Text="Cost/portion: 45 kr"
+                                                               <Label Text="{Binding RecipeCost, StringFormat='Cost: {0} Kr'}"
                                                                       FontSize="16"
                                                                       TextColor="Black"/>
                                                         </StackLayout>
 
                                                         <!-- Go to Recipe Button -->
                                                         <Button Text="Go to Recipe"
-                                                                BackgroundColor="#4CAF50"
+                                                                BackgroundColor="#FF8DB6AC"
                                                                 TextColor="White"
                                                                 CornerRadius="10"
                                                                 HeightRequest="50"

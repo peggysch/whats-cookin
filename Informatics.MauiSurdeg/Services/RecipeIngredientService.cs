@@ -19,11 +19,21 @@ namespace Informatics.MauiSurdeg.Services
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<IEnumerable<RecipeIngredient>> GetRecipeIngredientsAsync()
+        /*public async Task<IEnumerable<RecipeIngredient>> GetRecipeIngredientsAsync()
         {
             return await _context.RecipeIngredients
                 .AsNoTracking()
                 .Include(ri => ri.Recipe)
+                .Include(ri => ri.Ingredient)
+                .ToListAsync();
+        }*/
+
+        //Behöver denna till att ladda alla ingredineser för ett recept i Profile - KOLLA om den över behövs??
+        public async Task<IEnumerable<RecipeIngredient>> GetRecipeIngredientsAsync(int recipeId)
+        {
+            return await _context.RecipeIngredients
+                .AsNoTracking()
+                .Where(ri => ri.RecipeID == recipeId)
                 .Include(ri => ri.Ingredient)
                 .ToListAsync();
         }
@@ -102,6 +112,20 @@ namespace Informatics.MauiSurdeg.Services
             {
                 throw new InvalidOperationException("Error saving RecipeIngredient to the database.", ex);
             }
+        }
+
+        public async Task<RecipeIngredient?> UpdateRecipeIngredientAsync(RecipeIngredient updatedRecipeIngredient)
+        {
+            var existing = await _context.RecipeIngredients
+            .FirstOrDefaultAsync(ri => ri.RecipeID == updatedRecipeIngredient.RecipeID && ri.IngredientID == updatedRecipeIngredient.IngredientID);
+
+            if (existing != null)
+            {
+                existing.Quantity = updatedRecipeIngredient.Quantity;
+                await _context.SaveChangesAsync();
+                return updatedRecipeIngredient;
+            }
+            return null;
         }
 
 
