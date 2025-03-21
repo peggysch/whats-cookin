@@ -11,9 +11,9 @@ namespace Informatics.MauiSurdeg.Services
 {
     public class CommentService : ICommentService
     {
-        private readonly UniversityContext _context;
+        private readonly WhatsCookinContext _context;
 
-        public CommentService(UniversityContext context)
+        public CommentService(WhatsCookinContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }

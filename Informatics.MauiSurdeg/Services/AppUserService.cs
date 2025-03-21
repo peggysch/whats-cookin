@@ -13,9 +13,9 @@ namespace Informatics.MauiSurdeg.Services;
 
 public class AppUserService : IAppUserService
 {
-    private readonly UniversityContext _context;
+    private readonly WhatsCookinContext _context;
 
-    public AppUserService(UniversityContext context)
+    public AppUserService(WhatsCookinContext context)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }

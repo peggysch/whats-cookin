@@ -39,9 +39,9 @@ public static class MauiProgram
 		}
 
 		// Add database context to the service collection
-		builder.Services.AddDbContext<UniversityContext>(options =>
+		builder.Services.AddDbContext<WhatsCookinContext>(options =>
 		{
-			var connectionString = builder.Configuration["AppSettings:UniversityDatabase"]; ;
+			var connectionString = builder.Configuration["AppSettings:WhatsCookinDatabase"]; ;
 			options.UseSqlServer(connectionString);
 		});
 

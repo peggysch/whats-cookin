@@ -11,9 +11,9 @@ namespace Informatics.MauiSurdeg.Services
 {
     public class RatingService : IRatingService
     {
-        private readonly UniversityContext _context;
+        private readonly WhatsCookinContext _context;
 
-        public RatingService(UniversityContext context)
+        public RatingService(WhatsCookinContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
