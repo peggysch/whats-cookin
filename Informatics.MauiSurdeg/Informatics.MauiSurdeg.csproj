@@ -69,26 +69,27 @@
 	</ItemGroup>
 
 	<ItemGroup>
-    <None Remove="appsettings.json" />
-    <EmbeddedResource Include="appsettings.json">
-        <LogicalName>Informatics.MauiSurdeg.appsettings.json</LogicalName>
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
+    <None Include="appsettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <EmbeddedResource Include="appsettings.json" />
 	</ItemGroup>
+
 
 	<ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
     <!-- Add core EF Core package -->
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.3" />
     <!-- Optionally add this for development -->
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.3" />
     <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
     <!-- Align this version -->
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.3" />
+    <PackageReference Include="OpenAI" Version="2.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>

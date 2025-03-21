@@ -22,4 +22,8 @@
         <ShellContent Title="Settings" Route="settings" ContentTemplate="{DataTemplate local:Pages.SettingsPage}" />
     </FlyoutItem>
 
+    <FlyoutItem Title="Recipe Suggestions" >
+        <ShellContent Title="Recipe Suggestions" Route="recipesuggestions" ContentTemplate="{DataTemplate local:Pages.RecipeSuggestionsPage}" />
+    </FlyoutItem>
+    
 </Shell>
