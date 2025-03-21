@@ -6,13 +6,13 @@
              BackgroundColor="White">
 
        <AbsoluteLayout>
-              <VerticalStackLayout AbsoluteLayout.LayoutBounds="0,0,1000,800"
+              <VerticalStackLayout AbsoluteLayout.LayoutBounds="0,0,1500,1000"
                                    AbsoluteLayout.LayoutFlags="None"
                                    Padding="20"
                                    Spacing="15"
                                    BackgroundColor="WhiteSmoke"
-                                   WidthRequest="1000"
-                                   HeightRequest="800">
+                                   WidthRequest="1500"
+                                   HeightRequest="1000">
 
                      <!-- Recipe Name -->
                      <Label Text="Enter Recipe Name:"
@@ -148,7 +148,7 @@
                              TextColor="White"
                              CornerRadius="10"
                              WidthRequest="240"
-                             
+                             HorizontalOptions="Start"
                              Command="{Binding SaveRecipeCommand}"/>
 
               </VerticalStackLayout>

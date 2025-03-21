@@ -19,16 +19,6 @@ namespace Informatics.MauiSurdeg.Services
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        /*public async Task<IEnumerable<RecipeIngredient>> GetRecipeIngredientsAsync()
-        {
-            return await _context.RecipeIngredients
-                .AsNoTracking()
-                .Include(ri => ri.Recipe)
-                .Include(ri => ri.Ingredient)
-                .ToListAsync();
-        }*/
-
-        //Behöver denna till att ladda alla ingredineser för ett recept i Profile - KOLLA om den över behövs??
         public async Task<IEnumerable<RecipeIngredient>> GetRecipeIngredientsAsync(int recipeId)
         {
             return await _context.RecipeIngredients
@@ -77,7 +67,7 @@ namespace Informatics.MauiSurdeg.Services
             }
         }
 
-        public async Task<bool> RemoveIngredientFromRecipeAsync(int recipeId, int ingredientId) //KOLLA
+        public async Task<bool> RemoveIngredientFromRecipeAsync(int recipeId, int ingredientId)
         {
             var recipeIngredient = await _context.RecipeIngredients
                 .FirstOrDefaultAsync(ri => ri.RecipeID == recipeId && ri.IngredientID == ingredientId);

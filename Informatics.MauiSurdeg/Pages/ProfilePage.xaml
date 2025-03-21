@@ -99,23 +99,41 @@
                                                     MinimumDate="2000-01-01"
                                                     MaximumDate="{Binding MaxDate}"
                                                     FontSize="14"/>
-                                        <!-- beskrivning -->
-                                        <Label Text="Description"
-                                               FontAttributes="Bold"
-                                               FontSize="16"
-                                               FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
-                                        <Border StrokeShape="RoundRectangle 8,8,8,8"
-                                                BackgroundColor="#FF8DB6AC"
-                                                Padding="0"
-                                                HorizontalOptions="Start"
-                                                WidthRequest="{OnPlatform iOS=350, Android=300, Default=400}">
-                                                <Editor Text="{Binding SelectedRecipe.RecipeDescription}"
-                                                        HeightRequest="100"
-                                                        FontSize="14"
-                                                        AutoSize="TextChanges"
-                                                        BackgroundColor="Transparent"
-                                                        TextColor="White"/>
-                                        </Border>
+                                        <!-- beskrivning & instruktioner -->
+                                        <HorizontalStackLayout Spacing="20">
+                                                <Label Text="Description"
+                                                       FontAttributes="Bold"
+                                                       FontSize="16"
+                                                       FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+                                                <Border StrokeShape="RoundRectangle 8,8,8,8"
+                                                        BackgroundColor="#FF8DB6AC"
+                                                        Padding="0"
+                                                        HorizontalOptions="Start"
+                                                        WidthRequest="{OnPlatform iOS=350, Android=300, Default=400}">
+                                                        <Editor Text="{Binding SelectedRecipe.RecipeDescription}"
+                                                                HeightRequest="100"
+                                                                FontSize="14"
+                                                                AutoSize="TextChanges"
+                                                                BackgroundColor="Transparent"
+                                                                TextColor="White"/>
+                                                </Border>
+                                                <Label Text="Instructions"
+                                                       FontAttributes="Bold"
+                                                       FontSize="16"
+                                                       FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+                                                <Border StrokeShape="RoundRectangle 8,8,8,8"
+                                                        BackgroundColor="#FF8DB6AC"
+                                                        Padding="0"
+                                                        HorizontalOptions="Start"
+                                                        WidthRequest="{OnPlatform iOS=350, Android=300, Default=400}">
+                                                        <Editor Text="{Binding SelectedRecipe.RecipeInstructions}"
+                                                                HeightRequest="100"
+                                                                FontSize="14"
+                                                                AutoSize="TextChanges"
+                                                                BackgroundColor="Transparent"
+                                                                TextColor="White"/>
+                                                </Border>
+                                        </HorizontalStackLayout>
                                         <!-- Ingridienser -->
                                         <Label Text="Ingredients:"
                                                FontAttributes="Bold"
