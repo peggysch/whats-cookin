@@ -12,9 +12,9 @@ namespace Informatics.MauiSurdeg.Services
 
     public class RecipeIngredientService : IRecipeIngredientService
     {
-        private readonly UniversityContext _context;
+        private readonly WhatsCookinContext _context;
 
-        public RecipeIngredientService(UniversityContext context)
+        public RecipeIngredientService(WhatsCookinContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }

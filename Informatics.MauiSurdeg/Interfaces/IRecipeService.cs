@@ -18,5 +18,8 @@ namespace Informatics.MauiSurdeg.Interfaces
         Task<Recipe> SaveRecipeAsync(Recipe recipe);
         Task<bool> DeleteRecipeByIdAsync(int id);
         Task<Recipe> AddNewRecipeAsync(Recipe newRecipe);
+
+        // Generate Recipe
+        Task<List<Recipe>> GetLatestRecipesAsync(int count);
     }
 }

@@ -1,0 +1,76 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Informatics.MauiSurdeg.Pages.RecipeSuggestionsPage"
+             Title="Recipe Suggestions"
+             xmlns:local="clr-namespace:Informatics.MauiSurdeg.ViewModels"
+             NavigationPage.HasBackButton="False">
+
+    <!-- Wrap everything in a ScrollView -->
+    <ScrollView>
+        <StackLayout Padding="20"
+                Spacing="15">
+
+            <Label Text="Generate Recipe Suggestions"
+                    FontSize="24"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Center"/>
+
+            <Button Text="Personalized Recipes"
+                    Command="{Binding GeneratePersonalizedCommand}"
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InvertBoolConverter}}"/>
+
+            <Button Text="Community Recipes"
+                    Command="{Binding GenerateCommunityCommand}"
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InvertBoolConverter}}"/>
+
+            <Button Text="New Unique Recipes"
+                    Command="{Binding GenerateUniqueCommand}"
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InvertBoolConverter}}"/>
+
+            <ActivityIndicator IsRunning="{Binding IsLoading}"
+                    IsVisible="{Binding IsLoading}"/>
+
+            <!-- Ensure CollectionView has a defined height to prevent layout issues -->
+            <CollectionView ItemsSource="{Binding Recipes}"
+                    Margin="0,20,0,0"
+                    HeightRequest="600">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Stroke="#cccccc"
+                                StrokeThickness="1"
+                                Padding="10">
+                            <StackLayout>
+                                <Label Text="{Binding Title}"
+                                        FontAttributes="Bold"
+                                        FontSize="16"/>
+                                <Label Text="{Binding CookingTime, StringFormat='Cooking Time: {0} min'}"
+                                        FontSize="14"/>
+                                <Label Text="Instructions:"
+                                        FontAttributes="Bold"/>
+                                <Label Text="{Binding Instructions}"
+                                        FontSize="14"
+                                        LineBreakMode="WordWrap"/>
+                                <Label Text="Ingredients:"
+                                        FontAttributes="Bold"/>
+
+                                <CollectionView ItemsSource="{Binding Ingredients}">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{Binding Name}"
+                                                        FontSize="14"/>
+                                                <Label Text="{Binding Quantity, StringFormat='({0})'}"
+                                                        FontSize="14"/>
+                                            </StackLayout>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </StackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
