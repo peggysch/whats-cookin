@@ -18,12 +18,12 @@
         <ShellContent Title="Add Recipe" Route="addrecipe" ContentTemplate="{DataTemplate local:Pages.AddRecipePage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Settings" >
-        <ShellContent Title="Settings" Route="settings" ContentTemplate="{DataTemplate local:Pages.SettingsPage}" />
-    </FlyoutItem>
-
     <FlyoutItem Title="Recipe Suggestions" >
         <ShellContent Title="Recipe Suggestions" Route="recipesuggestions" ContentTemplate="{DataTemplate local:Pages.RecipeSuggestionsPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Settings" >
+        <ShellContent Title="Settings" Route="settings" ContentTemplate="{DataTemplate local:Pages.SettingsPage}" />
     </FlyoutItem>
     
 </Shell>

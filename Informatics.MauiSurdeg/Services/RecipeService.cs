@@ -34,7 +34,7 @@ namespace Informatics.MauiSurdeg.Services
                 .AsNoTracking()
                 .Include(r => r.RecipeIngredients)
                 .ThenInclude(ri => ri.Ingredient) // hämta alla relationer med mängded av varje ingrediens 
-                .Include(r => r.AppUser) 
+                .Include(r => r.AppUser)
                 .FirstOrDefaultAsync(r => r.RecipeID == id);
         }
 
@@ -54,7 +54,7 @@ namespace Informatics.MauiSurdeg.Services
             {
                 if (recipe.RecipeID > 0) // Update existing recipe
                 {
-                    
+
                     _context.Recipes.Update(recipe);
                 }
                 else // New recipe
@@ -139,6 +139,17 @@ namespace Informatics.MauiSurdeg.Services
 
             throw new InvalidOperationException("Failed to generate RecipeNo.");
         }
+
+        public async Task<List<Recipe>> GetLatestRecipesAsync(int count)
+        {
+            return await _context.Recipes
+                .OrderByDescending(r => r.CreatedAt)
+                .Take(count)
+                .Include(r => r.RecipeIngredients)
+                .ThenInclude(ri => ri.Ingredient)
+                .ToListAsync();
+        }
+
 
     }
 }

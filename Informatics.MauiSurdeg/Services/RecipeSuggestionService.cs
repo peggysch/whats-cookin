@@ -20,7 +20,7 @@ namespace Informatics.MauiSurdeg.Services
         // OpenAI Parameters
         private const string OpenAiUrl = "https://api.openai.com/v1/chat/completions";
         private const string ModelName = "gpt-4o-mini";
-        private const int MaxTokens = 500;
+        private const int MaxTokens = 2000;
         private const double Temperature = 0.7;
 
         public RecipeSuggestionService(HttpClient httpClient, IConfiguration configuration, IRecipeService recipeService)
@@ -114,54 +114,92 @@ namespace Informatics.MauiSurdeg.Services
         }
 
 
+
         private async Task<string> BuildPrompt(string type, int userId)
         {
-            var recipes = await _recipeService.GetRecipesByUserIdAsync(userId);
-            if (!recipes.Any())
-                return "User has no known recipes.";
+            string recipeData = "";
 
-            var recipeDetails = recipes.Select(recipe =>
+            if (type == "personalized")
             {
-                var ingredients = recipe.RecipeIngredients
-                    .Select(ri => $"{ri.Ingredient.IngredientName} ({ri.Quantity})")
-                    .ToList();
+                // Fetch user's recipes for personalization
+                var userRecipes = await _recipeService.GetRecipesByUserIdAsync(userId);
+                if (!userRecipes.Any())
+                    return "User has no known recipes.";
 
-                string ingredientList = ingredients.Any()
-                    ? string.Join(", ", ingredients)
-                    : "No ingredients listed";
+                recipeData = string.Join("\n", userRecipes.Select(recipe =>
+                {
+                    var ingredients = recipe.RecipeIngredients
+                        .Select(ri => $"{ri.Ingredient.IngredientName} ({ri.Quantity})")
+                        .ToList();
 
-                return $"- {recipe.RecipeName} (Cooking Time: {recipe.CookingTime} min): Ingredients - {ingredientList}";
-            }).ToList();
+                    string ingredientList = ingredients.Any() ? string.Join(", ", ingredients) : "No ingredients listed";
+                    return $"- {recipe.RecipeName} (Cooking Time: {recipe.CookingTime} min): Ingredients - {ingredientList}";
+                }));
+            }
+            else if (type == "community")
+            {
+                // Fetch the 10 newest recipes from the community (feed)
+                var communityRecipes = await _recipeService.GetLatestRecipesAsync(10);
+                if (!communityRecipes.Any())
+                    return "No recent community recipes available.";
 
-            string recipeData = string.Join("\n", recipeDetails);
+                recipeData = string.Join("\n", communityRecipes.Select(recipe =>
+                {
+                    var ingredients = recipe.RecipeIngredients
+                        .Select(ri => $"{ri.Ingredient.IngredientName} ({ri.Quantity})")
+                        .ToList();
+
+                    string ingredientList = ingredients.Any() ? string.Join(", ", ingredients) : "No ingredients listed";
+                    return $"- {recipe.RecipeName} (Cooking Time: {recipe.CookingTime} min): Ingredients - {ingredientList}";
+                }));
+            }
+            else if (type == "unique")
+            {
+                // Fetch the 10 newest recipes from the community (feed)
+                var communityRecipes = await _recipeService.GetLatestRecipesAsync(10);
+                if (!communityRecipes.Any())
+                    return "No recent community recipes available.";
+
+                recipeData = string.Join("\n", communityRecipes.Select(recipe =>
+                {
+                    var ingredients = recipe.RecipeIngredients
+                        .Select(ri => $"{ri.Ingredient.IngredientName} ({ri.Quantity})")
+                        .ToList();
+
+                    string ingredientList = ingredients.Any() ? string.Join(", ", ingredients) : "No ingredients listed";
+                    return $"- {recipe.RecipeName} (Cooking Time: {recipe.CookingTime} min): Ingredients - {ingredientList}";
+                }));
+                
+            }
 
             return $@"
-            You are an AI assistant that only generates JSON data.
-            You NEVER include markdown, explanations, or any extra text in your responses.
+    You are an AI assistant that only generates JSON data.
+    You NEVER include markdown, explanations, or any extra text in your responses.
 
-            Generate a JSON array of **exactly 5 new recipes** in this format:
-            ```json
-            [
-                {{
-                    ""Title"": ""Example Recipe"",
-                    ""CookingTime"": 30,
-                    ""Instructions"": ""Step 1: Do this. Step 2: Do that."",
-                    ""Ingredients"": [
-                        {{ ""Name"": ""Flour"", ""Quantity"": ""2 cups"" }},
-                        {{ ""Name"": ""Eggs"", ""Quantity"": ""3"" }}
-                    ]
-                }},
-                ...
+    Generate a JSON array of **exactly 5 new recipes** in this format:
+    ```json
+    [
+        {{
+            ""Title"": ""Example Recipe"",
+            ""CookingTime"": 30,
+            ""Instructions"": ""Step 1: Do this. Step 2: Do that."",
+            ""Ingredients"": [
+                {{ ""Name"": ""Flour"", ""Quantity"": ""2 cups"" }},
+                {{ ""Name"": ""Eggs"", ""Quantity"": ""3"" }}
             ]
-            ```
+        }},
+        ...
+    ]
+    ```
 
-            The user already knows these recipes:
-            {recipeData}
+    {(type == "personalized" ? $"- Make recipes similar to these:\n{recipeData}" : "")}
+    {(type == "community" ? $"- Base the new recipes on these recent community recipes:\n{recipeData}" : "")}
+    {(type == "unique" ? $"- Make recipes that are **entirely different** from these:\n{recipeData}" : "")}
 
-            - **Do NOT repeat recipes the user already knows.**
-            - **Make sure every response is valid JSON, with no explanations or formatting.**
-            - **Do NOT use Markdown or extra text. Just return the JSON array.**
-            ";
+    - **Ensure every response is valid JSON, without markdown or explanations.**
+    - **Do NOT use Markdown or extra text. Just return the JSON array.**
+    ";
         }
+
     }
 }
