@@ -6,6 +6,7 @@ using Informatics.MauiSurdeg.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Informatics.MauiSurdeg.Interfaces;
+using System.Threading.Tasks;
 
 namespace Informatics.MauiSurdeg.ViewModels;
 
@@ -47,7 +48,7 @@ public partial class AddRecipeViewModel : BaseViewModel
         _ingredientService = ingredientService;
         _recipeService = recipeService;
         _recipeIngredientService = recipeIngredientService;
-        AddIngredientCommand = new RelayCommand(AddIngredient);
+        AddIngredientCommand = new AsyncRelayCommand(AddIngredient);
         SaveRecipeCommand = new AsyncRelayCommand(SaveRecipeAsync);
         LoadIngredientsAsync();
         SelectedIngredients = new ObservableCollection<RecipeIngredient>();
@@ -63,10 +64,30 @@ public partial class AddRecipeViewModel : BaseViewModel
     }
 
     //add error handling
-    private void AddIngredient()
+    private async Task AddIngredient()
     {
         if (SelectedIngredient == null || string.IsNullOrWhiteSpace(IngredientQuantity))
             return;
+
+        var existingIngredient = SelectedIngredients
+        .FirstOrDefault(i => i.IngredientID == SelectedIngredient.IngredientID);
+
+        if(existingIngredient != null)
+        {
+            bool replace = await Shell.Current.DisplayAlert(
+                "Duplicate Ingredient",
+                $"You have already added {SelectedIngredient.IngredientName}. Do you want to replace it?",
+                "Yes", "No"
+            );
+
+            if(!replace)
+            {
+                IngredientQuantity = string.Empty;
+                SelectedIngredient = null;
+                return;
+            }
+            SelectedIngredients.Remove(existingIngredient);
+        }
 
         var newRecipeIngredient = new RecipeIngredient
         {
@@ -94,10 +115,11 @@ public partial class AddRecipeViewModel : BaseViewModel
             string.IsNullOrWhiteSpace(RecipeDescription) ||
             CookingTime <= 0 ||
             string.IsNullOrWhiteSpace(RecipeInstructions) ||
-            RecipeCost <= 0)
+            RecipeCost <= 0 ||
+            SelectedIngredients == null || SelectedIngredients.Count < 2)
         {
             await Shell.Current.DisplayAlert("Missing Information",
-                "Please fill in all required fields before adding the recipe.", "OK");
+                "Please fill in all required fields and add at least two ingredients before adding the recipe", "OK");
             return;
         }
 
