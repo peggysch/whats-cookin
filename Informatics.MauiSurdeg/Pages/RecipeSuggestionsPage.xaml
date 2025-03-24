@@ -5,10 +5,9 @@
              xmlns:local="clr-namespace:Informatics.MauiSurdeg.ViewModels"
              NavigationPage.HasBackButton="False">
 
-        <!-- Wrap everything in a ScrollView -->
         <ScrollView>
                 <StackLayout Padding="20"
-                             Spacing="15">
+                                Spacing="15">
 
                         <Label Text="Generate Recipe Suggestions"
                                FontSize="24"
@@ -20,60 +19,87 @@
                                 FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
                                 Command="{Binding GeneratePersonalizedCommand}"
                                 IsEnabled="{Binding IsLoading, Converter={StaticResource InvertBoolConverter}}"
-                                BackgroundColor="#FF306356"/>
+                                BackgroundColor="#FF306356"
+                                TextColor="White"/>
 
                         <Button Text="Community Recipes"
                                 FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
                                 Command="{Binding GenerateCommunityCommand}"
                                 IsEnabled="{Binding IsLoading, Converter={StaticResource InvertBoolConverter}}"
-                                BackgroundColor="#FF306356"/>
+                                BackgroundColor="#FF306356"
+                                TextColor="White"/>
 
                         <Button Text="New Unique Recipes"
                                 FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
                                 Command="{Binding GenerateUniqueCommand}"
                                 IsEnabled="{Binding IsLoading, Converter={StaticResource InvertBoolConverter}}"
-                                BackgroundColor="#FF306356"/>
+                                BackgroundColor="#FF306356"
+                                TextColor="White"/>
 
                         <ActivityIndicator IsRunning="{Binding IsLoading}"
                                            IsVisible="{Binding IsLoading}"/>
 
-                        <!-- Ensure CollectionView has a defined height to prevent layout issues -->
                         <CollectionView ItemsSource="{Binding Recipes}"
                                         Margin="0,20,0,0"
                                         HeightRequest="600">
                                 <CollectionView.ItemTemplate>
                                         <DataTemplate>
-                                                <Border Stroke="#cccccc"
+                                                <Border Stroke="#E0E0E0"
+                                                        Background="White"
                                                         StrokeThickness="1"
-                                                        Padding="10">
-                                                        <StackLayout>
+                                                        Padding="15"
+                                                        Margin="0,0,0,15"
+                                                        StrokeShape="RoundRectangle 12">
+                                                        <StackLayout Spacing="10">
                                                                 <Label Text="{Binding Title}"
                                                                        FontAttributes="Bold"
-                                                                       FontSize="16"
-                                                                       FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
-                                                                <Label Text="{Binding CookingTime, StringFormat='Cooking Time: {0} min'}"
-                                                                       FontSize="14"
-                                                                       FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
-                                                                <Label Text="Instructions:"
-                                                                       FontAttributes="Bold"
-                                                                       FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
-                                                                <Label Text="{Binding Instructions}"
-                                                                       FontSize="14"
-                                                                       FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
-                                                                       LineBreakMode="WordWrap"/>
-                                                                <Label Text="Ingredients:"
-                                                                       FontAttributes="Bold"
+                                                                       FontSize="18"
+                                                                       TextColor="#333"
                                                                        FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
 
-                                                                <CollectionView ItemsSource="{Binding Ingredients}">
+                                                                <Label Text="{Binding CookingTime, StringFormat='Cooking Time: {0} min'}"
+                                                                       FontSize="14"
+                                                                       TextColor="#666"
+                                                                       FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+
+                                                                <Label Text="Instructions:"
+                                                                       FontAttributes="Bold"
+                                                                       FontSize="16"
+                                                                       TextColor="#444"
+                                                                       FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+
+                                                                <Label Text="{Binding Instructions}"
+                                                                       FontSize="14"
+                                                                       LineBreakMode="WordWrap"
+                                                                       TextColor="#555"
+                                                                       FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+
+                                                                <Label Text="Ingredients:"
+                                                                       FontAttributes="Bold"
+                                                                       FontSize="16"
+                                                                       TextColor="#444"
+                                                                       FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
+
+                                                                <CollectionView ItemsSource="{Binding Ingredients}"
+                                                                                SelectionMode="None"
+                                                                                Margin="0">
+                                                                        <CollectionView.ItemsLayout>
+                                                                                <LinearItemsLayout Orientation="Vertical"/>
+                                                                        </CollectionView.ItemsLayout>
                                                                         <CollectionView.ItemTemplate>
                                                                                 <DataTemplate>
-                                                                                        <StackLayout Orientation="Horizontal">
+                                                                                        <StackLayout Orientation="Horizontal"
+                                                                                                        Spacing="5">
+                                                                                                <Label Text="•"
+                                                                                                       FontSize="14"
+                                                                                                       TextColor="#666"/>
                                                                                                 <Label Text="{Binding Name}"
                                                                                                        FontSize="14"
+                                                                                                       TextColor="#333"
                                                                                                        FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
                                                                                                 <Label Text="{Binding Quantity, StringFormat='({0})'}"
                                                                                                        FontSize="14"
+                                                                                                       TextColor="#666"
                                                                                                        FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
                                                                                         </StackLayout>
                                                                                 </DataTemplate>
