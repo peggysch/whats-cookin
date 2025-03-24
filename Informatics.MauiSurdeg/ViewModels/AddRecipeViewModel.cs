@@ -33,6 +33,7 @@ public partial class AddRecipeViewModel : BaseViewModel
 
     public ICommand AddIngredientCommand { get; }
     public ICommand SaveRecipeCommand { get; }
+    public ICommand RemoveIngredientCommand { get; }
 
     public ObservableCollection<Ingredient> AvailableIngredients { get; set; } = new();
     public ObservableCollection<RecipeIngredient> SelectedIngredients { get; set; } = new();
@@ -50,6 +51,7 @@ public partial class AddRecipeViewModel : BaseViewModel
         _recipeIngredientService = recipeIngredientService;
         AddIngredientCommand = new AsyncRelayCommand(AddIngredient);
         SaveRecipeCommand = new AsyncRelayCommand(SaveRecipeAsync);
+        RemoveIngredientCommand = new RelayCommand<RecipeIngredient>(RemoveIngredient);
         LoadIngredientsAsync();
         SelectedIngredients = new ObservableCollection<RecipeIngredient>();
     }
@@ -67,7 +69,11 @@ public partial class AddRecipeViewModel : BaseViewModel
     private async Task AddIngredient()
     {
         if (SelectedIngredient == null || string.IsNullOrWhiteSpace(IngredientQuantity))
+        {
+            await Shell.Current.DisplayAlert("Missing Information",
+                "Please choose ingredient and enter quantity before adding the ingredient.", "OK");
             return;
+        }
 
         var existingIngredient = SelectedIngredients
         .FirstOrDefault(i => i.IngredientID == SelectedIngredient.IngredientID);
@@ -98,13 +104,18 @@ public partial class AddRecipeViewModel : BaseViewModel
 
         SelectedIngredients.Add(newRecipeIngredient);
 
-
         // Clear the input fields
         IngredientQuantity = string.Empty;
         SelectedIngredient = null;
 
         OnPropertyChanged(nameof(IngredientQuantity));
         OnPropertyChanged(nameof(SelectedIngredient));
+    }
+
+    private void RemoveIngredient(RecipeIngredient ingredient)
+    {
+        if (SelectedIngredients.Contains(ingredient))
+        SelectedIngredients.Remove(ingredient); 
     }
 
     private async Task SaveRecipeAsync()
