@@ -13,19 +13,23 @@
             <Label Text="Generate Recipe Suggestions"
                     FontSize="24"
                     FontAttributes="Bold"
-                    HorizontalOptions="Center"/>
+                    HorizontalOptions="Center"
+                    FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
 
             <Button Text="Personalized Recipes"
                     Command="{Binding GeneratePersonalizedCommand}"
-                    IsEnabled="{Binding IsLoading, Converter={StaticResource InvertBoolConverter}}"/>
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InvertBoolConverter}}"
+                    BackgroundColor="#FF306356"/>
 
             <Button Text="Community Recipes"
                     Command="{Binding GenerateCommunityCommand}"
-                    IsEnabled="{Binding IsLoading, Converter={StaticResource InvertBoolConverter}}"/>
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InvertBoolConverter}}"
+                    BackgroundColor="#FF306356"/>
 
             <Button Text="New Unique Recipes"
                     Command="{Binding GenerateUniqueCommand}"
-                    IsEnabled="{Binding IsLoading, Converter={StaticResource InvertBoolConverter}}"/>
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InvertBoolConverter}}"
+                    BackgroundColor="#FF306356"/>
 
             <ActivityIndicator IsRunning="{Binding IsLoading}"
                     IsVisible="{Binding IsLoading}"/>
