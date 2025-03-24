@@ -69,5 +69,11 @@ namespace Informatics.MauiSurdeg.ViewModels
                 IsLoading = false;
             }
         }
+
+        public void ClearData()
+        {
+            Recipes.Clear();
+            OnPropertyChanged(nameof(Recipes));
+        }
     }
 }

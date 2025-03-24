@@ -69,7 +69,7 @@
                             <VerticalStackLayout WidthRequest="370">
                                    <Label Text="Time (minutes):"
                                           FontFamily="LibreBaskerville-Bold.ttf#LibreBaskervilleBold"/>
-                                   <Entry Text="{Binding CookingTime, Mode=TwoWay}"
+                                   <Entry Text="{Binding CookingTimeText, Mode=TwoWay}"
                                           Keyboard="Numeric"
                                           WidthRequest="370"
                                           BackgroundColor="#FF8DB6AC"
@@ -79,7 +79,7 @@
                             <VerticalStackLayout WidthRequest="370">
                                    <Label Text="Cost per portion in SEK:"
                                           FontFamily="LibreBaskerville-Bold.ttf#LibreBaskervilleBold"/>
-                                   <Entry Text="{Binding RecipeCost, Mode=TwoWay}"
+                                   <Entry Text="{Binding RecipeCostText, Mode=TwoWay}"
                                           Keyboard="Numeric"
                                           WidthRequest="370"
                                           BackgroundColor="#FF8DB6AC"

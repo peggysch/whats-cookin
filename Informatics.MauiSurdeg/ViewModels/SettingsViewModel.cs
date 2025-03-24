@@ -31,17 +31,20 @@ namespace Informatics.MauiSurdeg.ViewModels
         private readonly ProfileViewModel _profileViewModel;
         private readonly AddRecipeViewModel _addRecipeModel;
 
+        private readonly RecipeSuggestionsViewModel _recipeSuggestionsViewModel;
+
 
         public ICommand SaveUsernameCommand { get; }
         public ICommand SavePasswordCommand { get; }
         public ICommand LogoutCommand { get; }
         public ICommand DeleteUserCommand { get; }
 
-        public SettingsViewModel(IAppUserService userService, ProfileViewModel profileViewModel, AddRecipeViewModel addRecipeViewModel)
+        public SettingsViewModel(IAppUserService userService, ProfileViewModel profileViewModel, AddRecipeViewModel addRecipeViewModel, RecipeSuggestionsViewModel recipeSuggestionsViewModel)
         {
             _userService = userService;
             _profileViewModel = profileViewModel;
             _addRecipeModel = addRecipeViewModel;
+            _recipeSuggestionsViewModel = recipeSuggestionsViewModel;
             SaveUsernameCommand = new AsyncRelayCommand(SaveUsernameAsync);
             SavePasswordCommand = new AsyncRelayCommand(SavePasswordAsync);
             LogoutCommand = new AsyncRelayCommand(LogoutAsync);
@@ -191,6 +194,7 @@ namespace Informatics.MauiSurdeg.ViewModels
 
                 _profileViewModel.ClearData();
                 _addRecipeModel.ClearData();
+                _recipeSuggestionsViewModel.ClearData();
                 await App.NavigateToLoginShell();
             }
             catch (Exception ex)
