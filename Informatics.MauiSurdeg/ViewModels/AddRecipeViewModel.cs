@@ -93,7 +93,7 @@ public partial class AddRecipeViewModel : BaseViewModel
         {
             IngredientID = SelectedIngredient.IngredientID,
             Quantity = IngredientQuantity,
-
+            Ingredient = SelectedIngredient
         };
 
         SelectedIngredients.Add(newRecipeIngredient);
