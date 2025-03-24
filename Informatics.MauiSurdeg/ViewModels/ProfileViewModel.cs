@@ -168,6 +168,19 @@ public partial class ProfileViewModel : BaseViewModel
         }
     }
 
+    public string RecipeCostString
+    {
+        get => SelectedRecipe?.RecipeCost.ToString() ?? "";
+        set
+        {
+            if (SelectedRecipe != null && int.TryParse(value, out int cost))
+            {
+                SelectedRecipe.RecipeCost = cost;
+                OnPropertyChanged(nameof(RecipeCostString));
+            }
+        }
+    }
+
     public DateTime MaxDate => DateTime.Today;
     public DateTime CreatedAtDate
     {

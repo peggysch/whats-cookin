@@ -19,13 +19,13 @@ public partial class AddRecipeViewModel : BaseViewModel
     private string recipeDescription;
 
     [ObservableProperty]
-    private int cookingTime;
+    private string cookingTimeText;
 
     [ObservableProperty]
     private string recipeInstructions;
 
     [ObservableProperty]
-    private int recipeCost;
+    private string recipeCostText;
 
     private readonly IIngredientService _ingredientService;
     private readonly IRecipeService _recipeService;
@@ -72,7 +72,7 @@ public partial class AddRecipeViewModel : BaseViewModel
         var existingIngredient = SelectedIngredients
         .FirstOrDefault(i => i.IngredientID == SelectedIngredient.IngredientID);
 
-        if(existingIngredient != null)
+        if (existingIngredient != null)
         {
             bool replace = await Shell.Current.DisplayAlert(
                 "Duplicate Ingredient",
@@ -80,7 +80,7 @@ public partial class AddRecipeViewModel : BaseViewModel
                 "Yes", "No"
             );
 
-            if(!replace)
+            if (!replace)
             {
                 IngredientQuantity = string.Empty;
                 SelectedIngredient = null;
@@ -93,7 +93,7 @@ public partial class AddRecipeViewModel : BaseViewModel
         {
             IngredientID = SelectedIngredient.IngredientID,
             Quantity = IngredientQuantity,
-
+            Ingredient = SelectedIngredient
         };
 
         SelectedIngredients.Add(newRecipeIngredient);
@@ -107,19 +107,31 @@ public partial class AddRecipeViewModel : BaseViewModel
         OnPropertyChanged(nameof(SelectedIngredient));
     }
 
-    //add error handling
     private async Task SaveRecipeAsync()
     {
-        // Validate required fields before proceeding
+        // Validate required text fields
         if (string.IsNullOrWhiteSpace(RecipeName) ||
             string.IsNullOrWhiteSpace(RecipeDescription) ||
-            CookingTime <= 0 ||
             string.IsNullOrWhiteSpace(RecipeInstructions) ||
-            RecipeCost <= 0 ||
+            string.IsNullOrWhiteSpace(CookingTimeText) ||
+            string.IsNullOrWhiteSpace(RecipeCostText) ||
             SelectedIngredients == null || SelectedIngredients.Count < 2)
         {
             await Shell.Current.DisplayAlert("Missing Information",
-                "Please fill in all required fields and add at least two ingredients before adding the recipe", "OK");
+                "Please fill in all required fields and add at least two ingredients before adding the recipe.", "OK");
+            return;
+        }
+
+        // Validate and parse numeric inputs
+        if (!int.TryParse(CookingTimeText, out int cookingTime) || cookingTime <= 0)
+        {
+            await Shell.Current.DisplayAlert("Invalid Time", "Please enter a valid cooking time (positive number).", "OK");
+            return;
+        }
+
+        if (!int.TryParse(RecipeCostText, out int recipeCost) || recipeCost <= 0)
+        {
+            await Shell.Current.DisplayAlert("Invalid Cost", "Please enter a valid recipe cost (positive number).", "OK");
             return;
         }
 
@@ -129,11 +141,11 @@ public partial class AddRecipeViewModel : BaseViewModel
             {
                 RecipeName = RecipeName,
                 RecipeDescription = RecipeDescription,
-                CookingTime = CookingTime,
+                CookingTime = cookingTime,
                 RecipeInstructions = RecipeInstructions,
-                RecipeCost = RecipeCost,
+                RecipeCost = recipeCost,
                 CreatedAt = DateTime.UtcNow,
-                AppUserID = App.UserId // Get the current user ID
+                AppUserID = App.UserId // logged-in user ID
             };
 
             var savedRecipe = await _recipeService.AddNewRecipeAsync(newRecipe);
@@ -144,7 +156,7 @@ public partial class AddRecipeViewModel : BaseViewModel
                 return;
             }
 
-            // Save ingredients if any were selected
+            // Save the selected ingredients
             foreach (var selectedIngredient in SelectedIngredients)
             {
                 var recipeIngredient = new RecipeIngredient
@@ -159,7 +171,7 @@ public partial class AddRecipeViewModel : BaseViewModel
 
             await Shell.Current.DisplayAlert("Success", "Recipe created successfully!", "OK");
 
-            // rensar all fält med clearData metoden 
+            // Clear all fields
             ClearData();
         }
         catch (Exception ex)
@@ -170,13 +182,14 @@ public partial class AddRecipeViewModel : BaseViewModel
     }
 
 
+
     public void ClearData()
     {
         RecipeName = string.Empty;
         RecipeDescription = string.Empty;
-        CookingTime = 0;
+        CookingTimeText = string.Empty;
         RecipeInstructions = string.Empty;
-        RecipeCost = 0;
+        RecipeCostText = string.Empty;
         SelectedIngredient = null;
         IngredientQuantity = string.Empty;
         SelectedIngredients?.Clear();
@@ -184,9 +197,9 @@ public partial class AddRecipeViewModel : BaseViewModel
         // Notify UI
         OnPropertyChanged(nameof(RecipeName));
         OnPropertyChanged(nameof(RecipeDescription));
-        OnPropertyChanged(nameof(CookingTime));
+        OnPropertyChanged(nameof(CookingTimeText));
         OnPropertyChanged(nameof(RecipeInstructions));
-        OnPropertyChanged(nameof(RecipeCost));
+        OnPropertyChanged(nameof(RecipeCostText));
         OnPropertyChanged(nameof(SelectedIngredient));
         OnPropertyChanged(nameof(IngredientQuantity));
         OnPropertyChanged(nameof(SelectedIngredients));
