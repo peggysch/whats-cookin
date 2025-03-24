@@ -16,12 +16,13 @@
                      <VerticalStackLayout Grid.Column="0">
                             <Label Text="Your Profile"
                                    FontSize="28"
-                                   FontAttributes="Bold"/>
+                                   FontAttributes="Bold"
+                                   FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
 
                             <Label Text="{Binding DisplayUsername}"
-                                   FontSize="18"
+                                   FontSize="14"
                                    TextColor="Gray"
-                                   FontAttributes="Italic"
+                                   FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
                                    Margin="0,5,0,0"/>
                      </VerticalStackLayout>
 
@@ -31,6 +32,7 @@
                              Command="{Binding LogoutCommand}"
                              BackgroundColor="#6B937E"
                              TextColor="White"
+                             FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
                              HeightRequest="48"/>
               </Grid>
 
@@ -53,12 +55,14 @@
                                           <VerticalStackLayout Spacing="12">
                                                  <Label Text="Change Username:"
                                                         FontAttributes="Bold"
-                                                        FontSize="18"/>
+                                                        FontSize="18"
+                                                        FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
                                                  <Entry Text="{Binding Username}"
                                                         Placeholder="Ex. CookingMaster"
                                                         BackgroundColor="#F8F8F8"
                                                         HeightRequest="48"
-                                                        Margin="0,6,0,0"/>
+                                                        Margin="0,6,0,0"
+                                                        FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
                                                  <!-- Username Button -->
                                                  <Button Text="Change Username"
                                                          Command="{Binding SaveUsernameCommand}"
@@ -67,6 +71,7 @@
                                                          TextColor="White"
                                                          HeightRequest="48"
                                                          FontSize="16"
+                                                         FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
                                                          WidthRequest="200"
                                                          HorizontalOptions="Center"
                                                          Margin="0,20,0,0"/>
@@ -76,7 +81,8 @@
                                           <VerticalStackLayout Spacing="12">
                                                  <Label Text="Change Password:"
                                                         FontAttributes="Bold"
-                                                        FontSize="18"/>
+                                                        FontSize="18"
+                                                        FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
                                                  <Entry Text="{Binding Password}"
                                                         IsPassword="True"
                                                         Placeholder="Enter new password (min. 5 characters)"
@@ -89,13 +95,15 @@
                                           <VerticalStackLayout Spacing="12">
                                                  <Label Text="Confirm Password:"
                                                         FontAttributes="Bold"
-                                                        FontSize="18"/>
+                                                        FontSize="18"
+                                                        FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
                                                  <Entry Text="{Binding ConfirmPassword}"
                                                         IsPassword="True"
                                                         Placeholder="Confirm new password"
                                                         BackgroundColor="#F8F8F8"
                                                         HeightRequest="48"
-                                                        Margin="0,6,0,0"/>
+                                                        Margin="0,6,0,0"
+                                                        FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
 
                                                  <!-- Password Button (Always Clickable) -->
                                                  <Button Text="Change Password"
@@ -104,6 +112,7 @@
                                                          TextColor="White"
                                                          HeightRequest="48"
                                                          FontSize="16"
+                                                         FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
                                                          WidthRequest="200"
                                                          HorizontalOptions="Center"
                                                          Margin="0,20,0,0"/>
@@ -122,6 +131,7 @@
                                                   TextColor="White"
                                                   HeightRequest="48"
                                                   FontSize="16"
+                                                  FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
                                                   WidthRequest="200"
                                                   HorizontalOptions="Center"
                                                   Margin="0,10,0,0"/>

@@ -18,6 +18,7 @@
                      <Label Text="Recipe Feed"
                             FontSize="32"
                             FontAttributes="Bold"
+                            FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
                             TextColor="Black"
                             Grid.Row="0"/>
 
@@ -25,6 +26,7 @@
                      <Label Text="Discover new recipes!"
                             FontSize="18"
                             TextColor="Gray"
+                            FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
                             Margin="0,0,0,20"
                             Grid.Row="1"/>
 
@@ -34,7 +36,7 @@
                             <!-- Add Vertical Spacing -->
                             <CollectionView.ItemsLayout>
                                    <LinearItemsLayout Orientation="Vertical"
-                                                 ItemSpacing="30"/>
+                                                      ItemSpacing="30"/>
                             </CollectionView.ItemsLayout>
 
                             <CollectionView.ItemTemplate>
@@ -51,22 +53,26 @@
                                                         <Label Text="{Binding RecipeName}"
                                                                FontSize="24"
                                                                FontAttributes="Bold"
+                                                               FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
                                                                TextColor="Black"/>
 
                                                         <!-- User -->
                                                         <Label Text="{Binding AppUser.Username}"
                                                                FontSize="16"
+                                                               FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
                                                                TextColor="Gray"/>
 
                                                         <!-- Created At -->
                                                         <Label Text="{Binding CreatedAt, StringFormat='Created at: {0:dd MMM yyyy HH:mm}'}"
                                                                FontSize="14"
+                                                               FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
                                                                TextColor="Gray"/>
 
                                                         <!-- Recipe Description -->
                                                         <Label Text="{Binding RecipeDescription}"
                                                                FontSize="18"
                                                                TextColor="Black"
+                                                               FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
                                                                LineBreakMode="WordWrap"/>
 
                                                         <!-- Cooking Time and Cost -->
@@ -74,14 +80,17 @@
                                                                      Spacing="30">
                                                                <Label Text="{Binding CookingTime, StringFormat='Time: {0} min'}"
                                                                       FontSize="16"
+                                                                      FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
                                                                       TextColor="Black"/>
                                                                <Label Text="{Binding RecipeCost, StringFormat='Cost: {0} Kr'}"
                                                                       FontSize="16"
+                                                                      FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
                                                                       TextColor="Black"/>
                                                         </StackLayout>
 
                                                         <!-- Go to Recipe Button -->
                                                         <Button Text="Go to Recipe"
+                                                                FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
                                                                 BackgroundColor="#FF8DB6AC"
                                                                 TextColor="White"
                                                                 CornerRadius="10"
