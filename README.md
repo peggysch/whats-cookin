@@ -27,7 +27,7 @@ and get **AI-generated recipe suggestions** based on what they and the community
 
 ## Team and my contribution
 
-Built by a team of six students. My main contribution was the **Add Recipe** feature: I built the
+Built by a team of five students. My main contribution was the **Add Recipe** feature: I built the
 page and most of its ViewModel logic for creating recipes with ingredients, extended the recipe and
 ingredient services it needed, and unified typography and styling across the app's pages.
 
