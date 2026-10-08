@@ -12,7 +12,7 @@ and get **AI-generated recipe suggestions** based on what they and the community
 - **Profile** – view, edit and delete your own recipes and their ingredients
 - **Feed** – browse the latest recipes from all users, with cooking time and cost per portion
 - **Add Recipe** – create a recipe with description, instructions, time, cost and ingredients chosen from a shared ingredient list with quantities
-- **AI recipe suggestions** – the OpenAI API suggests new recipes based on your own recipes or recent community recipes
+- **AI recipe suggestions** – the OpenAI API (gpt-4o-mini) generates recipe ideas in three modes: based on your own recipes, on the newest community recipes, or completely new. Suggestions are shown for inspiration and are not saved as recipes.
 - **Ratings and comments** in the data model
 
 ## Tech stack
