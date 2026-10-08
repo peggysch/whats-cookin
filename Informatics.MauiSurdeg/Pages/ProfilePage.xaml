@@ -112,7 +112,7 @@
                                                         FontSize="16"
                                                         FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
                                                  <Border StrokeShape="RoundRectangle 8,8,8,8"
-                                                         BackgroundColor="#FF8DB6AC"
+                                                         BackgroundColor="White" Stroke="#FFC8C8C8" StrokeThickness="1"
                                                          Padding="0"
                                                          HorizontalOptions="Start"
                                                          WidthRequest="{OnPlatform iOS=350, Android=300, Default=400}">
@@ -121,7 +121,7 @@
                                                         FontSize="14"
                                                         AutoSize="TextChanges"
                                                         BackgroundColor="Transparent"
-                                                        TextColor="White"/>
+                                                        TextColor="Black"/>
                                                  </Border>
                                           </VerticalStackLayout>
                                           <VerticalStackLayout Spacing="5">
@@ -130,7 +130,7 @@
                                                         FontSize="16"
                                                         FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
                                                  <Border StrokeShape="RoundRectangle 8,8,8,8"
-                                                         BackgroundColor="#FF8DB6AC"
+                                                         BackgroundColor="White" Stroke="#FFC8C8C8" StrokeThickness="1"
                                                          Padding="0"
                                                          HorizontalOptions="Start"
                                                          WidthRequest="{OnPlatform iOS=350, Android=300, Default=400}">
@@ -139,7 +139,7 @@
                                                         FontSize="14"
                                                         AutoSize="TextChanges"
                                                         BackgroundColor="Transparent"
-                                                        TextColor="White"/>
+                                                        TextColor="Black"/>
                                                  </Border>
                                           </VerticalStackLayout>
                                    </HorizontalStackLayout>
@@ -153,11 +153,10 @@
                                           FontSize="14"
                                           FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
 
-                                   <CollectionView ItemsSource="{Binding RecipeIngredients}"
-                                                   HeightRequest="200"
-                                                   SelectionMode="None"
-                                                   EmptyView="No ingredients added yet.">
-                                          <CollectionView.ItemTemplate>
+                                   <!-- BindableLayout instead of CollectionView: renders every row reliably on Mac -->
+                                   <VerticalStackLayout BindableLayout.ItemsSource="{Binding RecipeIngredients}"
+                                                        BindableLayout.EmptyView="No ingredients added yet.">
+                                          <BindableLayout.ItemTemplate>
                                                  <DataTemplate>
                                                         <Grid ColumnDefinitions="100, *, Auto"
                                                               Padding="8"
@@ -176,8 +175,8 @@
                                                                       Text="{Binding Quantity, Mode=TwoWay}"
                                                                       FontSize="14"
                                                                       Keyboard="Numeric"
-                                                                      BackgroundColor="#FF8DB6AC"
-                                                                      TextColor="White"
+                                                                      BackgroundColor="White"
+                                                                      TextColor="Black"
                                                                       Placeholder="Quantity"/>
 
                                                                <Button Grid.Column="2"
@@ -194,8 +193,8 @@
                                                                        FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"/>
                                                         </Grid>
                                                  </DataTemplate>
-                                          </CollectionView.ItemTemplate>
-                                   </CollectionView>
+                                          </BindableLayout.ItemTemplate>
+                                   </VerticalStackLayout>
 
 
                                    <!-- Lägg till ingrediens -->
@@ -210,14 +209,14 @@
                                                   SelectedItem="{Binding SelectedIngredient}"
                                                   WidthRequest="370"
                                                   FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
-                                                  BackgroundColor="#FF8DB6AC"/>
+                                                  BackgroundColor="White"/>
 
                                           <Entry Text="{Binding NewIngredientQuantity}"
                                                  Placeholder="Quantity"
                                                  WidthRequest="150"
                                                  Keyboard="Numeric"
                                                  FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
-                                                 BackgroundColor="#FF8DB6AC"/>
+                                                 BackgroundColor="White"/>
 
                                           <Button Text="Add Ingredient"
                                                   BackgroundColor="#FF306356"

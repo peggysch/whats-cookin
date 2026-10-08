@@ -4,6 +4,9 @@ using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Maui.Storage;
+using Informatics.MauiSurdeg.DataBase;
 
 using Informatics.MauiSurdeg.Interfaces;
 using Informatics.MauiSurdeg.Services;
@@ -39,10 +42,18 @@ public static class MauiProgram
 		}
 
 		// Add database context to the service collection
+		// If a SQL Server connection string is configured in appsettings.json, use it (original setup).
+		// Otherwise fall back to a local SQLite file so the app can run without a database server.
+		var connectionString = builder.Configuration["AppSettings:WhatsCookinDatabase"];
+		var useSqlServer = !string.IsNullOrWhiteSpace(connectionString);
+		var sqlitePath = Path.Combine(FileSystem.AppDataDirectory, "whatscookin.db");
+
 		builder.Services.AddDbContext<WhatsCookinContext>(options =>
 		{
-			var connectionString = builder.Configuration["AppSettings:WhatsCookinDatabase"]; ;
-			options.UseSqlServer(connectionString);
+			if (useSqlServer)
+				options.UseSqlServer(connectionString);
+			else
+				options.UseSqlite($"Data Source={sqlitePath}");
 		});
 
 
@@ -56,7 +67,9 @@ public static class MauiProgram
 		builder.Services.AddHttpClient<IRecipeSuggestionService, RecipeSuggestionService>(client =>
 		{
 			client.BaseAddress = new Uri("https://api.openai.com/");
-			client.DefaultRequestHeaders.Add("Authorization", $"Bearer {builder.Configuration["AppSettings:OpenAIApiKey"]}");
+			var apiKey = builder.Configuration["AppSettings:OpenAIApiKey"];
+			if (!string.IsNullOrWhiteSpace(apiKey))
+				client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
 		});
 
 		// Register ViewModels
@@ -82,6 +95,16 @@ public static class MauiProgram
 		builder.Logging.AddDebug();
 #endif
 
-		return builder.Build();
+		var app = builder.Build();
+
+		// Create and fill the local database on first start
+		if (!useSqlServer)
+		{
+			using var scope = app.Services.CreateScope();
+			var db = scope.ServiceProvider.GetRequiredService<WhatsCookinContext>();
+			DatabaseSeeder.EnsureCreatedAndSeeded(db);
+		}
+
+		return app;
 	}
 }

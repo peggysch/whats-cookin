@@ -82,8 +82,10 @@
     <!-- Add core EF Core package -->
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.3" />
+    <!-- Local SQLite database, used when no SQL Server connection string is configured -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.3" />
     <!-- Optionally add this for development -->
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.9" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.3" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.3" />
     <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />

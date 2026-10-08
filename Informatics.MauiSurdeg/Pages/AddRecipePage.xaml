@@ -22,14 +22,14 @@
                             TextColor="Black"
                             WidthRequest="760"
                             HorizontalOptions="Start"
-                            BackgroundColor="#FF8DB6AC"/>
+                            BackgroundColor="White"/>
 
                      <!-- Description and Instructions Layout -->
                      <HorizontalStackLayout Spacing="20">
                             <VerticalStackLayout WidthRequest="370">
                                    <Label Text="Enter a short description of your recipe:"
                                           FontFamily="LibreBaskerville-Bold.ttf#LibreBaskervilleBold"/>
-                                   <Border Background="#FF8DB6AC"
+                                   <Border Background="White" Stroke="#FFC8C8C8" StrokeThickness="1"
                                            Padding="1"
                                            HeightRequest="110">
                                           <Border.StrokeShape>
@@ -37,7 +37,7 @@
                                           </Border.StrokeShape>
                                           <Editor Text="{Binding RecipeDescription}"
                                                   FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
-                                                  BackgroundColor="#FF8DB6AC"
+                                                  BackgroundColor="White"
                                                   TextColor="Black"/>
                                    </Border>
                             </VerticalStackLayout>
@@ -45,7 +45,7 @@
                             <VerticalStackLayout WidthRequest="370">
                                    <Label Text="Enter a summarized text of instructions:"
                                           FontFamily="LibreBaskerville-Bold.ttf#LibreBaskervilleBold"/>
-                                   <Border Background="#FF8DB6AC"
+                                   <Border Background="White" Stroke="#FFC8C8C8" StrokeThickness="1"
                                            Padding="1"
                                            HeightRequest="110">
                                           <Border.StrokeShape>
@@ -53,7 +53,7 @@
                                           </Border.StrokeShape>
                                           <Editor Text="{Binding RecipeInstructions}"
                                                   FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
-                                                  BackgroundColor="#FF8DB6AC"
+                                                  BackgroundColor="White"
                                                   TextColor="Black"/>
                                    </Border>
                             </VerticalStackLayout>
@@ -67,7 +67,7 @@
                                    <Entry Text="{Binding CookingTimeText, Mode=TwoWay}"
                                           Keyboard="Numeric"
                                           WidthRequest="370"
-                                          BackgroundColor="#FF8DB6AC"
+                                          BackgroundColor="White"
                                           TextColor="Black"/>
                             </VerticalStackLayout>
 
@@ -77,7 +77,7 @@
                                    <Entry Text="{Binding RecipeCostText, Mode=TwoWay}"
                                           Keyboard="Numeric"
                                           WidthRequest="370"
-                                          BackgroundColor="#FF8DB6AC"
+                                          BackgroundColor="White"
                                           TextColor="Black"/>
                             </VerticalStackLayout>
                      </HorizontalStackLayout>
@@ -90,14 +90,14 @@
                                     ItemDisplayBinding="{Binding IngredientName}"
                                     SelectedItem="{Binding SelectedIngredient}"
                                     WidthRequest="370"
-                                    BackgroundColor="#FF8DB6AC"
+                                    BackgroundColor="White"
                                     FontFamily="LibreBaskerville-Bold.ttf#LibreBaskervilleBold"/>
 
                             <Entry Text="{Binding IngredientQuantity}"
                                    FontFamily="LibreBaskerville-Regular.ttf#LibreBaskervilleRegular"
                                    Placeholder="Quantity"
                                    WidthRequest="150"
-                                   BackgroundColor="#FF8DB6AC"
+                                   BackgroundColor="White"
                                    TextColor="Black"/>
 
                             <Button Text="Add Ingredient"

@@ -11,6 +11,7 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
+        UserAppTheme = AppTheme.Light; // The app is designed for light mode
         MainPage = new LoginShell();
         _instance = this; // Spara referensen till instansen av appen
     }
